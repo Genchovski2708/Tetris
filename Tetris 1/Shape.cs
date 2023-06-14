@@ -77,6 +77,7 @@ namespace Tetris_1
             if (!Limits())
             {
                 Stage = (Stage - 1) % 4;
+                ResetMatrix();
                 FillMatrix();
             }
 
