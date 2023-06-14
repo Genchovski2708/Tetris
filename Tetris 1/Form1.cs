@@ -8,7 +8,6 @@ namespace Tetris_1
         {
             InitializeComponent();
             DoubleBuffered= true;
-            Playground = new Playground(new Point(100,100),new Point(500,400));
             timer1.Interval = 400;
             Invalidate();
         }
@@ -20,12 +19,21 @@ namespace Tetris_1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Playground.DrawDots(e.Graphics);
+            if(Playground!= null && Playground.GameIsStarted)
+            {
+                Playground.DrawDots(e.Graphics);
+            }
+
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(Playground == null || !Playground.GameIsStarted)
+            {
+                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+            }
             timer1.Start();
+            Playground.GameIsStarted = true;
             Invalidate();
         }
 

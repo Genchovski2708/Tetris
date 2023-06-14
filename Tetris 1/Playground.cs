@@ -21,6 +21,7 @@ namespace Tetris_1
 
         public int HorizontalDots { get; set; }
         public int VerticalDots { get; set; }
+        public bool GameIsStarted { get; set; }
 
         public Playground(Point topLeft, Point topRight)
         {
@@ -70,12 +71,21 @@ namespace Tetris_1
         }
         public void AddShape()
         {
-            if (MovingShape == null || MovingShape.AtBottom)
+            if (MovingShape == null || MovingShape.AtBottom && GameIsStarted)
             {
-                int randomInx = Random.Next(0, HorizontalDots);
-                Dot randomDot = DotsArray[0, randomInx];
-                MovingShape = GenerateShape(randomDot, randomInx);
-                Shapes.Add(MovingShape);
+                CheckIfGameOver();
+                if(MovingShape!=null && !GameIsStarted)
+                {
+                    MessageBox.Show("Game Over");
+                }
+                else
+                {
+                    int randomInx = Random.Next(0, HorizontalDots);
+                    Dot randomDot = DotsArray[0, randomInx];
+                    MovingShape = GenerateShape(randomDot, randomInx);
+                    Shapes.Add(MovingShape);
+                }
+
             }
 
         }
@@ -91,7 +101,7 @@ namespace Tetris_1
                         int rowIndex = shape.IndexRow + i;
                         int columnIndex = shape.IndexColumn + j;
 
-                        if (shape.SquareMatrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
+                        if (shape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
                         {
                             DotsArray[rowIndex, columnIndex].HasSquare = true;
                             if(rowIndex == VerticalDots - 1)
@@ -118,16 +128,20 @@ namespace Tetris_1
         public void Tick()
         {
 
-            if (MovingShape.IndexRow < VerticalDots)
+            if(GameIsStarted)
             {
-                if (!MovingShape.AtBottom)
+                if (MovingShape != null && MovingShape.IndexRow < VerticalDots)
                 {
-                    MovingShape.IndexRow++;
+                    if (!MovingShape.AtBottom)
+                    {
+                        MovingShape.IndexRow++;
+                    }
                 }
+                UpdateDots();
+                CheckIfMovingShapeAtBottom();
+                //CheckIfAtBottom();
             }
-            UpdateDots();
-            CheckIfMovingShapeAtBottom();
-            //CheckIfAtBottom();
+
         }
 
         private void CheckIfAtBottom()
@@ -142,11 +156,11 @@ namespace Tetris_1
                     for(int j = 0; j < 4; j++)
                     {
                         
-                        if (shape.SquareMatrix[i, j])
+                        if (shape.Matrix[i, j])
                         {
                             rowIndex = shape.IndexRow + i;
                             columnIndex = shape.IndexColumn + j;
-                            if (rowIndex + 1 < VerticalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i==3 || !shape.SquareMatrix[i+1,j]))
+                            if (rowIndex + 1 < VerticalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i==3 || !shape.Matrix[i+1,j]))
                             {
                                 shape.AtBottom = true;
                                 found = true;
@@ -168,7 +182,7 @@ namespace Tetris_1
         {
             int random = Random.Next(0, 5);
             int limitLeft = 0;
-            int limitRight = HorizontalDots-1;
+            int limitRight = HorizontalDots;
             switch (random)
             {
                 case 0: return new ShapeLine(dot,0,index,limitLeft,limitRight);
@@ -182,15 +196,22 @@ namespace Tetris_1
         }
         public void Move(Keys keys) 
         {
-            if (!MovingShape.AtBottom)
+            if (GameIsStarted && !MovingShape.AtBottom)
             {
                 if (keys == Keys.Left)
                 {
-                    MoveLeft();
+                    if (!CheckCollisionsLeft())
+                    {
+                        MoveLeft();
+                    }
+        
                 }
                 else if (keys == Keys.Right)
                 {
-                    MoveRight();
+                    if (!CheckCollisionsRight())
+                    {
+                        MoveRight();
+                    }
                 }
                 else if (keys == Keys.Up)
                 {
@@ -200,9 +221,58 @@ namespace Tetris_1
                 {
                     MoveDown();
                 }
-                CheckIfMovingShapeAtBottom();
                 UpdateDots();
+                CheckIfMovingShapeAtBottom();
             }
+        }
+
+        private bool CheckCollisionsLeft()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                int indexRow = MovingShape.IndexRow + i;
+                int indexColumn = MovingShape.IndexColumn; // Move this line outside the inner loop
+                for (int j = 0; j < 4; j++)
+                {
+                    if (MovingShape.Matrix[i, j])
+                    {
+                        indexColumn = MovingShape.IndexColumn + j;
+                        if (indexColumn - 1 < 0)
+                        {
+                            return true;
+                        }
+                        if (DotsArray[indexRow, indexColumn - 1].HasSquare && (j == 0 || !MovingShape.Matrix[i, j - 1]))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        private bool CheckCollisionsRight()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                int indexRow = MovingShape.IndexRow + i;
+                int indexColumn = MovingShape.IndexColumn;
+                for (int j = 0; j < 4; j++)
+                {
+                    indexColumn = MovingShape.IndexColumn + j;
+                    if (MovingShape.Matrix[i, j])
+                    {
+                        if (indexColumn + 1 >= HorizontalDots)
+                        {
+                            return true;
+                        }
+                        if (DotsArray[indexRow, indexColumn + 1].HasSquare && (j == 3 || !MovingShape.Matrix[i, j + 1]))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
         public void MoveLeft()
         {
@@ -247,11 +317,11 @@ namespace Tetris_1
                     for (int j = 0; j < MovingShape.Width; j++)
                     {
 
-                        if (MovingShape.SquareMatrix[i, j])
+                        if (MovingShape.Matrix[i, j])
                         {
                             rowIndex = MovingShape.IndexRow + i;
                             columnIndex = MovingShape.IndexColumn + j;
-                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.SquareMatrix[i + 1, j])))
+                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex>=0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
                             {
                                 MovingShape.AtBottom = true;
                                 found = true;
@@ -266,6 +336,25 @@ namespace Tetris_1
                 }
             
             }
+        }
+        private void CheckIfGameOver()
+        {
+            for(int x=0; x<4; x++)
+            {
+                for (int i = 0; i < HorizontalDots; i++)
+                {
+                    if (DotsArray[x,i].HasSquare)
+                    {
+                        GameIsStarted = false;
+                        break;
+                    }
+                }
+                if (!GameIsStarted)
+                {
+                    break;
+                }
+            }
+
         }
     }
 }

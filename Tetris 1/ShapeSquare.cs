@@ -18,7 +18,7 @@ namespace Tetris_1
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    SquareMatrix[i, j] = true;
+                    Matrix[i, j] = true;
                 }
             }
             Width = 2;

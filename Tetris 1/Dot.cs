@@ -10,6 +10,7 @@ namespace Tetris_1
     {
         public Point Center { get; set; }
         public int Size { get; set; } = 5;
+        public int SquareSize { get; set; } = 10;
         public Color Color { get; set; } = Color.Red;
         public bool HasSquare { get; set; } = false;
 
@@ -27,7 +28,7 @@ namespace Tetris_1
             if (HasSquare)
             {
                 Brush b = new SolidBrush(Color);
-                g.FillRectangle(b, Center.X - Size, Center.Y - Size, 2 * Size, 2 * Size);
+                g.FillRectangle(b, Center.X - SquareSize, Center.Y - SquareSize, 2 * SquareSize, 2 * SquareSize);
                 b.Dispose();
             }
             else

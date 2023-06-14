@@ -11,10 +11,12 @@ namespace Tetris_1
         private int location;
         public static Random Random = new Random();
         public Dot FirstPoint { get; set; }
-        public bool [,] SquareMatrix { get; set; }
+        public bool [,] Matrix { get; set; }
         public int IndexColumn { get; set; }
         public int IndexRow { get; set; }
         public bool AtBottom { get; set; } = false;
+        public int StartingWidthIndex { get; set; }
+        public int StartingHeightIndex { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int LimitLeft { get; set; }
@@ -24,14 +26,14 @@ namespace Tetris_1
         protected Shape(Dot firstPoint,int indexRow, int indexColumn, int limitLeft, int limitRight)
         {
             FirstPoint = firstPoint;
-            SquareMatrix = new bool[4,4];
+            Matrix = new bool[4,4];
             LimitLeft = limitLeft;
             LimitRight = limitRight;
             IndexColumn = indexColumn;
             IndexRow = indexRow;
             Stage = Random.Next(0,4);
-            FixLimits();
             FillMatrix();
+            FixLimits();
         }
 
         protected Shape(Dot firstPoint, int location)
@@ -47,7 +49,7 @@ namespace Tetris_1
             {
                 for(int j=0;j<4;j++)
                 {
-                    SquareMatrix[i, j] = false;
+                    Matrix[i, j] = false;
                 }
             }
         }
@@ -82,22 +84,18 @@ namespace Tetris_1
 
         public void FixLimits()
         {
-            while (!Limits())
+            if (IndexColumn + Width > LimitRight)
             {
-
-                if (IndexColumn + Width > LimitRight+1)
-                {
-                    IndexColumn--;
-                }
-                if (IndexColumn < LimitLeft)
-                {
-                    IndexColumn++;
-                }
+                IndexColumn = LimitRight - Width;
+            }
+            if (IndexColumn + StartingWidthIndex < LimitLeft)
+            {
+                IndexColumn = LimitLeft - StartingWidthIndex;
             }
         }
         public bool Limits()
         {
-            if (IndexColumn + Width > LimitRight+1 || IndexColumn < LimitLeft)
+            if (IndexColumn + Width > LimitRight || IndexColumn + StartingWidthIndex < LimitLeft)
             {
                 return false;
             }

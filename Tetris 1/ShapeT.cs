@@ -24,40 +24,56 @@ namespace Tetris_1
                     {
                         for (int j = 1; j < 2; j++)
                         {
-                            SquareMatrix[j, i] = true;
+                            Matrix[j, i] = true;
                         }
                     }
-                    SquareMatrix[2, 1] = true;
+                    Matrix[2, 1] = true;
+                    Width = 3;
+                    Height = 3;
+                    StartingWidthIndex = 0;
+                    StartingHeightIndex = 1;
                     break;
                 case 1:
                     for (int i = 0; i < 3; i++)
                     {
                         for (int j = 1; j < 2; j++)
                         {
-                            SquareMatrix[i, j] = true;
+                            Matrix[i, j] = true;
                         }
                     }
-                    SquareMatrix[1, 0] = true;
+                    Matrix[1, 0] = true;
+                    Width = 2;
+                    Height = 3;
+                    StartingWidthIndex = 0;
+                    StartingHeightIndex = 0;
                     break;
                 case 2:
                     for (int i = 0; i < 3; i++)
                     {
                         for (int j = 1; j < 2; j++)
                         {
-                            SquareMatrix[j, i] = true;
+                            Matrix[j, i] = true;
                         }
                     }
-                    SquareMatrix[0, 1] = true;
+                    Matrix[0, 1] = true;
+                    Width = 3;
+                    Height = 2;
+                    StartingWidthIndex = 0;
+                    StartingHeightIndex = 0;
                     break;
                 case 3:
                     for (int i = 0; i < 3; i++)
                     {
                         for (int j = 1; j < 2; j++)
                         {
-                            SquareMatrix[i, j] = true;
+                            Matrix[i, j] = true;
                         }
                     }
-                    SquareMatrix[1, 2] = true;
+                    Matrix[1, 2] = true;
+                    Width = 3;
+                    Height = 3;
+                    StartingWidthIndex = 1;
+                    StartingHeightIndex = 0;
                     break;
             }
         }

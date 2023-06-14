@@ -23,11 +23,13 @@ namespace Tetris_1
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            SquareMatrix[i, j] = true;
+                            Matrix[i, j] = true;
                         }
                     }
                     Width = 4;
                     Height = 2;
+                    StartingWidthIndex = 0;
+                    StartingHeightIndex = 1;
                     break;
                 case 1:
                 case 3:
@@ -35,11 +37,13 @@ namespace Tetris_1
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            SquareMatrix[j, i] = true;
+                            Matrix[j, i] = true;
                         }
                     }
                     Width = 2;
                     Height = 4;
+                    StartingWidthIndex = 1;
+                    StartingHeightIndex = 0;
                     break;
             }
 

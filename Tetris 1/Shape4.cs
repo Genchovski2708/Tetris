@@ -19,24 +19,25 @@ namespace Tetris_1
             {
                 case 0:
                 case 2:
-                    SquareMatrix[0, 0] = true;
-                    SquareMatrix[1, 0] = true;
-                    SquareMatrix[1, 1] = true;
-                    SquareMatrix[2, 1] = true;
+                    Matrix[0, 0] = true;
+                    Matrix[1, 0] = true;
+                    Matrix[1, 1] = true;
+                    Matrix[2, 1] = true;
                     Width = 2;
                     Height = 3;
                     break; 
                 case 1:
                 case 3:
-                    SquareMatrix[0, 1] = true;
-                    SquareMatrix[0, 2] = true;
-                    SquareMatrix[1, 0] = true;
-                    SquareMatrix[1, 1] = true;
+                    Matrix[0, 1] = true;
+                    Matrix[0, 2] = true;
+                    Matrix[1, 0] = true;
+                    Matrix[1, 1] = true;
                     Width = 3;
                     Height = 2;
                     break;
             }
-
+            StartingWidthIndex = 0;
+            StartingHeightIndex = 0;
         }
     }
 }
