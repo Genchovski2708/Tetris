@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tamara\\Desktop\\Andrej\\Forms\\Tetris\\Tetris 1\\Tetris 1\\Tetris 1.csproj",
+      "projectUniqueName": "D:\\Andrej\\Faklutet\\VP\\Tetris\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj",
       "projectName": "Tetris 1",
-      "projectPath": "C:\\Users\\Tamara\\Desktop\\Andrej\\Forms\\Tetris\\Tetris 1\\Tetris 1\\Tetris 1.csproj",
+      "projectPath": "D:\\Andrej\\Faklutet\\VP\\Tetris\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj",
       "packagesPath": "C:\\Users\\Tamara\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tamara\\Desktop\\Andrej\\Forms\\Tetris\\Tetris 1\\Tetris 1\\obj\\",
+      "outputPath": "D:\\Andrej\\Faklutet\\VP\\Tetris\\TetrisV0.1\\Tetris 1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

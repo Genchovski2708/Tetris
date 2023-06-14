@@ -8,7 +8,7 @@ namespace Tetris_1
 {
     internal class ShapeSquare : Shape
     {
-        public ShapeSquare(Dot firstPoint, int ixRow, int ixColumn) : base(firstPoint, ixRow, ixColumn)
+        public ShapeSquare(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
         }
 
@@ -21,6 +21,8 @@ namespace Tetris_1
                     SquareMatrix[i, j] = true;
                 }
             }
+            Width = 2;
+            Height = 2;
         }
     }
 }

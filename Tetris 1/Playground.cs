@@ -14,6 +14,7 @@ namespace Tetris_1
         public static Random Random { get; set; } = new Random();
         public List<Dot> Dots { get; set; }
         public List<Shape> Shapes { get; set; }
+        public Shape MovingShape { get; set; }
         public Dot [,] DotsArray { get; set; }
         public Point TopLeft { get; set; }
         public Point TopRight { get; set; }
@@ -27,6 +28,7 @@ namespace Tetris_1
             TopRight = topRight;
             Dots = new List<Dot>();
             Shapes = new List<Shape>();
+            Shape MovingShape;
             HorizontalDots = (TopRight.X + DISTANCE - TopLeft.X) / DISTANCE;
             VerticalDots = (TopRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
             DotsArray = new Dot[VerticalDots , HorizontalDots];
@@ -68,9 +70,14 @@ namespace Tetris_1
         }
         public void AddShape()
         {
-            int randomInx = Random.Next(0, HorizontalDots - 4);
-            Dot randomDot = DotsArray[0, randomInx];
-            Shapes.Add(GenerateShape(randomDot, randomInx));
+            if (MovingShape == null || MovingShape.AtBottom)
+            {
+                int randomInx = Random.Next(0, HorizontalDots);
+                Dot randomDot = DotsArray[0, randomInx];
+                MovingShape = GenerateShape(randomDot, randomInx);
+                Shapes.Add(MovingShape);
+            }
+
         }
         public void UpdateDots()
         {
@@ -110,18 +117,17 @@ namespace Tetris_1
 
         public void Tick()
         {
-            foreach(Shape shape in Shapes)
+
+            if (MovingShape.IndexRow < VerticalDots)
             {
-                if (shape.IndexRow < VerticalDots)
+                if (!MovingShape.AtBottom)
                 {
-                    if (!shape.AtBottom)
-                    {
-                        shape.IndexRow++;
-                    }
+                    MovingShape.IndexRow++;
                 }
             }
             UpdateDots();
-            CheckIfAtBottom();
+            CheckIfMovingShapeAtBottom();
+            //CheckIfAtBottom();
         }
 
         private void CheckIfAtBottom()
@@ -161,16 +167,105 @@ namespace Tetris_1
         public Shape GenerateShape(Dot dot, int index)
         {
             int random = Random.Next(0, 5);
+            int limitLeft = 0;
+            int limitRight = HorizontalDots-1;
             switch (random)
             {
-                case 0: return new ShapeLine(dot,0,index);
-                case 1: return new ShapeSquare(dot,0,index); 
-                case 2: return new ShapeL(dot,0,index);
-                case 3: return new Shape4(dot,0,index);
-                case 4: return new ShapeT(dot,0,index);
+                case 0: return new ShapeLine(dot,0,index,limitLeft,limitRight);
+                case 1: return new ShapeSquare(dot,0,index, limitLeft, limitRight); 
+                case 2: return new ShapeL(dot, 0, index, limitLeft, limitRight);
+                case 3: return new Shape4(dot, 0, index, limitLeft, limitRight);
+                case 4: return new ShapeT(dot, 0, index, limitLeft, limitRight);
                 default: return null;
             }
             
+        }
+        public void Move(Keys keys) 
+        {
+            if (!MovingShape.AtBottom)
+            {
+                if (keys == Keys.Left)
+                {
+                    MoveLeft();
+                }
+                else if (keys == Keys.Right)
+                {
+                    MoveRight();
+                }
+                else if (keys == Keys.Up)
+                {
+                    MoveUp();
+                }
+                else if (keys == Keys.Down)
+                {
+                    MoveDown();
+                }
+                CheckIfMovingShapeAtBottom();
+                UpdateDots();
+            }
+        }
+        public void MoveLeft()
+        {
+            if (MovingShape != null && !MovingShape.AtBottom)
+            {
+                MovingShape.MoveLeft();
+            }
+
+
+        }
+        public void MoveRight()
+        {
+            if (MovingShape != null && !MovingShape.AtBottom)
+            {
+                MovingShape.MoveRight();
+            }
+        }
+        public void MoveUp()
+        {
+            if (MovingShape != null && !MovingShape.AtBottom)
+            {
+                MovingShape.MoveUp();
+            }
+        }
+        public void MoveDown()
+        {
+            if (MovingShape != null && !MovingShape.AtBottom)
+            {
+                MovingShape.MoveDown();
+            }
+        }
+
+        private void CheckIfMovingShapeAtBottom()
+        {
+            if (!MovingShape.AtBottom)
+            {
+                int rowIndex = MovingShape.IndexRow;
+                int columnIndex = MovingShape.IndexColumn;
+                for (int i = MovingShape.Height-1; i >= 0; i--)
+                {
+                    bool found = false;
+                    for (int j = 0; j < MovingShape.Width; j++)
+                    {
+
+                        if (MovingShape.SquareMatrix[i, j])
+                        {
+                            rowIndex = MovingShape.IndexRow + i;
+                            columnIndex = MovingShape.IndexColumn + j;
+                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.SquareMatrix[i + 1, j])))
+                            {
+                                MovingShape.AtBottom = true;
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (found)
+                    {
+                        break;
+                    }
+                }
+            
+            }
         }
     }
 }

@@ -43,5 +43,11 @@ namespace Tetris_1
             Playground.Tick();
             Invalidate();
         }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            Playground.Move(e.KeyCode);
+            Invalidate();
+        }
     }
 }
