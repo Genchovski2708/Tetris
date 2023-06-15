@@ -10,7 +10,7 @@ namespace Tetris_1
 {
     public class Playground
     {
-        public static int DISTANCE { get; set; } = 30;
+        public static int DISTANCE { get; set; } = 50;
         public static Random Random { get; set; } = new Random();
         public List<Dot> Dots { get; set; }
         public List<Shape> Shapes { get; set; }
@@ -22,6 +22,7 @@ namespace Tetris_1
         public int HorizontalDots { get; set; }
         public int VerticalDots { get; set; }
         public bool GameIsStarted { get; set; }
+        public int ClearedRows { get; set; } = 0;
 
         public Playground(Point topLeft, Point topRight)
         {
@@ -80,6 +81,7 @@ namespace Tetris_1
                 }
                 else
                 {
+                    CheckFullRows();
                     int randomInx = Random.Next(0, HorizontalDots);
                     Dot randomDot = DotsArray[0, randomInx];
                     MovingShape = GenerateShape(randomDot, randomInx);
@@ -91,38 +93,49 @@ namespace Tetris_1
         }
         public void UpdateDots()
         {
-            ResetDots();
-            foreach(Shape shape in Shapes)
-            {
-                for(int i = 0; i < 4; i++)
-                {
-                    for(int j=0;j<4; j++)
-                    {
-                        int rowIndex = shape.IndexRow + i;
-                        int columnIndex = shape.IndexColumn + j;
 
-                        if (shape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
+            
+            CheckIfMovingShapeAtBottom();
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    int rowIndex = MovingShape.IndexRow + i;
+                    int columnIndex = MovingShape.IndexColumn + j;
+
+                    if (MovingShape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
+                    {
+                        DotsArray[rowIndex, columnIndex].HasSquare = true;
+                        if (rowIndex == VerticalDots - 1)
                         {
-                            DotsArray[rowIndex, columnIndex].HasSquare = true;
-                            if(rowIndex == VerticalDots - 1)
-                            {
-                                shape.AtBottom= true;
-                            }
+                            MovingShape.AtBottom = true;
                         }
                     }
                 }
             }
+
+            
         }
 
         private void ResetDots()
         {
-            for (int i = 0; i < VerticalDots; i++)
+            for(int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < HorizontalDots; j++)
+                for(int j = 0; j < 4; j++)
                 {
-                    DotsArray[i, j].HasSquare = false;
+                    if (MovingShape.Matrix[i, j])
+                    {
+                        DotsArray[i + MovingShape.IndexRow, j + MovingShape.IndexColumn].HasSquare = false;
+                    }
                 }
             }
+            //for (int i = 0; i < VerticalDots; i++)
+            //{
+            //    for (int j = 0; j < HorizontalDots; j++)
+            //    {
+            //        DotsArray[i, j].HasSquare = false;
+            //    }
+            //}
         }
 
         public void Tick()
@@ -130,14 +143,16 @@ namespace Tetris_1
 
             if(GameIsStarted)
             {
+                CheckIfMovingShapeAtBottom();
                 if (MovingShape != null && MovingShape.IndexRow < VerticalDots)
                 {
                     if (!MovingShape.AtBottom)
                     {
+                        ResetDots();
                         MovingShape.IndexRow++;
+                        UpdateDots();
                     }
                 }
-                UpdateDots();
                 CheckIfMovingShapeAtBottom();
                 //CheckIfAtBottom();
             }
@@ -198,6 +213,9 @@ namespace Tetris_1
         {
             if (GameIsStarted && !MovingShape.AtBottom)
             {
+                if(keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down){
+                    ResetDots();
+                }
                 if (keys == Keys.Left)
                 {
                     if (!CheckCollisionsLeft())
@@ -219,10 +237,10 @@ namespace Tetris_1
                 }
                 else if (keys == Keys.Down)
                 {
+   
                     MoveDown();
                 }
                 UpdateDots();
-                CheckIfMovingShapeAtBottom();
             }
         }
 
@@ -302,12 +320,13 @@ namespace Tetris_1
             if (MovingShape != null && !MovingShape.AtBottom)
             {
                 MovingShape.MoveDown();
+                CheckIfMovingShapeAtBottom();
             }
         }
 
-        private void CheckIfMovingShapeAtBottom()
+        public void CheckIfMovingShapeAtBottom()
         {
-            if (!MovingShape.AtBottom)
+            if (MovingShape!=null && !MovingShape.AtBottom)
             {
                 int rowIndex = MovingShape.IndexRow;
                 int columnIndex = MovingShape.IndexColumn;
@@ -331,12 +350,52 @@ namespace Tetris_1
                     }
                     if (found)
                     {
+                        CheckFullRows();
+                        // Treba da se ima metod UpdateMovingShape(), a toa UpdateDots() nema potreba da ga ima
+                        // Ama treba i drugi rabote da se smenat
                         break;
                     }
                 }
             
             }
         }
+
+        private void CheckFullRows()
+        {
+            for(int i=0; i < VerticalDots; i++)
+            {
+                if (RowIsFull(i))
+                {
+                    ClearRow(i);
+                    ClearedRows++;
+                }
+            }
+        }
+
+        private void ClearRow(int i)
+        {
+            for(int x = i; x > 0; x--)
+            {
+                for(int y = 0; y < HorizontalDots; y++)
+                {
+                    DotsArray[x, y].HasSquare = DotsArray[x-1,y].HasSquare;
+                }
+            }
+        }
+
+        private bool RowIsFull(int i)
+        {
+            
+            for(int j=0;j < HorizontalDots; j++)
+            {
+                if (!DotsArray[i, j].HasSquare)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void CheckIfGameOver()
         {
             for(int x=0; x<4; x++)

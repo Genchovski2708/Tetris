@@ -8,7 +8,7 @@ namespace Tetris_1
         {
             InitializeComponent();
             DoubleBuffered= true;
-            timer1.Interval = 400;
+            timer1.Interval = 1000;
             Invalidate();
         }
 
@@ -39,17 +39,15 @@ namespace Tetris_1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (tick == 0)
-            {
-                Playground.AddShape();
-                tick++;
-            }
-            else
-            {
-                tick = (tick + 1) % 4;
-            }
+            Playground.AddShape();
             Playground.Tick();
+            UpdateLabels();
             Invalidate();
+        }
+
+        private void UpdateLabels()
+        {
+            labelRows.Text = String.Format("Rows: {0}", Playground.ClearedRows);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

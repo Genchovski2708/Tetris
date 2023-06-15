@@ -10,7 +10,7 @@ namespace Tetris_1
     {
         public Point Center { get; set; }
         public int Size { get; set; } = 5;
-        public int SquareSize { get; set; } = 10;
+        public int SquareSize { get; set; } = 25;
         public Color Color { get; set; } = Color.Red;
         public bool HasSquare { get; set; } = false;
 

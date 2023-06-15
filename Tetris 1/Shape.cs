@@ -71,12 +71,13 @@ namespace Tetris_1
         }
         public void MoveUp()
         {
+            int previusStage = Stage;
             Stage = (Stage + 1) % 4;
             ResetMatrix();
             FillMatrix();
             if (!Limits())
             {
-                Stage = (Stage - 1) % 4;
+                Stage = previusStage;
                 ResetMatrix();
                 FillMatrix();
             }
