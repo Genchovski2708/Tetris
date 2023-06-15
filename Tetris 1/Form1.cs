@@ -30,7 +30,7 @@ namespace Tetris_1
         {
             if(Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+                Playground = new Playground(new Point(100, 100), new Point(500, 700));
             }
             timer1.Start();
             Playground.GameIsStarted = true;
@@ -53,6 +53,29 @@ namespace Tetris_1
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             Playground.Move(e.KeyCode);
+            Invalidate();
+        }
+
+        private void singlePlayerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Playground == null || !Playground.GameIsStarted)
+            {
+                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+            }
+            timer1.Start();
+            Playground.GameIsStarted = true;
+            Invalidate();
+        }
+
+        private void twoPlayersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Treba da se porabote na voa
+            if (Playground == null || !Playground.GameIsStarted)
+            {
+                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+            }
+            timer1.Start();
+            Playground.GameIsStarted = true;
             Invalidate();
         }
     }

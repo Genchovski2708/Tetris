@@ -10,7 +10,7 @@ namespace Tetris_1
 {
     public class Playground
     {
-        public static int DISTANCE { get; set; } = 50;
+        public static int DISTANCE { get; set; } = 40;
         public static Random Random { get; set; } = new Random();
         public List<Dot> Dots { get; set; }
         public List<Shape> Shapes { get; set; }
@@ -95,7 +95,6 @@ namespace Tetris_1
         {
 
             
-            CheckIfMovingShapeAtBottom();
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
