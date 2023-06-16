@@ -51,9 +51,19 @@ namespace Tetris_1
                 Playground2.AddShape();
                 Playground2.Tick();
             }
-            UpdateLabels();
-            if (Playground.DialogRes == DialogResult.Yes)
+            if (Playground.GameOver)
             {
+                timer1.Stop();
+            }
+            if (TwoPlayers && Playground2.GameOver)
+            {
+                timer1.Stop();
+            }
+            UpdateLabels();
+            if ((Playground.DialogRes == DialogResult.Yes)||(Playground2!= null && Playground2.DialogRes==DialogResult.Yes))
+            {
+                Playground = null;
+                Playground2 = null;
                 UpdateStartBackground();
             }
             else if (Playground.DialogRes == DialogResult.No)
@@ -116,7 +126,7 @@ namespace Tetris_1
         {
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(100, 250), new Point(500, 750));
+                Playground = new Playground(new Point(70, 250), new Point(470, 750));
                 RemoveBackground();
                 UpdateGameBackground();
             }
@@ -127,8 +137,8 @@ namespace Tetris_1
         {
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
-                Playground = new Playground(new Point(50, 250), new Point(450, 750));
-                Playground2 = new Playground(new Point(550, 250), new Point(950, 750));
+                Playground = new Playground(new Point(70, 250), new Point(470, 750));
+                Playground2 = new Playground(new Point(580, 250), new Point(980, 750));
                 Playground2.SecondGround = true;
                 RemoveBackground();
                 UpdateGameBackground();

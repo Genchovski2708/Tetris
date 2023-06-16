@@ -76,12 +76,20 @@ namespace Tetris_1
             {
                 for(int j = 3; j >= 0; j--)
                 {
-                    PreviewShapeDots[j, i] = new Dot(new Point(TopRight.X-2*DISTANCE+i*DISTANCE,TopLeft.Y-2*DISTANCE-(3-j)*DISTANCE));
+                    PreviewShapeDots[j, i] = new Dot(new Point(TopRight.X-3*DISTANCE+i*DISTANCE,TopLeft.Y-2*DISTANCE-(3-j)*DISTANCE));
                 }
             }
         }
         public void DrawDots(Graphics g)
         {
+            Brush p = new SolidBrush(Color.Blue);
+            g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, TopRight.X - TopLeft.X+40, TopRight.Y - TopLeft.Y+15);
+             g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE*4, DISTANCE*4);
+            p.Dispose();
+            Pen pe = new Pen(Color.Yellow, 3);
+             g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, TopRight.X - TopLeft.X + 44, TopRight.Y - TopLeft.Y + 19);
+            g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4+4, DISTANCE * 4+4);
+            pe.Dispose();
             for (int i = 0; i < VerticalDots; i++)
             {
                 for (int j = 0; j < HorizontalDots; j++)
@@ -107,7 +115,6 @@ namespace Tetris_1
             text = String.Format("Points: {0}", Points.ToString());
             point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
             g.DrawString(text, font, brush, point);
-
 
         }  
         public void AddShape()
