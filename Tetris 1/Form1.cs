@@ -70,7 +70,7 @@ namespace Tetris_1
             button1.Enabled = true;
             button2.Enabled = true;
             button2.Visible = true;
-            labelRows.Visible = false;
+            //  labelRows.Visible = false;
         }
         private void UpdateGameBackground()
         {
@@ -80,11 +80,11 @@ namespace Tetris_1
             button1.Enabled = false;
             button2.Visible = false;
             button2.Enabled = false;
-            labelRows.Visible = true;
+            //  labelRows.Visible = true;
         }
         private void UpdateLabels()
         {
-            labelRows.Text = String.Format("Rows: {0}", Playground.ClearedRows);
+            //labelRows.Text = String.Format("Rows: {0}", Playground.ClearedRows);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -104,7 +104,7 @@ namespace Tetris_1
             button1.Enabled = false;
             button2.Visible = false;
             button2.Enabled = false;
-            labelRows.Visible = false;
+            // labelRows.Visible = false;
         }
         private void button1_Click(object sender, EventArgs e)
         {

@@ -30,7 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             timer1 = new System.Windows.Forms.Timer(components);
-            labelRows = new Label();
             imageList1 = new ImageList(components);
             imageList2 = new ImageList(components);
             button1 = new Button();
@@ -40,15 +39,6 @@
             // timer1
             // 
             timer1.Tick += timer1_Tick;
-            // 
-            // labelRows
-            // 
-            labelRows.AutoSize = true;
-            labelRows.Location = new Point(699, 83);
-            labelRows.Name = "labelRows";
-            labelRows.Size = new Size(51, 20);
-            labelRows.TabIndex = 1;
-            labelRows.Text = "Rows: ";
             // 
             // imageList1
             // 
@@ -97,19 +87,16 @@
             ClientSize = new Size(1034, 788);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(labelRows);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
             Paint += Form1_Paint;
             KeyDown += Form1_KeyDown;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
         private System.Windows.Forms.Timer timer1;
-        private Label labelRows;
         private ImageList imageList1;
         private ImageList imageList2;
         private Button button1;
