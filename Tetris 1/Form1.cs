@@ -1,10 +1,14 @@
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Media;
+using System.Windows.Forms;
 
 namespace Tetris_1
 {
     public partial class Form1 : Form
     {
         public Playground Playground { get; set; }
+        public Playground Playground2 { get; set; }
+        public bool TwoPlayers { get; set; }
         int tick = 0;
         public Form1()
         {
@@ -28,24 +32,25 @@ namespace Tetris_1
             {
                 Playground.DrawDots(e.Graphics);
             }
-
-        }
-
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Playground == null || !Playground.GameIsStarted)
+            if (TwoPlayers)
             {
-                Playground = new Playground(new Point(100, 100), new Point(500, 700));
+                if (Playground2 != null && Playground2.GameIsStarted)
+                {
+                    Playground2.DrawDots(e.Graphics);
+                }
             }
-            timer1.Start();
-            Playground.GameIsStarted = true;
-            Invalidate();
         }
+
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             Playground.AddShape();
             Playground.Tick();
+            if (TwoPlayers)
+            {
+                Playground2.AddShape();
+                Playground2.Tick();
+            }
             UpdateLabels();
             if (Playground.DialogRes == DialogResult.Yes)
             {
@@ -63,6 +68,8 @@ namespace Tetris_1
             BackgroundImageLayout = ImageLayout.Stretch;
             button1.Visible = true;
             button1.Enabled = true;
+            button2.Enabled = true;
+            button2.Visible = true;
             labelRows.Visible = false;
         }
         private void UpdateGameBackground()
@@ -71,6 +78,8 @@ namespace Tetris_1
             BackgroundImageLayout = ImageLayout.Stretch;
             button1.Visible = false;
             button1.Enabled = false;
+            button2.Visible = false;
+            button2.Enabled = false;
             labelRows.Visible = true;
         }
         private void UpdateLabels()
@@ -81,29 +90,10 @@ namespace Tetris_1
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             Playground.Move(e.KeyCode);
-            Invalidate();
-        }
-
-        private void singlePlayerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Playground == null || !Playground.GameIsStarted)
+            if (TwoPlayers)
             {
-                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+                Playground2.Move(e.KeyCode);
             }
-            timer1.Start();
-            Playground.GameIsStarted = true;
-            Invalidate();
-        }
-
-        private void twoPlayersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Treba da se porabote na voa
-            if (Playground == null || !Playground.GameIsStarted)
-            {
-                Playground = new Playground(new Point(100, 100), new Point(500, 600));
-            }
-            timer1.Start();
-            Playground.GameIsStarted = true;
             Invalidate();
         }
         private void RemoveBackground()
@@ -112,9 +102,17 @@ namespace Tetris_1
             this.BackColor = Color.White;
             button1.Visible = false;
             button1.Enabled = false;
+            button2.Visible = false;
+            button2.Enabled = false;
             labelRows.Visible = false;
         }
         private void button1_Click(object sender, EventArgs e)
+        {
+            SinglePlayerStart();
+            TwoPlayers = false;
+            Invalidate();
+        }
+        public void SinglePlayerStart()
         {
             if (Playground == null || !Playground.GameIsStarted)
             {
@@ -124,6 +122,25 @@ namespace Tetris_1
             }
             timer1.Start();
             Playground.GameIsStarted = true;
+        }
+        public void TwoPlayersStart()
+        {
+            if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
+            {
+                Playground = new Playground(new Point(50, 100), new Point(450, 600));
+                Playground2 = new Playground(new Point(550, 100), new Point(950, 600));
+                Playground2.SecondGround = true;
+                RemoveBackground();
+                UpdateGameBackground();
+            }
+            timer1.Start();
+            Playground.GameIsStarted = true;
+            Playground2.GameIsStarted = true;
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            TwoPlayersStart();
+            TwoPlayers = true;
             Invalidate();
         }
     }

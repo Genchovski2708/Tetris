@@ -25,6 +25,7 @@ namespace Tetris_1
         public int ClearedRows { get; set; } = 0;
         public DialogResult DialogRes { get; set; } = DialogResult.None;
         public bool GameOver { get; set; } = false;
+        public bool SecondGround { get; set; }
 
         public Playground(Point topLeft, Point topRight)
         {
@@ -214,36 +215,75 @@ namespace Tetris_1
         }
         public void Move(Keys keys) 
         {
-            if (GameIsStarted && !MovingShape.AtBottom)
+            if (!SecondGround)
             {
-                if(keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down){
-                    ResetDots();
-                }
-                if (keys == Keys.Left)
+                if (GameIsStarted && !MovingShape.AtBottom)
                 {
-                    if (!CheckCollisionsLeft())
+                    if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
                     {
-                        MoveLeft();
+                        ResetDots();
                     }
-        
-                }
-                else if (keys == Keys.Right)
-                {
-                    if (!CheckCollisionsRight())
+                    if (keys == Keys.Left)
                     {
-                        MoveRight();
+                        if (!CheckCollisionsLeft())
+                        {
+                            MoveLeft();
+                        }
+
                     }
+                    else if (keys == Keys.Right)
+                    {
+                        if (!CheckCollisionsRight())
+                        {
+                            MoveRight();
+                        }
+                    }
+                    else if (keys == Keys.Up)
+                    {
+                        MoveUp();
+                    }
+                    else if (keys == Keys.Down)
+                    {
+
+                        MoveDown();
+                    }
+                    UpdateDots();
                 }
-                else if (keys == Keys.Up)
+            }
+            else
+            {
+                if (GameIsStarted && !MovingShape.AtBottom)
                 {
-                    MoveUp();
+                    if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
+                    {
+                        ResetDots();
+                    }
+                    if (keys == Keys.A)
+                    {
+                        if (!CheckCollisionsLeft())
+                        {
+                            MoveLeft();
+                        }
+
+                    }
+                    else if (keys == Keys.D)
+                    {
+                        if (!CheckCollisionsRight())
+                        {
+                            MoveRight();
+                        }
+                    }
+                    else if (keys == Keys.W)
+                    {
+                        MoveUp();
+                    }
+                    else if (keys == Keys.S)
+                    {
+
+                        MoveDown();
+                    }
+                    UpdateDots();
                 }
-                else if (keys == Keys.Down)
-                {
-   
-                    MoveDown();
-                }
-                UpdateDots();
             }
         }
 
