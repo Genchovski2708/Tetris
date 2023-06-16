@@ -23,6 +23,8 @@ namespace Tetris_1
         public int VerticalDots { get; set; }
         public bool GameIsStarted { get; set; }
         public int ClearedRows { get; set; } = 0;
+        public DialogResult DialogRes { get; set; } = DialogResult.None;
+        public bool GameOver { get; set; } = false;
 
         public Playground(Point topLeft, Point topRight)
         {
@@ -77,7 +79,9 @@ namespace Tetris_1
                 CheckIfGameOver();
                 if(MovingShape!=null && !GameIsStarted)
                 {
-                    MessageBox.Show("Game Over");
+                    GameOver = true;
+                    DialogResult dg=MessageBox.Show("Game Over, New Game?","Game Over",MessageBoxButtons.YesNo);
+                    DialogRes = dg;
                 }
                 else
                 {
