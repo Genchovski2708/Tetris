@@ -23,10 +23,12 @@ namespace Tetris_1
         public int VerticalDots { get; set; }
         public bool GameIsStarted { get; set; }
         public int ClearedRows { get; set; } = 0;
+        public int Points { get; set; } = 0;
         public DialogResult DialogRes { get; set; } = DialogResult.None;
         public bool GameOver { get; set; } = false;
         public bool SecondGround { get; set; }
-
+        public Dot[,] PreviewShapeDots { get; set; }
+        Shape PreviewShape;
         public Playground(Point topLeft, Point topRight)
         {
             TopLeft = topLeft;
@@ -37,11 +39,19 @@ namespace Tetris_1
             HorizontalDots = (TopRight.X + DISTANCE - TopLeft.X) / DISTANCE;
             VerticalDots = (TopRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
             DotsArray = new Dot[VerticalDots , HorizontalDots];
+            PreviewShapeDots = new Dot[4, 4];
             for(int i = 0; i < VerticalDots; i++)
             {
                 for(int j = 0; j<HorizontalDots; j++)
                 {
                     DotsArray[i,j] = new Dot();
+                }
+            }
+            for(int i=0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    PreviewShapeDots[i, j] = new Dot();
                 }
             }
             GenerateDots();
@@ -62,6 +72,13 @@ namespace Tetris_1
                 countCol = 0;
                 countRow++;
             }
+            for(int i=0; i < 4; i++)
+            {
+                for(int j = 3; j >= 0; j--)
+                {
+                    PreviewShapeDots[j, i] = new Dot(new Point(TopRight.X-2*DISTANCE+i*DISTANCE,TopLeft.Y-2*DISTANCE-(3-j)*DISTANCE));
+                }
+            }
         }
         public void DrawDots(Graphics g)
         {
@@ -72,7 +89,27 @@ namespace Tetris_1
                     DotsArray[i, j].Draw(g);
                 }
             }
-        }
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    PreviewShapeDots[i, j].Draw(g);
+                }
+            }
+
+            Font font = new Font("Arial", 18);
+            Brush brush = Brushes.White;
+
+            string text = String.Format("Rows: {0}", ClearedRows.ToString());
+            Point point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
+            g.DrawString(text, font, brush, point);
+
+            text = String.Format("Points: {0}", Points.ToString());
+            point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
+            g.DrawString(text, font, brush, point);
+
+
+        }  
         public void AddShape()
         {
             if (MovingShape == null || MovingShape.AtBottom && GameIsStarted)
@@ -89,13 +126,34 @@ namespace Tetris_1
                     CheckFullRows();
                     int randomInx = Random.Next(0, HorizontalDots);
                     Dot randomDot = DotsArray[0, randomInx];
-                    MovingShape = GenerateShape(randomDot, randomInx);
+                    if(PreviewShape!= null)
+                    {
+                        MovingShape = PreviewShape;
+                    }
+                    else
+                    {
+                        MovingShape = GenerateShape(randomDot, randomInx);
+                    }
+                    PreviewShape = GenerateShape(randomDot, randomInx);
+                    ChangePreviewDots();
                     Shapes.Add(MovingShape);
+
                 }
 
             }
 
         }
+        private void ChangePreviewDots()
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j =0; j<4; j++)
+                {
+                    PreviewShapeDots[i, j].HasSquare = PreviewShape.Matrix[i, j];
+                }
+            }
+        }
+
         public void UpdateDots()
         {
 
@@ -292,7 +350,7 @@ namespace Tetris_1
             for (int i = 0; i < 4; i++)
             {
                 int indexRow = MovingShape.IndexRow + i;
-                int indexColumn = MovingShape.IndexColumn; // Move this line outside the inner loop
+                int indexColumn = MovingShape.IndexColumn;
                 for (int j = 0; j < 4; j++)
                 {
                     if (MovingShape.Matrix[i, j])
@@ -405,13 +463,32 @@ namespace Tetris_1
 
         private void CheckFullRows()
         {
+            int clearedRows = 0;
             for(int i=0; i < VerticalDots; i++)
             {
                 if (RowIsFull(i))
                 {
                     ClearRow(i);
                     ClearedRows++;
+                    clearedRows++;
                 }
+            }
+            switch (clearedRows)
+            {
+                case 0:
+                    break;
+                case 1:
+                    Points += 40;
+                    break;
+                case 2:
+                    Points += 100;
+                    break;
+                case 3:
+                    Points += 300;
+                    break;
+                default:
+                    Points += 1200;
+                    break;
             }
         }
 

@@ -50,3 +50,21 @@ C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetri
 C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.genruntimeconfig.cache
 C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\ref\Tetris 1.dll
 C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.Properties.Resources.resources
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\bin\Debug\net6.0-windows\Tetris 1.exe
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\bin\Debug\net6.0-windows\Tetris 1.deps.json
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\bin\Debug\net6.0-windows\Tetris 1.runtimeconfig.json
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\bin\Debug\net6.0-windows\Tetris 1.dll
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\bin\Debug\net6.0-windows\Tetris 1.pdb
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.csproj.AssemblyReference.cache
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.Form1.resources
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.Properties.Resources.resources
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.csproj.GenerateResource.cache
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.AssemblyInfoInputs.cache
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.AssemblyInfo.cs
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.csproj.CoreCompileInputs.cache
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.dll
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\refint\Tetris 1.dll
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.pdb
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris 1.genruntimeconfig.cache
+C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\ref\Tetris 1.dll

@@ -116,7 +116,7 @@ namespace Tetris_1
         {
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(100, 100), new Point(500, 600));
+                Playground = new Playground(new Point(100, 250), new Point(500, 750));
                 RemoveBackground();
                 UpdateGameBackground();
             }
@@ -127,8 +127,8 @@ namespace Tetris_1
         {
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
-                Playground = new Playground(new Point(50, 100), new Point(450, 600));
-                Playground2 = new Playground(new Point(550, 100), new Point(950, 600));
+                Playground = new Playground(new Point(50, 250), new Point(450, 750));
+                Playground2 = new Playground(new Point(550, 250), new Point(950, 750));
                 Playground2.SecondGround = true;
                 RemoveBackground();
                 UpdateGameBackground();
