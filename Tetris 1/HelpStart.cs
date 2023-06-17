@@ -21,6 +21,7 @@ namespace Tetris_1
             k = m;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            this.Icon = new Icon("Images\\TETRIS4.ico");
         }
 
         private void HelpStart_Load(object sender, EventArgs e)

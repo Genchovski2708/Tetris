@@ -25,6 +25,7 @@ namespace Tetris_1
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
+            this.Icon = new Icon("Images\\TETRIS4.ico");
             Invalidate();
         }
 
@@ -178,11 +179,19 @@ namespace Tetris_1
             button4.Enabled = true;
             button5.Visible = true;
             button5.Enabled = true;
+            Started = false;
+            TwoPlayers = false;
+            SinglePlayer = false;
+            HardModeOn = false;
         }
         private void UpdateGameBackground()
         {
             BackgroundImage = Image.FromFile("Images\\pozadina.png");
             BackgroundImageLayout = ImageLayout.Stretch;
+            SetButtonsOff();
+        }
+        private void SetButtonsOff()
+        {
             button1.Visible = false;
             button1.Enabled = false;
             button2.Visible = false;
@@ -193,8 +202,8 @@ namespace Tetris_1
             button4.Enabled = false;
             button5.Visible = false;
             button5.Enabled = false;
-        }
 
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             Playground.Move(e.KeyCode);
@@ -208,16 +217,7 @@ namespace Tetris_1
         {
             this.BackgroundImage = null;
             this.BackColor = Color.White;
-            button1.Visible = false;
-            button1.Enabled = false;
-            button2.Visible = false;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button3.Visible = false;
-            button4.Visible = false;
-            button4.Enabled = false;
-            button5.Visible = false;
-            button5.Enabled = false;
+            SetButtonsOff() ;
         }
         private void button1_Click(object sender, EventArgs e)
         {
