@@ -58,9 +58,10 @@
             button1.BackColor = Color.FromArgb(0, 0, 192);
             button1.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(331, 308);
+            button1.Location = new Point(378, 411);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(269, 57);
+            button1.Size = new Size(307, 76);
             button1.TabIndex = 2;
             button1.Text = "Single Player";
             button1.UseVisualStyleBackColor = false;
@@ -71,9 +72,10 @@
             button2.BackColor = Color.FromArgb(0, 0, 192);
             button2.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button2.ForeColor = Color.Black;
-            button2.Location = new Point(331, 370);
+            button2.Location = new Point(378, 493);
+            button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
-            button2.Size = new Size(269, 57);
+            button2.Size = new Size(307, 76);
             button2.TabIndex = 3;
             button2.Text = "Two Players";
             button2.UseVisualStyleBackColor = false;
@@ -84,23 +86,24 @@
             button3.BackColor = Color.FromArgb(0, 0, 192);
             button3.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button3.ForeColor = Color.Black;
-            button3.Location = new Point(389, 571);
+            button3.Location = new Point(445, 761);
+            button3.Margin = new Padding(3, 4, 3, 4);
             button3.Name = "button3";
-            button3.Size = new Size(136, 48);
+            button3.Size = new Size(155, 64);
             button3.TabIndex = 4;
             button3.Text = "HELP";
             button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
+            button3.MouseHover += button3_MouseHover;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(920, 622);
+            ClientSize = new Size(1051, 829);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;

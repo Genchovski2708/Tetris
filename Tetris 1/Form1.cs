@@ -72,7 +72,6 @@ namespace Tetris_1
             {
                 timer1.Stop();
             }
-            UpdateLabels();
             if (Playground.FinishedS)
             {
                 DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
@@ -127,7 +126,6 @@ namespace Tetris_1
             button1.Enabled = true;
             button2.Enabled = true;
             button2.Visible = true;
-            //  labelRows.Visible = false;
         }
         private void UpdateGameBackground()
         {
@@ -137,11 +135,6 @@ namespace Tetris_1
             button1.Enabled = false;
             button2.Visible = false;
             button2.Enabled = false;
-            //  labelRows.Visible = true;
-        }
-        private void UpdateLabels()
-        {
-            //labelRows.Text = String.Format("Rows: {0}", Playground.ClearedRows);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -161,13 +154,18 @@ namespace Tetris_1
             button1.Enabled = false;
             button2.Visible = false;
             button2.Enabled = false;
-            // labelRows.Visible = false;
+            button3.Enabled = false;
+            button3.Visible = false;
         }
         private void button1_Click(object sender, EventArgs e)
         {
             SinglePlayerStart();
             SinglePlayer = true;
             TwoPlayers = false;
+            HelpStart hp = new HelpStart(1);
+            hp.ShowDialog();
+            timer1.Start();
+            Started = true;
             Invalidate();
         }
         public void SinglePlayerStart()
@@ -178,13 +176,12 @@ namespace Tetris_1
                 RemoveBackground();
                 UpdateGameBackground();
             }
-            timer1.Start();
-            Started = true;
             Playground.GameIsStarted = true;
             Playground.TwoPlayers = false;
         }
         public void TwoPlayersStart()
         {
+
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
                 Playground = new Playground(new Point(70, 250), new Point(470, 750));
@@ -193,8 +190,6 @@ namespace Tetris_1
                 RemoveBackground();
                 UpdateGameBackground();
             }
-            timer1.Start();
-            Started = true;
             Playground.GameIsStarted = true;
             Playground2.GameIsStarted = true;
             Playground.TwoPlayers = true;
@@ -205,34 +200,22 @@ namespace Tetris_1
             TwoPlayersStart();
             TwoPlayers = true;
             SinglePlayer = false;
+            HelpStart hp = new HelpStart(2);
+            hp.ShowDialog();
+            timer1.Start();
+            Started = true;
             Invalidate();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if(Started)
-            {
-                timer1.Stop();
-                Started = !Started;
-            }
             HelpStart hp = new HelpStart(0);
-            if (SinglePlayer)
-            {
-                hp = new HelpStart(1);
-            }
-            else if (TwoPlayers)
-            {
-                hp = new HelpStart(2);
-            }
             DialogResult dg = hp.ShowDialog();
-            if(dg==DialogResult.OK)
-            {
-                    if (Playground != null)
-                    {
-                        timer1.Start();
-                        Started = !Started;
-                    }
-            }
+        }
+
+        private void button3_MouseHover(object sender, EventArgs e)
+        {
+           
         }
     }
 }
