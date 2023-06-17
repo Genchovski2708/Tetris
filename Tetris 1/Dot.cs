@@ -33,7 +33,7 @@ namespace Tetris_1
             }
             else
             {
-                Brush b = new SolidBrush(Color.White);
+                Brush b = new SolidBrush(Color.Blue);
                 g.FillEllipse(b, Center.X - Size, Center.Y - Size, 2 * Size, 2 * Size);
                 b.Dispose();
             }

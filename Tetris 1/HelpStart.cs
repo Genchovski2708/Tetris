@@ -34,13 +34,20 @@ namespace Tetris_1
                 label1.Text = "Player Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
                     "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.";
             }
-            else
+            else if (k==2)
             {
                 this.Height = 400;
                 button1.Location= new Point(185, 290);
                 label1.Text = "Player 1 Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
                     "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\n"+ "Player 2 Controls:\r\nUse 'a' to move left.\r\nUse 'd' to move right.\r\n" +
                     "Use 'w' to rotate for 90 degrees.\r\nUse 's' to move down faster.";
+            }
+            else
+            {
+                button1.Location = new Point(185, 220);
+                label1.Text = "Player Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
+                    "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\nNow you don't have preview of next shape!"+
+                    "\r\nCareful! Time passes faster!";
             }
         }
 

@@ -35,6 +35,8 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            button4 = new Button();
+            button5 = new Button();
             SuspendLayout();
             // 
             // timer1
@@ -96,11 +98,41 @@
             button3.Click += button3_Click;
             button3.MouseHover += button3_MouseHover;
             // 
+            // button4
+            // 
+            button4.BackColor = Color.FromArgb(0, 0, 192);
+            button4.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            button4.ForeColor = Color.Black;
+            button4.Location = new Point(378, 661);
+            button4.Margin = new Padding(3, 4, 3, 4);
+            button4.Name = "button4";
+            button4.Size = new Size(307, 76);
+            button4.TabIndex = 5;
+            button4.Text = "Exit";
+            button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
+            // 
+            // button5
+            // 
+            button5.BackColor = Color.FromArgb(0, 0, 192);
+            button5.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            button5.ForeColor = Color.Black;
+            button5.Location = new Point(378, 577);
+            button5.Margin = new Padding(3, 4, 3, 4);
+            button5.Name = "button5";
+            button5.Size = new Size(307, 76);
+            button5.TabIndex = 6;
+            button5.Text = "Hard Mode";
+            button5.UseVisualStyleBackColor = false;
+            button5.Click += button5_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1051, 829);
+            Controls.Add(button5);
+            Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -119,5 +151,7 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private Button button4;
+        private Button button5;
     }
 }

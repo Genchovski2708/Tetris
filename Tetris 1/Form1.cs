@@ -11,16 +11,20 @@ namespace Tetris_1
         public Playground Playground2 { get; set; }
         public bool TwoPlayers { get; set; } = false;
         public bool SinglePlayer { get; set; } = false;
+        public bool HardModeOn { get; set; } = false;
         public bool Started { get; set; } = false;
+        int speed = 10;
+
         int tick = 0;
         public Form1()
         {
             InitializeComponent();
             DoubleBuffered = true;
-            timer1.Interval = 1000;
+            timer1.Interval = 100;
             UpdateStartBackground();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen;
             Invalidate();
         }
 
@@ -57,63 +61,105 @@ namespace Tetris_1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Playground.AddShape();
-            Playground.Tick();
-            if (TwoPlayers)
+
+            tick++;
+            if (!HardModeOn)
             {
-                Playground2.AddShape();
-                Playground2.Tick();
+                if (tick % 10 == 0)
+                {
+                    Playground.AddShape();
+                    Playground.Tick();
+                    if (TwoPlayers)
+                    {
+                        Playground2.AddShape();
+                        Playground2.Tick();
+                    }
+                    if (Playground.GameOver)
+                    {
+                        timer1.Stop();
+                    }
+                    if (TwoPlayers && Playground2.GameOver)
+                    {
+                        timer1.Stop();
+                    }
+                    if (Playground.FinishedS)
+                    {
+                        DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        if (dg == DialogResult.Yes)
+                        {
+                            Playground = null;
+                            UpdateStartBackground();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                    else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
+                    {
+                        string w = "DRAW"; //0 - D 1 - P1 2 - P2
+                        if (Playground.Points > Playground2.Points)
+                        {
+                            w = "Player 1!";
+                        }
+                        else if (Playground.Points < Playground2.Points)
+                        {
+                            w = "Player 2";
+                        }
+                        if (w.Equals("DRAW"))
+                        {
+                            MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                        }
+                        DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        if (dg == DialogResult.Yes)
+                        {
+                            Playground = null;
+                            Playground2 = null;
+                            UpdateStartBackground();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                }
+                if (tick == 100)
+                {
+                    tick = 0;
+                }
             }
-            if (Playground.GameOver)
+            else
             {
-                timer1.Stop();
-            }
-            if (TwoPlayers && Playground2.GameOver)
-            {
-                timer1.Stop();
-            }
-            if (Playground.FinishedS)
-            {
-                DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
-                if (dg == DialogResult.Yes)
+                if (tick % speed == 0)
                 {
-                    Playground = null;
-                    UpdateStartBackground();
+                    Playground.AddShape();
+                    Playground.Tick();
                 }
-                else
+                if (tick == 100)
                 {
-                    this.Close();
+                    tick = 0;
+                    if (speed >= 3)
+                    {
+                        speed--;
+                    }
                 }
-            }
-            else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
-            {
-                string w = "DRAW"; //0 - D 1 - P1 2 - P2
-                if (Playground.Points > Playground2.Points)
+                if (Playground.FinishedS)
                 {
-                    w = "Player 1!";
-                }
-                else if (Playground.Points < Playground2.Points)
-                {
-                    w = "Player 2";
-                }
-                if (w.Equals("DRAW"))
-                {
-                    MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
-                }
-                else
-                {
-                    MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
-                }
-                DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
-                if (dg == DialogResult.Yes)
-                {
-                    Playground = null;
-                    Playground2 = null;
-                    UpdateStartBackground();
-                }
-                else
-                {
-                    this.Close();
+                    timer1.Stop();
+                    DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                    if (dg == DialogResult.Yes)
+                    {
+                        Playground = null;
+                        UpdateStartBackground();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
                 }
             }
             Invalidate();
@@ -126,6 +172,12 @@ namespace Tetris_1
             button1.Enabled = true;
             button2.Enabled = true;
             button2.Visible = true;
+            button3.Enabled = true;
+            button3.Visible = true;
+            button4.Visible = true;
+            button4.Enabled = true;
+            button5.Visible = true;
+            button5.Enabled = true;
         }
         private void UpdateGameBackground()
         {
@@ -135,6 +187,12 @@ namespace Tetris_1
             button1.Enabled = false;
             button2.Visible = false;
             button2.Enabled = false;
+            button3.Enabled = false;
+            button3.Visible = false;
+            button4.Visible = false;
+            button4.Enabled = false;
+            button5.Visible = false;
+            button5.Enabled = false;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -156,6 +214,10 @@ namespace Tetris_1
             button2.Enabled = false;
             button3.Enabled = false;
             button3.Visible = false;
+            button4.Visible = false;
+            button4.Enabled = false;
+            button5.Visible = false;
+            button5.Enabled = false;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -163,6 +225,7 @@ namespace Tetris_1
             SinglePlayer = true;
             TwoPlayers = false;
             HelpStart hp = new HelpStart(1);
+            hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
             Started = true;
@@ -195,12 +258,24 @@ namespace Tetris_1
             Playground.TwoPlayers = true;
             Playground2.TwoPlayers = true;
         }
+        public void HardMode()
+        {
+            if (Playground == null || !Playground.GameIsStarted)
+            {
+                Playground = new Playground(new Point(335, 250), new Point(735, 750));
+                RemoveBackground();
+                UpdateGameBackground();
+            }
+            Playground.GameIsStarted = true;
+            Playground.TwoPlayers = false;
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             TwoPlayersStart();
             TwoPlayers = true;
             SinglePlayer = false;
             HelpStart hp = new HelpStart(2);
+            hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
             Started = true;
@@ -210,12 +285,34 @@ namespace Tetris_1
         private void button3_Click(object sender, EventArgs e)
         {
             HelpStart hp = new HelpStart(0);
-            DialogResult dg = hp.ShowDialog();
+            hp.StartPosition = FormStartPosition.CenterScreen;
+            hp.ShowDialog();
         }
 
         private void button3_MouseHover(object sender, EventArgs e)
         {
-           
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Quit game?", "Quit game", MessageBoxButtons.YesNo))
+            {
+                this.Close();
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            HardMode();
+            HardModeOn = true;
+            Playground.Hard = true;
+            Playground.GameIsStarted = true;
+            HelpStart hp = new HelpStart(3);
+            hp.StartPosition = FormStartPosition.CenterScreen;
+            hp.ShowDialog();
+            timer1.Start();
+            Invalidate();
         }
     }
 }

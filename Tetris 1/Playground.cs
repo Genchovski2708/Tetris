@@ -32,6 +32,7 @@ namespace Tetris_1
         public Dot[,] PreviewShapeDots { get; set; }
         Shape PreviewShape;
         public bool TwoPlayers { get; set; } = false;
+        public bool Hard { get; set; } = false;
         public Playground(Point topLeft, Point topRight)
         {
             TopLeft = topLeft;
@@ -87,7 +88,10 @@ namespace Tetris_1
         {
             Brush p = new SolidBrush(Color.Blue);
             g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, TopRight.X - TopLeft.X+40, TopRight.Y - TopLeft.Y+15);
-             g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE*4, DISTANCE*4);
+            if (!Hard)
+            {
+                g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE * 4, DISTANCE * 4);
+            }
             p.Dispose();
             for (int i = 0; i < VerticalDots; i++)
             {
@@ -96,14 +100,16 @@ namespace Tetris_1
                     DotsArray[i, j].Draw(g);
                 }
             }
-            for(int i = 0; i < 4; i++)
+            if (!Hard)
             {
-                for(int j = 0; j < 4; j++)
+                for (int i = 0; i < 4; i++)
                 {
-                    PreviewShapeDots[i, j].Draw(g);
+                    for (int j = 0; j < 4; j++)
+                    {
+                        PreviewShapeDots[i, j].Draw(g);
+                    }
                 }
             }
-
             Font font = new Font("Arial", 18);
             Brush brush = Brushes.White;
 
@@ -122,15 +128,21 @@ namespace Tetris_1
                     g.DrawRectangle(pen, DotsArray[i, j].Center.X - DISTANCE / 2, DotsArray[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
                 }
             }
-            for(int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
+            if (!Hard)
             {
-                for(int j=TopLeft.Y-220;j<(TopLeft.Y - 220) + (4 * DISTANCE); j += DISTANCE)
+                for (int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
                 {
-                    g.DrawRectangle(pen, i, j, DISTANCE, DISTANCE);
+                    for (int j = TopLeft.Y - 220; j < (TopLeft.Y - 220) + (4 * DISTANCE); j += DISTANCE)
+                    {
+                        g.DrawRectangle(pen, i, j, DISTANCE, DISTANCE);
+                    }
                 }
             }
             Pen pe = new Pen(Color.Yellow, 3);
-            g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
+            if (!Hard)
+            {
+                g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
+            }
             g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, TopRight.X - TopLeft.X + 44, TopRight.Y - TopLeft.Y + 19);
             pen.Dispose();
             pe.Dispose();
