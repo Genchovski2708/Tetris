@@ -9,7 +9,9 @@ namespace Tetris_1
     {
         public Playground Playground { get; set; }
         public Playground Playground2 { get; set; }
-        public bool TwoPlayers { get; set; }
+        public bool TwoPlayers { get; set; } = false;
+        public bool SinglePlayer { get; set; } = false;
+        public bool Started { get; set; } = false;
         int tick = 0;
         public Form1()
         {
@@ -119,7 +121,7 @@ namespace Tetris_1
         }
         private void UpdateStartBackground()
         {
-            BackgroundImage = Image.FromFile("Images\\TETRIS 1.png");
+            BackgroundImage = Image.FromFile("Images\\TETRIS 4.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             button1.Visible = true;
             button1.Enabled = true;
@@ -164,6 +166,7 @@ namespace Tetris_1
         private void button1_Click(object sender, EventArgs e)
         {
             SinglePlayerStart();
+            SinglePlayer = true;
             TwoPlayers = false;
             Invalidate();
         }
@@ -171,11 +174,12 @@ namespace Tetris_1
         {
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(70, 250), new Point(470, 750));
+                Playground = new Playground(new Point(335, 250), new Point(735, 750));
                 RemoveBackground();
                 UpdateGameBackground();
             }
             timer1.Start();
+            Started = true;
             Playground.GameIsStarted = true;
             Playground.TwoPlayers = false;
         }
@@ -190,6 +194,7 @@ namespace Tetris_1
                 UpdateGameBackground();
             }
             timer1.Start();
+            Started = true;
             Playground.GameIsStarted = true;
             Playground2.GameIsStarted = true;
             Playground.TwoPlayers = true;
@@ -199,7 +204,35 @@ namespace Tetris_1
         {
             TwoPlayersStart();
             TwoPlayers = true;
+            SinglePlayer = false;
             Invalidate();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(Started)
+            {
+                timer1.Stop();
+                Started = !Started;
+            }
+            HelpStart hp = new HelpStart(0);
+            if (SinglePlayer)
+            {
+                hp = new HelpStart(1);
+            }
+            else if (TwoPlayers)
+            {
+                hp = new HelpStart(2);
+            }
+            DialogResult dg = hp.ShowDialog();
+            if(dg==DialogResult.OK)
+            {
+                    if (Playground != null)
+                    {
+                        timer1.Start();
+                        Started = !Started;
+                    }
+            }
         }
     }
 }

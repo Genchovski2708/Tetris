@@ -89,10 +89,6 @@ namespace Tetris_1
             g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, TopRight.X - TopLeft.X+40, TopRight.Y - TopLeft.Y+15);
              g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE*4, DISTANCE*4);
             p.Dispose();
-            Pen pe = new Pen(Color.Yellow, 3);
-             g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, TopRight.X - TopLeft.X + 44, TopRight.Y - TopLeft.Y + 19);
-            g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4+4, DISTANCE * 4+4);
-            pe.Dispose();
             for (int i = 0; i < VerticalDots; i++)
             {
                 for (int j = 0; j < HorizontalDots; j++)
@@ -118,6 +114,26 @@ namespace Tetris_1
             text = String.Format("Points: {0}", Points.ToString());
             point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
             g.DrawString(text, font, brush, point);
+            Pen pen = new Pen(Color.Black, 2);
+            for (int i = 0; i < VerticalDots; i++)
+            {
+                for (int j = 0; j < HorizontalDots; j++)
+                {
+                    g.DrawRectangle(pen, DotsArray[i, j].Center.X - DISTANCE / 2, DotsArray[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
+                }
+            }
+            for(int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
+            {
+                for(int j=TopLeft.Y-220;j<(TopLeft.Y - 220) + (4 * DISTANCE); j += DISTANCE)
+                {
+                    g.DrawRectangle(pen, i, j, DISTANCE, DISTANCE);
+                }
+            }
+            Pen pe = new Pen(Color.Yellow, 3);
+            g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
+            g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, TopRight.X - TopLeft.X + 44, TopRight.Y - TopLeft.Y + 19);
+            pen.Dispose();
+            pe.Dispose();
 
         }  
         public void AddShape()
@@ -291,72 +307,78 @@ namespace Tetris_1
         {
             if (!SecondGround)
             {
-                if (GameIsStarted && !MovingShape.AtBottom)
+                if (MovingShape != null)
                 {
-                    if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
+                    if (GameIsStarted && !MovingShape.AtBottom)
                     {
-                        ResetDots();
-                    }
-                    if (keys == Keys.Left)
-                    {
-                        if (!CheckCollisionsLeft())
+                        if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
                         {
-                            MoveLeft();
+                            ResetDots();
                         }
-
-                    }
-                    else if (keys == Keys.Right)
-                    {
-                        if (!CheckCollisionsRight())
+                        if (keys == Keys.Left)
                         {
-                            MoveRight();
-                        }
-                    }
-                    else if (keys == Keys.Up)
-                    {
-                        MoveUp();
-                    }
-                    else if (keys == Keys.Down)
-                    {
+                            if (!CheckCollisionsLeft())
+                            {
+                                MoveLeft();
+                            }
 
-                        MoveDown();
+                        }
+                        else if (keys == Keys.Right)
+                        {
+                            if (!CheckCollisionsRight())
+                            {
+                                MoveRight();
+                            }
+                        }
+                        else if (keys == Keys.Up)
+                        {
+                            MoveUp();
+                        }
+                        else if (keys == Keys.Down)
+                        {
+
+                            MoveDown();
+                        }
+                        UpdateDots();
                     }
-                    UpdateDots();
                 }
             }
             else
             {
-                if (GameIsStarted && !MovingShape.AtBottom)
+                if (MovingShape != null)
                 {
-                    if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
+                    if (GameIsStarted && !MovingShape.AtBottom)
                     {
-                        ResetDots();
-                    }
-                    if (keys == Keys.A)
-                    {
-                        if (!CheckCollisionsLeft())
+                        if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
                         {
-                            MoveLeft();
+                            ResetDots();
                         }
-
-                    }
-                    else if (keys == Keys.D)
-                    {
-                        if (!CheckCollisionsRight())
+                        if (keys == Keys.A)
                         {
-                            MoveRight();
-                        }
-                    }
-                    else if (keys == Keys.W)
-                    {
-                        MoveUp();
-                    }
-                    else if (keys == Keys.S)
-                    {
+                            if (!CheckCollisionsLeft())
+                            {
+                                MoveLeft();
+                            }
 
-                        MoveDown();
+                        }
+                        else if (keys == Keys.D)
+                        {
+                            if (!CheckCollisionsRight())
+                            {
+                                MoveRight();
+                            }
+                        }
+                        else if (keys == Keys.W)
+                        {
+                            MoveUp();
+                        }
+                        else if (keys == Keys.S)
+                        {
+
+                            MoveDown();
+                        }
+                        UpdateDots();
                     }
-                    UpdateDots();
                 }
             }
         }
