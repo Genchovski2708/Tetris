@@ -26,9 +26,12 @@ namespace Tetris_1
         public int Points { get; set; } = 0;
         public DialogResult DialogRes { get; set; } = DialogResult.None;
         public bool GameOver { get; set; } = false;
+        public bool FinishedT { get; set; } = false;
+        public bool FinishedS { get; set; } = false;
         public bool SecondGround { get; set; }
         public Dot[,] PreviewShapeDots { get; set; }
         Shape PreviewShape;
+        public bool TwoPlayers { get; set; } = false;
         public Playground(Point topLeft, Point topRight)
         {
             TopLeft = topLeft;
@@ -125,8 +128,14 @@ namespace Tetris_1
                 if(MovingShape!=null && !GameIsStarted)
                 {
                     GameOver = true;
-                    DialogResult dg=MessageBox.Show("Game Over, New Game?","Game Over",MessageBoxButtons.YesNo);
-                    DialogRes = dg;
+                    if (!TwoPlayers)
+                    {
+                        FinishedS = true;    
+                    }
+                    else
+                    {
+                        FinishedT= true;
+                    }
                 }
                 else
                 {

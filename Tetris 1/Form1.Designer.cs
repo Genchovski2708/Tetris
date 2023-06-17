@@ -60,7 +60,7 @@
             button1.Location = new Point(55, 663);
             button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(287, 76);
+            button1.Size = new Size(307, 76);
             button1.TabIndex = 2;
             button1.Text = "Single Player";
             button1.UseVisualStyleBackColor = false;
@@ -74,7 +74,7 @@
             button2.Location = new Point(605, 663);
             button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
-            button2.Size = new Size(287, 76);
+            button2.Size = new Size(307, 76);
             button2.TabIndex = 3;
             button2.Text = "Two Players";
             button2.UseVisualStyleBackColor = false;

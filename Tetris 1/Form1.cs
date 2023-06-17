@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Drawing;
 using System.Media;
 using System.Windows.Forms;
 
@@ -28,15 +29,25 @@ namespace Tetris_1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+
+            Font font = new Font("Arial", 18);
+            Brush brush = Brushes.White;
             if (Playground != null && Playground.GameIsStarted)
             {
                 Playground.DrawDots(e.Graphics);
+
+                string text = "Player 1";
+                Point point = new Point(Playground.TopLeft.X, Playground.TopLeft.Y - 5 * Playground.DISTANCE);
+                e.Graphics.DrawString(text, font, brush, point);
             }
             if (TwoPlayers)
             {
                 if (Playground2 != null && Playground2.GameIsStarted)
                 {
                     Playground2.DrawDots(e.Graphics);
+                    string text = "Player 2";
+                    Point point = new Point(Playground2.TopLeft.X, Playground2.TopLeft.Y - 5 * Playground.DISTANCE);
+                    e.Graphics.DrawString(text, font, brush, point);
                 }
             }
         }
@@ -60,15 +71,49 @@ namespace Tetris_1
                 timer1.Stop();
             }
             UpdateLabels();
-            if ((Playground.DialogRes == DialogResult.Yes)||(Playground2!= null && Playground2.DialogRes==DialogResult.Yes))
+            if (Playground.FinishedS)
             {
-                Playground = null;
-                Playground2 = null;
-                UpdateStartBackground();
+                DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                if (dg == DialogResult.Yes)
+                {
+                    Playground = null;
+                    UpdateStartBackground();
+                }
+                else
+                {
+                    this.Close();
+                }
             }
-            else if (Playground.DialogRes == DialogResult.No)
+            else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
             {
-                this.Close();
+                string w = "DRAW"; //0 - D 1 - P1 2 - P2
+                if (Playground.Points > Playground2.Points)
+                {
+                    w = "Player 1!";
+                }
+                else if (Playground.Points < Playground2.Points)
+                {
+                    w = "Player 2";
+                }
+                if (w.Equals("DRAW"))
+                {
+                    MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                }
+                DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                if (dg == DialogResult.Yes)
+                {
+                    Playground = null;
+                    Playground2 = null;
+                    UpdateStartBackground();
+                }
+                else
+                {
+                    this.Close();
+                }
             }
             Invalidate();
         }
@@ -132,6 +177,7 @@ namespace Tetris_1
             }
             timer1.Start();
             Playground.GameIsStarted = true;
+            Playground.TwoPlayers = false;
         }
         public void TwoPlayersStart()
         {
@@ -146,6 +192,8 @@ namespace Tetris_1
             timer1.Start();
             Playground.GameIsStarted = true;
             Playground2.GameIsStarted = true;
+            Playground.TwoPlayers = true;
+            Playground2.TwoPlayers = true;
         }
         private void button2_Click(object sender, EventArgs e)
         {
