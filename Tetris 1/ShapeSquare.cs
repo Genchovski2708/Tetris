@@ -8,8 +8,17 @@ namespace Tetris_1
 {
     internal class ShapeSquare : Shape
     {
+
         public ShapeSquare(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
+        }
+        public ShapeSquare(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        {
+
+        }
+        public override object Clone()
+        {
+            return new ShapeSquare(FirstPoint,IndexRow,IndexColumn,LimitLeft,LimitRight, Stage);
         }
 
         public override void FillMatrix()
@@ -25,4 +34,6 @@ namespace Tetris_1
             Height = 2;
         }
     }
+
+    
 }

@@ -12,7 +12,10 @@ namespace Tetris_1
         {
           
         }
+        public ShapeLine(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        {
 
+        }
         public override void FillMatrix()
         {
             switch (Stage)
@@ -49,7 +52,10 @@ namespace Tetris_1
 
         }
 
-
+        public override object Clone()
+        {
+            return new ShapeLine(FirstPoint, IndexRow, IndexColumn, LimitLeft, LimitRight, Stage);
+        }
 
     }
 }

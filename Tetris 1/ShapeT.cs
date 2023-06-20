@@ -12,7 +12,10 @@ namespace Tetris_1
         {
             Width = 3;
         }
+        public ShapeT(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        {
 
+        }
         public override void FillMatrix()
         {
             
@@ -76,6 +79,10 @@ namespace Tetris_1
                     StartingHeightIndex = 0;
                     break;
             }
+        }
+        public override object Clone()
+        {
+            return new ShapeT(FirstPoint, IndexRow, IndexColumn, LimitLeft, LimitRight,Stage);
         }
     }
 }

@@ -222,6 +222,128 @@ namespace Tetris_1
 
             
         }
+        private void BottomPreview()
+        {
+            //bool canFit = true;
+            //for (int k = VerticalDots - 1; k >= MovingShape.IndexRow + MovingShape.Height; k--)
+            //{
+            //    canFit = true;
+            //    for (int i = MovingShape.Height - 1; i >= 0; i--)
+            //    {
+            //        for (int j = 0; j < MovingShape.Width; j++)
+            //        {
+            //            if (MovingShape.Matrix[i, j])
+            //            {
+            //                if (DotsArray[k - (MovingShape.Height - 1 - i), j + MovingShape.IndexColumn].HasSquare)
+            //                {
+            //                    canFit = false;
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //        if (!canFit)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //    if (canFit)
+            //    {
+            //        for (int i = MovingShape.Height - 1; i >= 0; i--)
+            //        {
+            //            for (int j = 0; j < MovingShape.Width; j++)
+            //            {
+            //                if (MovingShape.Matrix[i, j])
+            //                {
+            //                    DotsArray[k - (MovingShape.Height - 1 - i), j + MovingShape.IndexColumn].BottomPreview = true;
+            //                }
+            //            }
+            //        }
+            //        break;
+            //    }
+            //}
+            Shape tempShape = (Shape)MovingShape.Clone();
+            for(int i = MovingShape.IndexRow; i < VerticalDots - MovingShape.Height; i++)
+            {
+                tempShape.IndexRow = i;
+                if (CheckIfShapeAtBottom(tempShape))
+                {
+                    if(!CheckIfOverlapping(tempShape, i))
+                    {
+                        for (int y = 0; y < 4; y++)
+                        {
+                            for (int x = 0; x < 4; x++)
+                            {
+                                if (tempShape.Matrix[y, x])
+                                {
+                                    DotsArray[i + y, tempShape.IndexColumn + x].BottomPreview = true;
+                                }
+                            }
+                        }
+                    }
+                    return;
+                }       
+            }
+            if (!CheckIfOverlapping(tempShape, VerticalDots - tempShape.Height))
+            {
+                for (int y = tempShape.Height - 1; y >= 0; y--)
+                {
+                    for (int x = 0; x < tempShape.Width; x++)
+                    {
+                        if (tempShape.Matrix[y, x])
+                        {
+                            DotsArray[VerticalDots - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
+                        }
+                    }
+                }
+            }
+
+            
+
+
+        }
+
+        private bool CheckIfOverlapping(Shape tempShape, int i)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    if (tempShape.Matrix[y, x] && DotsArray[i + y, tempShape.IndexColumn + x].HasSquare)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool CheckIfShapeAtBottom(Shape CheckedShape)
+        {
+            if (CheckedShape != null && !CheckedShape.AtBottom)
+            {
+                int rowIndex = CheckedShape.IndexRow;
+                int columnIndex = CheckedShape.IndexColumn;
+                for (int i = CheckedShape.Height - 1; i >= 0; i--)
+                {
+                    bool found = false;
+                    for (int j = 0; j < CheckedShape.Width; j++)
+                    {
+
+                        if (CheckedShape.Matrix[i, j])
+                        {
+                            rowIndex = CheckedShape.IndexRow + i;
+                            columnIndex = CheckedShape.IndexColumn + j;
+                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!CheckedShape.Matrix[i + 1, j])))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                
+            }
+            return false;
+        }
 
         private void ResetDots()
         {
@@ -260,9 +382,22 @@ namespace Tetris_1
                     }
                 }
                 CheckIfMovingShapeAtBottom();
+                ResetBottomPreview();
+                BottomPreview();
                 //CheckIfAtBottom();
             }
 
+        }
+
+        private void ResetBottomPreview()
+        {
+            for(int i = 0; i < VerticalDots; i++)
+            {
+                for(int j=0; j< HorizontalDots; j++)
+                {
+                    DotsArray[i, j].BottomPreview = false;
+                }
+            }
         }
 
         private void CheckIfAtBottom()
@@ -352,6 +487,8 @@ namespace Tetris_1
                             MoveDown();
                         }
                         UpdateDots();
+                        ResetBottomPreview();
+                        BottomPreview();
                     }
                 }
             }
@@ -390,6 +527,8 @@ namespace Tetris_1
                             MoveDown();
                         }
                         UpdateDots();
+                        ResetBottomPreview();
+                        BottomPreview();
                     }
                 }
             }

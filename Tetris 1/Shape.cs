@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris_1
 {
-    public abstract class Shape
+    public abstract class Shape : ICloneable
     {
         private int location;
         public static Random Random = new Random();
@@ -32,6 +32,18 @@ namespace Tetris_1
             IndexColumn = indexColumn;
             IndexRow = indexRow;
             Stage = Random.Next(0,4);
+            FillMatrix();
+            FixLimits();
+        }
+        protected Shape(Dot firstPoint, int indexRow, int indexColumn, int limitLeft, int limitRight, int stage)
+        {
+            FirstPoint = firstPoint;
+            Matrix = new bool[4, 4];
+            LimitLeft = limitLeft;
+            LimitRight = limitRight;
+            IndexColumn = indexColumn;
+            IndexRow = indexRow;
+            Stage = stage;
             FillMatrix();
             FixLimits();
         }
@@ -104,5 +116,6 @@ namespace Tetris_1
             return true;
         }
 
+        public abstract object Clone();
     }
 }

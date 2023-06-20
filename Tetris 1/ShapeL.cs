@@ -11,7 +11,10 @@ namespace Tetris_1
         public ShapeL(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
         }
+        public ShapeL(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        {
 
+        }
         public override void FillMatrix()
         {
             switch (Stage)
@@ -74,6 +77,10 @@ namespace Tetris_1
                     break;
             }
 
+        }
+        public override object Clone()
+        {
+            return new ShapeL(FirstPoint, IndexRow, IndexColumn, LimitLeft, LimitRight, Stage);
         }
     }
 }
