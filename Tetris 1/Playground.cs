@@ -194,6 +194,7 @@ namespace Tetris_1
                 for(int j =0; j<4; j++)
                 {
                     PreviewShapeDots[i, j].HasSquare = PreviewShape.Matrix[i, j];
+                    PreviewShapeDots[i, j].Color = PreviewShape.Color;
                 }
             }
         }
@@ -212,6 +213,7 @@ namespace Tetris_1
                     if (MovingShape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
                     {
                         DotsArray[rowIndex, columnIndex].HasSquare = true;
+                        DotsArray[rowIndex, columnIndex].Color = MovingShape.Color;
                         if (rowIndex == VerticalDots - 1)
                         {
                             MovingShape.AtBottom = true;

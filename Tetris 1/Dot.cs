@@ -24,6 +24,11 @@ namespace Tetris_1
         {
             Center = center;
         }
+        public Dot(Point center, Color color)
+        {
+            Center = center;
+            Color = color;
+        }
         public void Draw(Graphics g)
         {
             if (HasSquare)

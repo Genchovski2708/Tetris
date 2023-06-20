@@ -22,6 +22,7 @@ namespace Tetris_1
         public int LimitLeft { get; set; }
         public int LimitRight { get; set; }
         public int Stage { get; set; } // 0 default, 1 - rotated 90, 2 - rotated 180, 4 - rotated 270
+        public Color Color { get; set; }
 
         protected Shape(Dot firstPoint,int indexRow, int indexColumn, int limitLeft, int limitRight)
         {
@@ -32,6 +33,7 @@ namespace Tetris_1
             IndexColumn = indexColumn;
             IndexRow = indexRow;
             Stage = Random.Next(0,4);
+            Color = RandomColorPicker();
             FillMatrix();
             FixLimits();
         }
@@ -44,6 +46,7 @@ namespace Tetris_1
             IndexColumn = indexColumn;
             IndexRow = indexRow;
             Stage = stage;
+            Color = RandomColorPicker();
             FillMatrix();
             FixLimits();
         }
@@ -55,6 +58,25 @@ namespace Tetris_1
         }
 
         public abstract void FillMatrix();
+        private Color RandomColorPicker()
+        {
+            int randomInt = Random.Next(0, 5);
+            switch(randomInt)
+            {
+                case 0:
+                    return Color.Red;
+                case 1:
+                    return Color.Green;
+                case 2:
+                    return Color.Violet;
+                case 3:
+                    return Color.Yellow;
+                case 4:
+                    return Color.Salmon;
+                default:
+                    return Color.Red;
+            }
+        }
         public void ResetMatrix()
         {
             for(int i=0;i<4;i++)
