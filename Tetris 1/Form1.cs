@@ -16,6 +16,7 @@ namespace Tetris_1
         int speed = 10;
 
         int tick = 0;
+        int tick2 = 0;
         public Form1()
         {
             InitializeComponent();
@@ -64,12 +65,79 @@ namespace Tetris_1
         {
 
             tick++;
+            if (TwoPlayers)
+            {
+                tick2++;
+            }
             if (!HardModeOn)
             {
-                if (tick % 10 == 0)
+                timer1.Interval = 33;
+                if (tick % (30 - Playground.Level) == 0)
                 {
+
                     Playground.AddShape();
                     Playground.Tick();
+                    if (Playground.GameOver)
+                    {
+                        timer1.Stop();
+                    }
+                    if (TwoPlayers && Playground2.GameOver)
+                    {
+                        timer1.Stop();
+                    }
+                    if (Playground.FinishedS)
+                    {
+                        DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        if (dg == DialogResult.Yes)
+                        {
+                            Playground = null;
+                            UpdateStartBackground();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                    else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
+                    {
+                        string w = "DRAW"; //0 - D 1 - P1 2 - P2
+                        if (Playground.Points > Playground2.Points)
+                        {
+                            w = "Player 1!";
+                        }
+                        else if (Playground.Points < Playground2.Points)
+                        {
+                            w = "Player 2";
+                        }
+                        if (w.Equals("DRAW"))
+                        {
+                            MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                        }
+                        DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        if (dg == DialogResult.Yes)
+                        {
+                            Playground = null;
+                            Playground2 = null;
+                            UpdateStartBackground();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                }
+
+                if (SinglePlayer && tick == 30 - Playground.Level)
+                {
+                    tick = 0;
+                }
+                if (TwoPlayers && tick2 % (30 - Playground2.Level) == 0)
+                {
+
                     if (TwoPlayers)
                     {
                         Playground2.AddShape();
@@ -128,9 +196,10 @@ namespace Tetris_1
                         }
                     }
                 }
-                if (tick == 100)
+
+                if (TwoPlayers && tick2 == 30 - Playground2.Level)
                 {
-                    tick = 0;
+                    tick2 = 0;
                 }
             }
             else
@@ -233,6 +302,7 @@ namespace Tetris_1
         }
         public void SinglePlayerStart()
         {
+            timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
                 Playground = new Playground(new Point(335, 250), new Point(735, 750));
@@ -244,7 +314,7 @@ namespace Tetris_1
         }
         public void TwoPlayersStart()
         {
-
+            timer1.Interval = 100;
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
                 Playground = new Playground(new Point(70, 250), new Point(470, 750));
@@ -260,6 +330,7 @@ namespace Tetris_1
         }
         public void HardMode()
         {
+            timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
                 Playground = new Playground(new Point(335, 250), new Point(735, 750));

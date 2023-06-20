@@ -33,6 +33,8 @@ namespace Tetris_1
         Shape PreviewShape;
         public bool TwoPlayers { get; set; } = false;
         public bool Hard { get; set; } = false;
+        public int Level { get; set; } = 1;
+        public bool ChangedLevel { get; set; } = false;
         public Playground(Point topLeft, Point topRight)
         {
             TopLeft = topLeft;
@@ -120,6 +122,14 @@ namespace Tetris_1
             text = String.Format("Points: {0}", Points.ToString());
             point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
             g.DrawString(text, font, brush, point);
+
+            if (!Hard)
+            {
+                text = String.Format("Level: {0}", Level.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
+                g.DrawString(text, font, brush, point);
+            }
+
             Pen pen = new Pen(Color.Black, 2);
             for (int i = 0; i < VerticalDots; i++)
             {
@@ -680,26 +690,46 @@ namespace Tetris_1
                 {
                     ClearRow(i);
                     ClearedRows++;
+                    Level = ClearedRows / 10;
+                    if(Level > 29)
+                    {
+                        Level = 29;
+                    }
+                    else if (Level < 1)
+                    {
+                        Level = 1;
+                    }
+                    else if ( ClearedRows % 10 == 0)
+                    {
+                        ChangedLevel = true;
+                    }
                     clearedRows++;
                 }
             }
-            switch (clearedRows)
-            {
-                case 0:
-                    break;
-                case 1:
-                    Points += 40;
-                    break;
-                case 2:
-                    Points += 100;
-                    break;
-                case 3:
-                    Points += 300;
-                    break;
-                default:
-                    Points += 1200;
-                    break;
+            while (clearedRows > 0){
+                switch (clearedRows)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        Points += Level * 40;
+                        clearedRows--;
+                        break;
+                    case 2:
+                        Points += Level * 100;
+                        clearedRows -= 2;
+                        break;
+                    case 3:
+                        Points += Level * 300;
+                        clearedRows -= 3;
+                        break;
+                    default:
+                        Points += Level * 1200;
+                        clearedRows -= 4;
+                        break;
+                }
             }
+
         }
 
         private void ClearRow(int i)
