@@ -263,41 +263,45 @@ namespace Tetris_1
             //        break;
             //    }
             //}
-            Shape tempShape = (Shape)MovingShape.Clone();
-            for(int i = MovingShape.IndexRow; i < VerticalDots - MovingShape.Height; i++)
+            if (!MovingShape.AtBottom && !Hard)
             {
-                tempShape.IndexRow = i;
-                if (CheckIfShapeAtBottom(tempShape))
+                Shape tempShape = (Shape)MovingShape.Clone();
+                for (int i = MovingShape.IndexRow; i < VerticalDots - MovingShape.Height; i++)
                 {
-                    if(!CheckIfOverlapping(tempShape, i))
+                    tempShape.IndexRow = i;
+                    if (CheckIfShapeAtBottom(tempShape))
                     {
-                        for (int y = 0; y < 4; y++)
+                        if (!CheckIfOverlapping(tempShape, i))
                         {
-                            for (int x = 0; x < 4; x++)
+                            for (int y = 0; y < 4; y++)
                             {
-                                if (tempShape.Matrix[y, x])
+                                for (int x = 0; x < 4; x++)
                                 {
-                                    DotsArray[i + y, tempShape.IndexColumn + x].BottomPreview = true;
+                                    if (tempShape.Matrix[y, x])
+                                    {
+                                        DotsArray[i + y, tempShape.IndexColumn + x].BottomPreview = true;
+                                    }
                                 }
                             }
                         }
+                        return;
                     }
-                    return;
-                }       
-            }
-            if (!CheckIfOverlapping(tempShape, VerticalDots - tempShape.Height))
-            {
-                for (int y = tempShape.Height - 1; y >= 0; y--)
+                }
+                if (!CheckIfOverlapping(tempShape, VerticalDots - tempShape.Height))
                 {
-                    for (int x = 0; x < tempShape.Width; x++)
+                    for (int y = tempShape.Height - 1; y >= 0; y--)
                     {
-                        if (tempShape.Matrix[y, x])
+                        for (int x = 0; x < tempShape.Width; x++)
                         {
-                            DotsArray[VerticalDots - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
+                            if (tempShape.Matrix[y, x])
+                            {
+                                DotsArray[VerticalDots - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
+                            }
                         }
                     }
                 }
             }
+            
 
             
 
@@ -310,7 +314,22 @@ namespace Tetris_1
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (tempShape.Matrix[y, x] && DotsArray[i + y, tempShape.IndexColumn + x].HasSquare)
+                    if (tempShape.Matrix[y, x] && DotsArray[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeDot(i + y, tempShape.IndexColumn + x))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool IsMovingShapeDot(int y, int x)
+        {
+            for(int i=0;i<MovingShape.Height;i++)
+            {
+                for(int j = 0; j < MovingShape.Width; j++)
+                {
+                    if(MovingShape.IndexRow+i == y && MovingShape.IndexColumn+j == x && MovingShape.Matrix[i, j])
                     {
                         return true;
                     }
