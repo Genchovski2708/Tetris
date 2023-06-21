@@ -60,7 +60,7 @@
             button1.BackColor = Color.FromArgb(0, 0, 192);
             button1.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(378, 411);
+            button1.Location = new Point(372, 504);
             button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
             button1.Size = new Size(307, 76);
@@ -74,7 +74,7 @@
             button2.BackColor = Color.FromArgb(0, 0, 192);
             button2.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button2.ForeColor = Color.Black;
-            button2.Location = new Point(378, 493);
+            button2.Location = new Point(372, 586);
             button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
             button2.Size = new Size(307, 76);
@@ -88,7 +88,7 @@
             button3.BackColor = Color.FromArgb(0, 0, 192);
             button3.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button3.ForeColor = Color.Black;
-            button3.Location = new Point(445, 761);
+            button3.Location = new Point(439, 854);
             button3.Margin = new Padding(3, 4, 3, 4);
             button3.Name = "button3";
             button3.Size = new Size(155, 64);
@@ -103,7 +103,7 @@
             button4.BackColor = Color.FromArgb(0, 0, 192);
             button4.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button4.ForeColor = Color.Black;
-            button4.Location = new Point(378, 661);
+            button4.Location = new Point(372, 754);
             button4.Margin = new Padding(3, 4, 3, 4);
             button4.Name = "button4";
             button4.Size = new Size(307, 76);
@@ -117,7 +117,7 @@
             button5.BackColor = Color.FromArgb(0, 0, 192);
             button5.Font = new Font("Snap ITC", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             button5.ForeColor = Color.Black;
-            button5.Location = new Point(378, 577);
+            button5.Location = new Point(372, 670);
             button5.Margin = new Padding(3, 4, 3, 4);
             button5.Name = "button5";
             button5.Size = new Size(307, 76);
@@ -130,7 +130,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1051, 829);
+            ClientSize = new Size(1052, 953);
             Controls.Add(button5);
             Controls.Add(button4);
             Controls.Add(button3);

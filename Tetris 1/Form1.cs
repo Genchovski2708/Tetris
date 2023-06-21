@@ -286,7 +286,7 @@ namespace Tetris_1
         {
             this.BackgroundImage = null;
             this.BackColor = Color.White;
-            SetButtonsOff() ;
+            SetButtonsOff();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -305,7 +305,7 @@ namespace Tetris_1
             timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(335, 250), new Point(735, 750));
+                Playground = new Playground(new Point(335, 250), new Point(735, 910));
                 RemoveBackground();
                 UpdateGameBackground();
             }
@@ -317,8 +317,8 @@ namespace Tetris_1
             timer1.Interval = 100;
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
-                Playground = new Playground(new Point(70, 250), new Point(470, 750));
-                Playground2 = new Playground(new Point(580, 250), new Point(980, 750));
+                Playground = new Playground(new Point(70, 250), new Point(470, 910));
+                Playground2 = new Playground(new Point(580, 250), new Point(980, 910));
                 Playground2.SecondGround = true;
                 RemoveBackground();
                 UpdateGameBackground();
@@ -333,7 +333,7 @@ namespace Tetris_1
             timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(335, 250), new Point(735, 750));
+                Playground = new Playground(new Point(335, 250), new Point(735, 910));
                 RemoveBackground();
                 UpdateGameBackground();
             }
