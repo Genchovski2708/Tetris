@@ -690,7 +690,11 @@ namespace Tetris_1
                 {
                     ClearRow(i);
                     ClearedRows++;
-                    Level = ClearedRows / 10;
+                    if (ClearedRows != 0 && ClearedRows % 10 == 0)
+                    {
+                        ChangedLevel = true;
+                        Level++;
+                    }
                     if(Level > 29)
                     {
                         Level = 29;
@@ -698,10 +702,6 @@ namespace Tetris_1
                     else if (Level < 1)
                     {
                         Level = 1;
-                    }
-                    else if ( ClearedRows % 10 == 0)
-                    {
-                        ChangedLevel = true;
                     }
                     clearedRows++;
                 }

@@ -71,8 +71,9 @@ namespace Tetris_1
             }
             if (!HardModeOn)
             {
-                timer1.Interval = 33;
-                if (tick % (30 - Playground.Level) == 0)
+                timer1.Interval = 1;
+                int tickNow1 = 100 / (Playground.Level + 3);
+                if (tick % tickNow1 == 0)
                 {
 
                     Playground.AddShape();
@@ -129,13 +130,18 @@ namespace Tetris_1
                             this.Close();
                         }
                     }
-                }
-
-                if (SinglePlayer && tick == 30 - Playground.Level)
-                {
                     tick = 0;
                 }
-                if (TwoPlayers && tick2 % (30 - Playground2.Level) == 0)
+                int tickNow2 = 1;
+                if (TwoPlayers)
+                {
+                    tickNow2 = 100 / (Playground2.Level + 3);
+                    if(tickNow2 < 1)
+                    {
+                        tickNow2 = 1;
+                    }
+                }
+                if (TwoPlayers && tick2 % tickNow2 == 0)
                 {
 
                     if (TwoPlayers)
@@ -195,12 +201,9 @@ namespace Tetris_1
                             this.Close();
                         }
                     }
-                }
-
-                if (TwoPlayers && tick2 == 30 - Playground2.Level)
-                {
                     tick2 = 0;
                 }
+
             }
             else
             {
