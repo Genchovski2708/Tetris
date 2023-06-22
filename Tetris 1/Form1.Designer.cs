@@ -37,6 +37,7 @@
             button3 = new Button();
             button4 = new Button();
             button5 = new Button();
+            langPack = new ComboBox();
             SuspendLayout();
             // 
             // timer1
@@ -126,11 +127,23 @@
             button5.UseVisualStyleBackColor = false;
             button5.Click += button5_Click;
             // 
+            // langPack
+            // 
+            langPack.FormattingEnabled = true;
+            langPack.Items.AddRange(new object[] { "English", "Македонски" });
+            langPack.Location = new Point(78, 103);
+            langPack.Name = "langPack";
+            langPack.Size = new Size(151, 28);
+            langPack.TabIndex = 9;
+            langPack.SelectedIndexChanged += langPack_SelectedIndexChanged;
+            langPack.SelectedValueChanged += langPack_SelectedValueChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1052, 953);
+            Controls.Add(langPack);
             Controls.Add(button5);
             Controls.Add(button4);
             Controls.Add(button3);
@@ -153,5 +166,6 @@
         private Button button3;
         private Button button4;
         private Button button5;
+        private ComboBox langPack;
     }
 }

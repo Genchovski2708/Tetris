@@ -1,4 +1,4 @@
-using Microsoft.VisualBasic.ApplicationServices;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using System.Drawing;
 using System.Media;
 using System.Windows.Forms;
@@ -27,6 +27,7 @@ namespace Tetris_1
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
             this.Icon = new Icon("Images\\TETRIS4.ico");
+            langPack.SelectedIndex = 0;
             Invalidate();
         }
 
@@ -88,7 +89,15 @@ namespace Tetris_1
                     }
                     if (Playground.FinishedS)
                     {
-                        DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        DialogResult dg;
+                        if (langPack.SelectedIndex == 0)
+                        {
+                            dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        }
+                        else
+                        {
+                            dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                        }
                         if (dg == DialogResult.Yes)
                         {
                             Playground = null;
@@ -104,21 +113,57 @@ namespace Tetris_1
                         string w = "DRAW"; //0 - D 1 - P1 2 - P2
                         if (Playground.Points > Playground2.Points)
                         {
-                            w = "Player 1!";
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                w = "Player 1!";
+                            }
+                            else
+                            {
+                                w = "Играч 1";
+                            }
                         }
                         else if (Playground.Points < Playground2.Points)
                         {
-                            w = "Player 2";
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                w = "Player 2";
+                            }
+                            else
+                            {
+                                w = "Играч 2";
+                            }
                         }
                         if (w.Equals("DRAW"))
                         {
-                            MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                MessageBox.Show("DRAW!", "Game Ended", MessageBoxButtons.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Победникот е: {w}", "Играта заврши", MessageBoxButtons.OK);
+                            }
                         }
-                        DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        DialogResult dg;
+                        if (langPack.SelectedIndex == 0)
+                        {
+                            dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        }
+                        else
+                        {
+                            dg = MessageBox.Show("Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                        }
                         if (dg == DialogResult.Yes)
                         {
                             Playground = null;
@@ -136,7 +181,7 @@ namespace Tetris_1
                 if (TwoPlayers)
                 {
                     tickNow2 = 100 / (Playground2.Level + 3);
-                    if(tickNow2 < 1)
+                    if (tickNow2 < 1)
                     {
                         tickNow2 = 1;
                     }
@@ -159,7 +204,15 @@ namespace Tetris_1
                     }
                     if (Playground.FinishedS)
                     {
-                        DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        DialogResult dg;
+                        if (langPack.SelectedIndex == 0)
+                        {
+                            dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                        }
+                        else
+                        {
+                            dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                        }
                         if (dg == DialogResult.Yes)
                         {
                             Playground = null;
@@ -175,21 +228,57 @@ namespace Tetris_1
                         string w = "DRAW"; //0 - D 1 - P1 2 - P2
                         if (Playground.Points > Playground2.Points)
                         {
-                            w = "Player 1!";
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                w = "Player 1!";
+                            }
+                            else
+                            {
+                                w = "Играч 1";
+                            }
                         }
                         else if (Playground.Points < Playground2.Points)
                         {
-                            w = "Player 2";
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                w = "Player 2";
+                            }
+                            else
+                            {
+                                w = "Играч 2";
+                            }
                         }
                         if (w.Equals("DRAW"))
                         {
-                            MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                MessageBox.Show("DRAW!", "Game Ended", MessageBoxButtons.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                            if (langPack.SelectedIndex == 0)
+                            {
+                                MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Победникот е: {w}", "Играта заврши", MessageBoxButtons.OK);
+                            }
                         }
-                        DialogResult dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        DialogResult dg;
+                        if (langPack.SelectedIndex == 0)
+                        {
+                            dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                        }
+                        else
+                        {
+                            dg = MessageBox.Show("Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                        }
                         if (dg == DialogResult.Yes)
                         {
                             Playground = null;
@@ -223,7 +312,15 @@ namespace Tetris_1
                 if (Playground.FinishedS)
                 {
                     timer1.Stop();
-                    DialogResult dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                    DialogResult dg;
+                    if (langPack.SelectedIndex == 0)
+                    {
+                        dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                    }
+                    else
+                    {
+                        dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                    }
                     if (dg == DialogResult.Yes)
                     {
                         Playground = null;
@@ -251,6 +348,8 @@ namespace Tetris_1
             button4.Enabled = true;
             button5.Visible = true;
             button5.Enabled = true;
+            langPack.Enabled = true;
+            langPack.Visible = true;
             Started = false;
             TwoPlayers = false;
             SinglePlayer = false;
@@ -274,7 +373,30 @@ namespace Tetris_1
             button4.Enabled = false;
             button5.Visible = false;
             button5.Enabled = false;
+            langPack.Visible = false;
+            langPack.Enabled = false;
 
+        }
+        private void langChange(int i)
+        {
+            if (i == 0)
+            {
+                button1.Text = "Single Player";
+                button2.Text = "Two Players";
+                button3.Text = "HELP";
+                button4.Text = "Exit";
+                button5.Text = "Hard Mode";
+                langPack.SelectedIndex = 0;
+            }
+            else if (i == 1)
+            {
+                button1.Text = "Еден играч";
+                button2.Text = "Двајца играчи";
+                button3.Text = "ПОМОШ";
+                button4.Text = "Излез";
+                button5.Text = "Тежок левел";
+                langPack.SelectedIndex = 1;
+            }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -296,7 +418,15 @@ namespace Tetris_1
             SinglePlayerStart();
             SinglePlayer = true;
             TwoPlayers = false;
-            HelpStart hp = new HelpStart(1);
+            HelpStart hp;
+            if (langPack.SelectedIndex == 0)
+            {
+                hp = new HelpStart(1);
+            }
+            else
+            {
+                hp = new HelpStart(5);
+            }
             hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
@@ -348,7 +478,15 @@ namespace Tetris_1
             TwoPlayersStart();
             TwoPlayers = true;
             SinglePlayer = false;
-            HelpStart hp = new HelpStart(2);
+            HelpStart hp;
+            if (langPack.SelectedIndex == 0)
+            {
+                hp = new HelpStart(2);
+            }
+            else
+            {
+                hp = new HelpStart(6);
+            }
             hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
@@ -358,7 +496,15 @@ namespace Tetris_1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            HelpStart hp = new HelpStart(0);
+            HelpStart hp;
+            if (langPack.SelectedIndex == 0)
+            {
+                hp = new HelpStart(0);
+            }
+            else
+            {
+                hp = new HelpStart(4);
+            }
             hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
         }
@@ -370,9 +516,19 @@ namespace Tetris_1
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (DialogResult.Yes == MessageBox.Show("Quit game?", "Quit game", MessageBoxButtons.YesNo))
+            if (langPack.SelectedIndex == 0)
             {
-                this.Close();
+                if (DialogResult.Yes == MessageBox.Show("Are you sure you want to quit game?", "Quit game", MessageBoxButtons.YesNo))
+                {
+                    this.Close();
+                }
+            }
+            else
+            {
+                if (DialogResult.Yes == MessageBox.Show("Дали сте сигурни дека сакате да излезете од играта?", "Излез", MessageBoxButtons.YesNo))
+                {
+                    this.Close();
+                }
             }
         }
 
@@ -382,11 +538,37 @@ namespace Tetris_1
             HardModeOn = true;
             Playground.Hard = true;
             Playground.GameIsStarted = true;
-            HelpStart hp = new HelpStart(3);
+            HelpStart hp;
+            if (langPack.SelectedIndex == 0)
+            {
+                hp = new HelpStart(3);
+            }
+            else
+            {
+                hp = new HelpStart(7);
+            }
             hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
             Invalidate();
+        }
+
+        private void langPack_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (langPack.SelectedIndex == 0)
+            {
+                langChange(0);
+            }
+            else if (langPack.SelectedIndex == 1)
+            {
+                langChange(1);
+            }
+            Invalidate();
+        }
+
+        private void langPack_SelectedValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

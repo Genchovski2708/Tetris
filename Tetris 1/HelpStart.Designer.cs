@@ -37,18 +37,19 @@
             label1.AutoSize = true;
             label1.Font = new Font("Imprint MT Shadow", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.Blue;
-            label1.Location = new Point(55, 36);
+            label1.Location = new Point(77, 42);
             label1.Name = "label1";
-            label1.Size = new Size(0, 18);
+            label1.Size = new Size(0, 23);
             label1.TabIndex = 0;
             label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // button1
             // 
             button1.Font = new Font("Imprint MT Shadow", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(160, 147);
+            button1.Location = new Point(183, 196);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(75, 34);
+            button1.Size = new Size(86, 45);
             button1.TabIndex = 1;
             button1.Text = "ОК";
             button1.UseVisualStyleBackColor = true;
@@ -56,12 +57,11 @@
             // 
             // HelpStart
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(402, 202);
+            ClientSize = new Size(459, 269);
             Controls.Add(button1);
             Controls.Add(label1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "HelpStart";
             Text = "HelpStart";
             Load += HelpStart_Load;

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,33 +23,58 @@ namespace Tetris_1
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             this.Icon = new Icon("Images\\TETRIS4.ico");
+            label1.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         private void HelpStart_Load(object sender, EventArgs e)
         {
             if (k == 0)
             {
-                label1.Text = "WELCOME!\r\nThis is TETRIS game!\r\nYou can choose one game mode.\r\nFor help click the 'HELP' button in game!\r\nGood Luck!\r\n\r\n";
+                label1.Text = "WELCOME!\r\nThis is TETRIS game!\r\nYou can choose one game mode.\r\nYou will got instructions at the beginning.\r\nGood Luck!\r\n\r\n";
             }
             else if (k == 1)
             {
                 label1.Text = "Player Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
                     "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.";
             }
-            else if (k==2)
+            else if (k == 2)
             {
                 this.Height = 400;
-                button1.Location= new Point(185, 290);
+                button1.Location = new Point(185, 290);
                 label1.Text = "Player 1 Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
-                    "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\n"+ "Player 2 Controls:\r\nUse 'a' to move left.\r\nUse 'd' to move right.\r\n" +
+                    "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\n" + "Player 2 Controls:\r\nUse 'a' to move left.\r\nUse 'd' to move right.\r\n" +
                     "Use 'w' to rotate for 90 degrees.\r\nUse 's' to move down faster.";
             }
-            else
+            else if (k == 3)
             {
                 button1.Location = new Point(185, 220);
                 label1.Text = "Player Controls:\r\nUse left arrow to move left.\r\nUse right arrow to move right.\r\n" +
-                    "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\nNow you don't have preview of next shape!"+
+                    "Use up arrow to rotate for 90 degrees.\r\nUse down arrow to move down faster.\r\nNow you don't have preview of next shape!" +
                     "\r\nCareful! Time passes faster!";
+            }
+            else if (k == 4)
+            {
+                label1.Text = "ДОБРЕДОЈДОВТЕ!\r\nОва е игра тетрис!\r\nМожеш да одбереш еден вид на игра.\r\nИнструкции ќе добиеш на почетокот.\r\nСреќно!\r\n\r\n";
+            }
+            else if (k == 5)
+            {
+                label1.Text = "Контроли за играчот:\r\nСо левата стрелка се придвижува налево.\r\nСо десната стрелка се придвижува надесно.\r\n" +
+                    "Со горната стрелка се ротира за 90 степени.\r\nСо долната стрелка се придвижвува побрзо надолу.";
+            }
+            else if (k == 6)
+            {
+                this.Height = 400;
+                button1.Location = new Point(185, 290);
+                label1.Text = "Контроли за Играч 1:\r\nСо левата стрелка се придвижува налево.\r\nСо десната стрелка се придвижува надесно.\r\n" +
+                    "Со горната стрелка се ротира за 90 степени.\r\nСо долната стрелка се придвижвува побрзо надолу.\r\n" + "Контроли за Играч 2:\r\nНа буквата 'a' се придвижува налево.\r\nНа буквата 'd' се придвижува надесно.\r\n" +
+                    "На буквата 'w' се ротира за 90 степени.\r\nНа буквата 's' се придвижвува побрзо надолу.";
+            }
+            else if (k == 7)
+            {
+                button1.Location = new Point(185, 220);
+                label1.Text = "Контроли за играчот:\r\nСо левата стрелка се придвижува налево.\r\nСо десната стрелка се придвижува надесно.\r\n" +
+                    "Со горната стрелка се ротира за 90 степени.\r\nСо долната стрелка се придвижвува побрзо надолу." + "\r\nСега немаш преглед на следната форма!" +
+                    "\r\nВнимателно! Времето тече побрзо!";
             }
         }
 
