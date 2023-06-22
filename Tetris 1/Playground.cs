@@ -32,7 +32,7 @@ namespace Tetris_1
         public Dot[,] PreviewShapeDots { get; set; }
         Shape PreviewShape;
         public bool TwoPlayers { get; set; } = false;
-        public bool Hard { get; set; } = false;
+        public bool Extreme { get; set; } = false;
         public int Level { get; set; } = 1;
         public bool ChangedLevel { get; set; } = false;
         public Playground(Point topLeft, Point topRight)
@@ -44,7 +44,7 @@ namespace Tetris_1
             Shape MovingShape;
             HorizontalDots = (TopRight.X + DISTANCE - TopLeft.X) / DISTANCE;
             VerticalDots = (TopRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
-            DotsArray = new Dot[VerticalDots , HorizontalDots];
+            DotsArray = new Dot[VerticalDots + 4 , HorizontalDots];
             PreviewShapeDots = new Dot[4, 4];
             for(int i = 0; i < VerticalDots; i++)
             {
@@ -66,12 +66,11 @@ namespace Tetris_1
         {
             int countRow = 0;
             int countCol = 0;
-            for (int j = TopLeft.Y; j <= TopRight.Y; j += DISTANCE)
+            for (int j = TopLeft.Y ; j <= TopRight.Y; j += DISTANCE)
             {
                 for (int i = TopLeft.X; i <= TopRight.X; i += DISTANCE)
                 {
                     Dot temp = new Dot(new Point(i, j));
-                    Dots.Add(temp);
                     DotsArray[countRow, countCol] = temp;
                     countCol++;
                 }
@@ -90,7 +89,7 @@ namespace Tetris_1
         {
             Brush p = new SolidBrush(Color.Blue);
             g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, TopRight.X - TopLeft.X+40, TopRight.Y - TopLeft.Y+15);
-            if (!Hard)
+            if (!Extreme)
             {
                 g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE * 4, DISTANCE * 4);
             }
@@ -102,7 +101,7 @@ namespace Tetris_1
                     DotsArray[i, j].Draw(g);
                 }
             }
-            if (!Hard)
+            if (!Extreme)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -123,7 +122,7 @@ namespace Tetris_1
             point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
             g.DrawString(text, font, brush, point);
 
-            if (!Hard)
+            if (!Extreme)
             {
                 text = String.Format("Level: {0}", Level.ToString());
                 point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
@@ -138,7 +137,7 @@ namespace Tetris_1
                     g.DrawRectangle(pen, DotsArray[i, j].Center.X - DISTANCE / 2, DotsArray[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
                 }
             }
-            if (!Hard)
+            if (!Extreme)
             {
                 for (int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
                 {
@@ -149,7 +148,7 @@ namespace Tetris_1
                 }
             }
             Pen pe = new Pen(Color.Yellow, 3);
-            if (!Hard)
+            if (!Extreme)
             {
                 g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
             }
@@ -178,17 +177,21 @@ namespace Tetris_1
                 else
                 {
                     CheckFullRows();
-                    int randomInx = Random.Next(0, HorizontalDots);
-                    Dot randomDot = DotsArray[0, randomInx];
+                    int indx = HorizontalDots / 2 -1;
+                    if (Extreme)
+                    {
+                        indx = Random.Next(0, HorizontalDots);
+                    }
+                    Dot randomDot = DotsArray[0, indx];
                     if(PreviewShape!= null)
                     {
                         MovingShape = PreviewShape;
                     }
                     else
                     {
-                        MovingShape = GenerateShape(randomDot, randomInx);
+                        MovingShape = GenerateShape(randomDot, indx);
                     }
-                    PreviewShape = GenerateShape(randomDot, randomInx);
+                    PreviewShape = GenerateShape(randomDot, indx);
                     ChangePreviewDots();
                     Shapes.Add(MovingShape);
 
@@ -236,44 +239,7 @@ namespace Tetris_1
         }
         private void BottomPreview()
         {
-            //bool canFit = true;
-            //for (int k = VerticalDots - 1; k >= MovingShape.IndexRow + MovingShape.Height; k--)
-            //{
-            //    canFit = true;
-            //    for (int i = MovingShape.Height - 1; i >= 0; i--)
-            //    {
-            //        for (int j = 0; j < MovingShape.Width; j++)
-            //        {
-            //            if (MovingShape.Matrix[i, j])
-            //            {
-            //                if (DotsArray[k - (MovingShape.Height - 1 - i), j + MovingShape.IndexColumn].HasSquare)
-            //                {
-            //                    canFit = false;
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //        if (!canFit)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //    if (canFit)
-            //    {
-            //        for (int i = MovingShape.Height - 1; i >= 0; i--)
-            //        {
-            //            for (int j = 0; j < MovingShape.Width; j++)
-            //            {
-            //                if (MovingShape.Matrix[i, j])
-            //                {
-            //                    DotsArray[k - (MovingShape.Height - 1 - i), j + MovingShape.IndexColumn].BottomPreview = true;
-            //                }
-            //            }
-            //        }
-            //        break;
-            //    }
-            //}
-            if (!MovingShape.AtBottom && !Hard)
+            if (!MovingShape.AtBottom && !Extreme)
             {
                 Shape tempShape = (Shape)MovingShape.Clone();
                 for (int i = MovingShape.IndexRow; i < VerticalDots - MovingShape.Height; i++)
@@ -388,13 +354,6 @@ namespace Tetris_1
                     }
                 }
             }
-            //for (int i = 0; i < VerticalDots; i++)
-            //{
-            //    for (int j = 0; j < HorizontalDots; j++)
-            //    {
-            //        DotsArray[i, j].HasSquare = false;
-            //    }
-            //}
         }
 
         public void Tick()
@@ -412,10 +371,8 @@ namespace Tetris_1
                         UpdateDots();
                     }
                 }
-                CheckIfMovingShapeAtBottom();
                 ResetBottomPreview();
                 BottomPreview();
-                //CheckIfAtBottom();
             }
 
         }
@@ -431,45 +388,14 @@ namespace Tetris_1
             }
         }
 
-        private void CheckIfAtBottom()
-        {
-            foreach(Shape shape in Shapes)
-            {
-                int rowIndex = shape.IndexRow;
-                int columnIndex = shape.IndexColumn;
-                for (int i = 3; i >= 0; i--) 
-                {
-                    bool found = false;
-                    for(int j = 0; j < 4; j++)
-                    {
-                        
-                        if (shape.Matrix[i, j])
-                        {
-                            rowIndex = shape.IndexRow + i;
-                            columnIndex = shape.IndexColumn + j;
-                            if (rowIndex + 1 < VerticalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i==3 || !shape.Matrix[i+1,j]))
-                            {
-                                shape.AtBottom = true;
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                    if(found)
-                    {
-                        break;
-                    }
-                }
-
-
-            }
-        }
+      
 
         public Shape GenerateShape(Dot dot, int index)
         {
-            int random = Random.Next(0, 5);
+
             int limitLeft = 0;
             int limitRight = HorizontalDots;
+            int random = Random.Next(0, 5);
             switch (random)
             {
                 case 0: return new ShapeLine(dot,0,index,limitLeft,limitRight);
@@ -638,10 +564,14 @@ namespace Tetris_1
         }
         public void MoveDown()
         {
-            if (MovingShape != null && !MovingShape.AtBottom)
+            if (MovingShape != null)
             {
-                MovingShape.MoveDown();
                 CheckIfMovingShapeAtBottom();
+                if (!MovingShape.AtBottom)
+                {
+                    MovingShape.MoveDown();
+                }
+
             }
         }
 

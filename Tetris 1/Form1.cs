@@ -11,12 +11,16 @@ namespace Tetris_1
         public Playground Playground2 { get; set; }
         public bool TwoPlayers { get; set; } = false;
         public bool SinglePlayer { get; set; } = false;
-        public bool HardModeOn { get; set; } = false;
+        public bool ExtremeModeOn { get; set; } = false;
         public bool Started { get; set; } = false;
+        public bool Easy { get; set; } = false;
+        public bool Intermediate { get; set; } = false;
+        public bool Hard { get; set; } = false;
         int speed = 10;
 
         int tick = 0;
         int tick2 = 0;
+        int SelectedLang = 0;
         public Form1()
         {
             InitializeComponent();
@@ -61,7 +65,26 @@ namespace Tetris_1
             }
         }
 
+        private bool SetDifficulty()
+        {
+            //Difficulty difficulty = new Difficulty(SelectedLang);
+            //difficulty.StartPosition = FormStartPosition.CenterScreen;
+            //difficulty.Show();
+            //SetDifficultyBooleans(difficulty);
+                Difficulty difficulty = new Difficulty(SelectedLang);
+                difficulty.StartPosition = FormStartPosition.CenterScreen;
+                DialogResult result = difficulty.ShowDialog();
+                SetDifficultyBooleans(difficulty);
+                return result == DialogResult.OK; // Return true if the form was closed using DialogResult.OK
 
+
+        }
+        private void SetDifficultyBooleans(Difficulty difficulty)
+        {
+            Easy = difficulty.Easy;
+            Intermediate = difficulty.Intermediate;
+            Hard = difficulty.Hard;
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -70,10 +93,22 @@ namespace Tetris_1
             {
                 tick2++;
             }
-            if (!HardModeOn)
+            if (!ExtremeModeOn)
             {
                 timer1.Interval = 1;
-                int tickNow1 = 100 / (Playground.Level + 3);
+                int tickNow1 = 1;
+                if (Easy)
+                {
+                    tickNow1 = 100 / (int)(0.5 * Playground.Level + 3);
+                }
+                if (Intermediate)
+                {
+                    tickNow1 = 100 / (Playground.Level + 3);
+                }
+                if (Hard)
+                {
+                    tickNow1 = 100 / (int)(2 * Playground.Level + 3);
+                }
                 if (tick % tickNow1 == 0)
                 {
 
@@ -180,7 +215,18 @@ namespace Tetris_1
                 int tickNow2 = 1;
                 if (TwoPlayers)
                 {
-                    tickNow2 = 100 / (Playground2.Level + 3);
+                    if (Easy)
+                    {
+                        tickNow2 = 100 / (int)(0.5*Playground2.Level + 3);
+                    }
+                    if (Intermediate)
+                    {
+                        tickNow2 = 100 / (int)(Playground2.Level + 3);
+                    }
+                    if (Hard)
+                    {
+                        tickNow2 = 100 / (int)(2 * Playground2.Level + 3);
+                    }
                     if (tickNow2 < 1)
                     {
                         tickNow2 = 1;
@@ -353,7 +399,7 @@ namespace Tetris_1
             Started = false;
             TwoPlayers = false;
             SinglePlayer = false;
-            HardModeOn = false;
+            ExtremeModeOn = false;
         }
         private void UpdateGameBackground()
         {
@@ -418,20 +464,24 @@ namespace Tetris_1
             SinglePlayerStart();
             SinglePlayer = true;
             TwoPlayers = false;
-            HelpStart hp;
-            if (langPack.SelectedIndex == 0)
+            if (SetDifficulty())
             {
-                hp = new HelpStart(1);
+                HelpStart hp;
+                if (langPack.SelectedIndex == 0)
+                {
+                    hp = new HelpStart(1);
+                }
+                else
+                {
+                    hp = new HelpStart(5);
+                }
+                hp.StartPosition = FormStartPosition.CenterScreen;
+                hp.ShowDialog();
+                timer1.Start();
+                Started = true;
+                Invalidate();
             }
-            else
-            {
-                hp = new HelpStart(5);
-            }
-            hp.StartPosition = FormStartPosition.CenterScreen;
-            hp.ShowDialog();
-            timer1.Start();
-            Started = true;
-            Invalidate();
+
         }
         public void SinglePlayerStart()
         {
@@ -478,21 +528,25 @@ namespace Tetris_1
             TwoPlayersStart();
             TwoPlayers = true;
             SinglePlayer = false;
-            HelpStart hp;
-            if (langPack.SelectedIndex == 0)
+            if (SetDifficulty())
             {
-                hp = new HelpStart(2);
+                HelpStart hp;
+                if (langPack.SelectedIndex == 0)
+                {
+                    hp = new HelpStart(2);
+                }
+                else
+                {
+                    hp = new HelpStart(6);
+                }
+                hp.StartPosition = FormStartPosition.CenterScreen;
+                hp.ShowDialog();
+                timer1.Start();
+                Started = true;
+                Invalidate();
             }
-            else
-            {
-                hp = new HelpStart(6);
-            }
-            hp.StartPosition = FormStartPosition.CenterScreen;
-            hp.ShowDialog();
-            timer1.Start();
-            Started = true;
-            Invalidate();
         }
+           
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -535,8 +589,8 @@ namespace Tetris_1
         private void button5_Click(object sender, EventArgs e)
         {
             HardMode();
-            HardModeOn = true;
-            Playground.Hard = true;
+            ExtremeModeOn = true;
+            Playground.Extreme = true;
             Playground.GameIsStarted = true;
             HelpStart hp;
             if (langPack.SelectedIndex == 0)
@@ -557,10 +611,12 @@ namespace Tetris_1
         {
             if (langPack.SelectedIndex == 0)
             {
+                SelectedLang = 0;
                 langChange(0);
             }
             else if (langPack.SelectedIndex == 1)
             {
+                SelectedLang = 1;
                 langChange(1);
             }
             Invalidate();
