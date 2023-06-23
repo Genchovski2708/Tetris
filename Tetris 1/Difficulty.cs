@@ -23,6 +23,8 @@ namespace Tetris_1
             BackColor = Color.Orange;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            btnConfirm.BackColor = Color.Blue;
+            btnConfirm.ForeColor = Color.Orange;
         }
         private void SetBooleans()
         {
