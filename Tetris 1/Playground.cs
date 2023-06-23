@@ -254,10 +254,7 @@ namespace Tetris_1
                     {
                         DotsArray[rowIndex, columnIndex].HasSquare = true;
                         DotsArray[rowIndex, columnIndex].Color = MovingShape.Color;
-                        if (rowIndex == VerticalDots - 1)
-                        {
-                            MovingShape.AtBottom = true;
-                        }
+
                     }
                 }
             }
@@ -663,7 +660,7 @@ namespace Tetris_1
                         {
                             rowIndex = MovingShape.IndexRow + i;
                             columnIndex = MovingShape.IndexColumn + j;
-                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex>=0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
+                            if (rowIndex == VerticalDots - 1 || rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex>=0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
                             {
                                 MovingShape.AtBottom = true;
                                 found = true;

@@ -128,7 +128,7 @@ namespace Tetris_1
                 {
                     tickNow1 = 100 / (int)(2 * Playground.Level + 3);
                 }
-                if (tick % tickNow1 == 0)
+                if (tick % tickNow1 == 0 || Playground.MovingShape == null || Playground.MovingShape.AtBottom)
                 {
 
                     Playground.AddShape();
@@ -251,7 +251,7 @@ namespace Tetris_1
                         tickNow2 = 1;
                     }
                 }
-                if (TwoPlayers && tick2 % tickNow2 == 0)
+                if (TwoPlayers && (tick2 % tickNow2 == 0 || Playground2.MovingShape == null || Playground2.MovingShape.AtBottom))
                 {
 
                     if (TwoPlayers)
