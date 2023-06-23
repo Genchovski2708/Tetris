@@ -37,7 +37,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Imprint MT Shadow", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.Blue;
-            label1.Location = new Point(77, 42);
+            label1.Location = new Point(59, 40);
             label1.Name = "label1";
             label1.Size = new Size(0, 23);
             label1.TabIndex = 0;

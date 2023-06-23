@@ -35,10 +35,12 @@ namespace Tetris_1
         public bool Extreme { get; set; } = false;
         public int Level { get; set; } = 1;
         public bool ChangedLevel { get; set; } = false;
-        public Playground(Point topLeft, Point topRight)
+        public int  Langueage { get; set; }//0 - EN 1 - MK
+        public Playground(Point topLeft, Point topRight, int lang)
         {
             TopLeft = topLeft;
             TopRight = topRight;
+            Langueage = lang;
             Dots = new List<Dot>();
             Shapes = new List<Shape>();
             Shape MovingShape;
@@ -113,20 +115,42 @@ namespace Tetris_1
             }
             Font font = new Font("Arial", 18);
             Brush brush = Brushes.White;
+            string text;
+            Point point;
+            if (Langueage == 0)
+            {
+                text = String.Format("Rows: {0}", ClearedRows.ToString());
+                 point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
+                g.DrawString(text, font, brush, point);
 
-            string text = String.Format("Rows: {0}", ClearedRows.ToString());
-            Point point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
-            g.DrawString(text, font, brush, point);
+                text = String.Format("Points: {0}", Points.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
+                g.DrawString(text, font, brush, point);
+            }
+            else
+            {
+                text = String.Format("Редици: {0}", ClearedRows.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
+                g.DrawString(text, font, brush, point);
 
-            text = String.Format("Points: {0}", Points.ToString());
-            point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
-            g.DrawString(text, font, brush, point);
-
+                text = String.Format("Поени: {0}", Points.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
+                g.DrawString(text, font, brush, point);
+            }
             if (!Extreme)
             {
-                text = String.Format("Level: {0}", Level.ToString());
-                point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
-                g.DrawString(text, font, brush, point);
+                if (Langueage == 0)
+                {
+                    text = String.Format("Level: {0}", Level.ToString());
+                    point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
+                    g.DrawString(text, font, brush, point);
+                }
+                else
+                {
+                    text = String.Format("Ниво: {0}", Level.ToString());
+                    point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
+                    g.DrawString(text, font, brush, point);
+                }
             }
 
             Pen pen = new Pen(Color.Black, 2);

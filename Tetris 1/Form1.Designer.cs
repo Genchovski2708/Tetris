@@ -38,6 +38,7 @@
             button4 = new Button();
             button5 = new Button();
             langPack = new ComboBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // timer1
@@ -138,11 +139,22 @@
             langPack.SelectedIndexChanged += langPack_SelectedIndexChanged;
             langPack.SelectedValueChanged += langPack_SelectedValueChanged;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Snap ITC", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(78, 61);
+            label1.Name = "label1";
+            label1.Size = new Size(77, 27);
+            label1.TabIndex = 10;
+            label1.Text = "label1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1052, 953);
+            Controls.Add(label1);
             Controls.Add(langPack);
             Controls.Add(button5);
             Controls.Add(button4);
@@ -155,6 +167,7 @@
             Paint += Form1_Paint;
             KeyDown += Form1_KeyDown;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -167,5 +180,6 @@
         private Button button4;
         private Button button5;
         private ComboBox langPack;
+        private Label label1;
     }
 }

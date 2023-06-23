@@ -20,7 +20,9 @@ namespace Tetris_1
             InitializeComponent();
             changeLanguage(langInt);
             SetBooleans();
-
+            BackColor = Color.Orange;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
         }
         private void SetBooleans()
         {
@@ -30,19 +32,22 @@ namespace Tetris_1
         }
         private void changeLanguage(int langInt)
         {
-            if(langInt == 0)
+            if (langInt == 0)
             {
                 gbChooseDifficulty.Text = "Choose Difficulty";
                 rbEasy.Text = "Easy";
                 rbIntermediate.Text = "Intermediate";
                 rbHard.Text = "Hard";
+                btnConfirm.Text = "Confirm";
             }
-            else if( langInt == 1)
+            else if (langInt == 1)
             {
+                this.Text = "Тежина";
                 gbChooseDifficulty.Text = "Избери Тежина";
                 rbEasy.Text = "Лесно";
                 rbIntermediate.Text = "Средно";
                 rbHard.Text = "Тешко";
+                btnConfirm.Text = "Потврди";
             }
         }
 
@@ -50,6 +55,11 @@ namespace Tetris_1
         {
             SetBooleans();
             DialogResult = DialogResult.OK;
+        }
+
+        private void Difficulty_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

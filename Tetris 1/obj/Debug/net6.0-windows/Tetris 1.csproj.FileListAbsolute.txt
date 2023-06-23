@@ -71,3 +71,4 @@ C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0
 C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.HelpStart.resources
 C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.HelpStart.resources
 C:\Users\Tamara\Desktop\Andrej\Tetris Fixed\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.Difficulty.resources
+C:\Users\Aleksandar\Documents\TetrisV0.1\Tetris 1\obj\Debug\net6.0-windows\Tetris_1.Difficulty.resources

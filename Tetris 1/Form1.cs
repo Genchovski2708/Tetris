@@ -32,6 +32,10 @@ namespace Tetris_1
             StartPosition = FormStartPosition.CenterScreen;
             this.Icon = new Icon("Images\\TETRIS4.ico");
             langPack.SelectedIndex = 0;
+            label1.BackColor = Color.Transparent;
+            label1.ForeColor = Color.Orange;
+            langPack.BackColor = Color.Orange;
+            langPack.ForeColor=Color.Blue;
             Invalidate();
         }
 
@@ -48,8 +52,15 @@ namespace Tetris_1
             if (Playground != null && Playground.GameIsStarted)
             {
                 Playground.DrawDots(e.Graphics);
-
-                string text = "Player 1";
+                string text;
+                if (langPack.SelectedIndex == 0)
+                {
+                    text = "Player 1";
+                }
+                else
+                {
+                    text = "Играч 1";
+                }
                 Point point = new Point(Playground.TopLeft.X, Playground.TopLeft.Y - 5 * Playground.DISTANCE);
                 e.Graphics.DrawString(text, font, brush, point);
             }
@@ -58,7 +69,15 @@ namespace Tetris_1
                 if (Playground2 != null && Playground2.GameIsStarted)
                 {
                     Playground2.DrawDots(e.Graphics);
-                    string text = "Player 2";
+                    string text;
+                    if (langPack.SelectedIndex == 0)
+                    {
+                        text = "Player 2";
+                    }
+                    else
+                    {
+                        text = "Играч 2";
+                    }
                     Point point = new Point(Playground2.TopLeft.X, Playground2.TopLeft.Y - 5 * Playground.DISTANCE);
                     e.Graphics.DrawString(text, font, brush, point);
                 }
@@ -71,11 +90,11 @@ namespace Tetris_1
             //difficulty.StartPosition = FormStartPosition.CenterScreen;
             //difficulty.Show();
             //SetDifficultyBooleans(difficulty);
-                Difficulty difficulty = new Difficulty(SelectedLang);
-                difficulty.StartPosition = FormStartPosition.CenterScreen;
-                DialogResult result = difficulty.ShowDialog();
-                SetDifficultyBooleans(difficulty);
-                return result == DialogResult.OK; // Return true if the form was closed using DialogResult.OK
+            Difficulty difficulty = new Difficulty(SelectedLang);
+            difficulty.StartPosition = FormStartPosition.CenterScreen;
+            DialogResult result = difficulty.ShowDialog();
+            SetDifficultyBooleans(difficulty);
+            return result == DialogResult.OK; // Return true if the form was closed using DialogResult.OK
 
 
         }
@@ -217,7 +236,7 @@ namespace Tetris_1
                 {
                     if (Easy)
                     {
-                        tickNow2 = 100 / (int)(0.5*Playground2.Level + 3);
+                        tickNow2 = 100 / (int)(0.5 * Playground2.Level + 3);
                     }
                     if (Intermediate)
                     {
@@ -396,6 +415,8 @@ namespace Tetris_1
             button5.Enabled = true;
             langPack.Enabled = true;
             langPack.Visible = true;
+            label1.Visible = true;
+            label1.Enabled = true;
             Started = false;
             TwoPlayers = false;
             SinglePlayer = false;
@@ -421,6 +442,8 @@ namespace Tetris_1
             button5.Enabled = false;
             langPack.Visible = false;
             langPack.Enabled = false;
+            label1.Visible = false;
+            label1.Enabled = false;
 
         }
         private void langChange(int i)
@@ -431,7 +454,8 @@ namespace Tetris_1
                 button2.Text = "Two Players";
                 button3.Text = "HELP";
                 button4.Text = "Exit";
-                button5.Text = "Hard Mode";
+                button5.Text = "Extreme Mode";
+                label1.Text = "Choose language:";
                 langPack.SelectedIndex = 0;
             }
             else if (i == 1)
@@ -440,7 +464,8 @@ namespace Tetris_1
                 button2.Text = "Двајца играчи";
                 button3.Text = "ПОМОШ";
                 button4.Text = "Излез";
-                button5.Text = "Тежок левел";
+                button5.Text = "Екстремен левел";
+                label1.Text = "Изберете јазик:";
                 langPack.SelectedIndex = 1;
             }
         }
@@ -481,6 +506,11 @@ namespace Tetris_1
                 Started = true;
                 Invalidate();
             }
+            else
+            {
+                Playground = null;
+                UpdateStartBackground();
+            }
 
         }
         public void SinglePlayerStart()
@@ -488,7 +518,7 @@ namespace Tetris_1
             timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(335, 250), new Point(735, 910));
+                Playground = new Playground(new Point(335, 250), new Point(735, 910), langPack.SelectedIndex);
                 RemoveBackground();
                 UpdateGameBackground();
             }
@@ -500,8 +530,8 @@ namespace Tetris_1
             timer1.Interval = 100;
             if ((Playground == null || !Playground.GameIsStarted) && (Playground2 == null || !Playground2.GameIsStarted))
             {
-                Playground = new Playground(new Point(70, 250), new Point(470, 910));
-                Playground2 = new Playground(new Point(580, 250), new Point(980, 910));
+                Playground = new Playground(new Point(70, 250), new Point(470, 910), langPack.SelectedIndex);
+                Playground2 = new Playground(new Point(580, 250), new Point(980, 910), langPack.SelectedIndex);
                 Playground2.SecondGround = true;
                 RemoveBackground();
                 UpdateGameBackground();
@@ -516,7 +546,7 @@ namespace Tetris_1
             timer1.Interval = 100;
             if (Playground == null || !Playground.GameIsStarted)
             {
-                Playground = new Playground(new Point(335, 250), new Point(735, 910));
+                Playground = new Playground(new Point(335, 250), new Point(735, 910), langPack.SelectedIndex);
                 RemoveBackground();
                 UpdateGameBackground();
             }
@@ -545,8 +575,13 @@ namespace Tetris_1
                 Started = true;
                 Invalidate();
             }
+            else
+            {
+                Playground = null;
+                UpdateStartBackground();
+            }
         }
-           
+
 
         private void button3_Click(object sender, EventArgs e)
         {
