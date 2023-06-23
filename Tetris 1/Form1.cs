@@ -361,7 +361,7 @@ namespace Tetris_1
             }
             else
             {
-                if (tick % speed == 0)
+                if (tick % speed == 0 || Playground.MovingShape == null || Playground.MovingShape.AtBottom)
                 {
                     Playground.AddShape();
                     Playground.Tick();

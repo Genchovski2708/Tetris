@@ -205,10 +205,10 @@ namespace Tetris_1
                 {
                     CheckFullRows();
                     int indx = HorizontalDots / 2 -1;
-                    if (Extreme)
-                    {
-                        indx = Random.Next(0, HorizontalDots);
-                    }
+                    //if (Extreme)
+                    //{
+                    //    indx = Random.Next(0, HorizontalDots);
+                    //}
                     Dot randomDot = DotsArray[0, indx];
                     if(PreviewShape!= null)
                     {
@@ -390,6 +390,7 @@ namespace Tetris_1
                 {
                     if (!MovingShape.AtBottom)
                     {
+                        MovingShape.FixLimits();
                         ResetDots();
                         MovingShape.IndexRow++;
                         UpdateDots();
