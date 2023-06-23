@@ -23,6 +23,7 @@ namespace Tetris_1
         public int LimitRight { get; set; }
         public int Stage { get; set; } // 0 default, 1 - rotated 90, 2 - rotated 180, 4 - rotated 270
         public Color Color { get; set; }
+        public bool IsMovingShape { get; set; } = false;
 
         protected Shape(Dot firstPoint,int indexRow, int indexColumn, int limitLeft, int limitRight)
         {
@@ -103,7 +104,7 @@ namespace Tetris_1
             IndexColumn++;
             FixLimits();
         }
-        public void MoveUp()
+        public bool MoveUp()
         {
             int previusStage = Stage;
             Stage = (Stage + 1) % 4;
@@ -114,19 +115,24 @@ namespace Tetris_1
                 Stage = previusStage;
                 ResetMatrix();
                 FillMatrix();
+                return false;
             }
+            return true;
 
         }
 
         public void FixLimits()
         {
-            if (IndexColumn + Width > LimitRight)
+            if (IsMovingShape)
             {
-                IndexColumn = LimitRight - Width;
-            }
-            if (IndexColumn + StartingWidthIndex < LimitLeft)
-            {
-                IndexColumn = LimitLeft - StartingWidthIndex;
+                if (IndexColumn + Width > LimitRight)
+                {
+                    IndexColumn = LimitRight - Width;
+                }
+                if (IndexColumn + StartingWidthIndex < LimitLeft)
+                {
+                    IndexColumn = LimitLeft - StartingWidthIndex;
+                }
             }
         }
         public bool Limits()

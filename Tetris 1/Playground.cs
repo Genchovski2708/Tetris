@@ -35,12 +35,15 @@ namespace Tetris_1
         public bool Extreme { get; set; } = false;
         public int Level { get; set; } = 1;
         public bool ChangedLevel { get; set; } = false;
-        public int  Langueage { get; set; }//0 - EN 1 - MK
+        public int  Language { get; set; }//0 - EN 1 - MK
+        public bool HasLeft { get; set; }
+        public bool HasRight { get; set; }
+        public bool Moved { get; set; } = true;
         public Playground(Point topLeft, Point topRight, int lang)
         {
             TopLeft = topLeft;
             TopRight = topRight;
-            Langueage = lang;
+            Language = lang;
             Dots = new List<Dot>();
             Shapes = new List<Shape>();
             Shape MovingShape;
@@ -117,7 +120,7 @@ namespace Tetris_1
             Brush brush = Brushes.White;
             string text;
             Point point;
-            if (Langueage == 0)
+            if (Language == 0)
             {
                 text = String.Format("Rows: {0}", ClearedRows.ToString());
                  point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
@@ -139,7 +142,7 @@ namespace Tetris_1
             }
             if (!Extreme)
             {
-                if (Langueage == 0)
+                if (Language == 0)
                 {
                     text = String.Format("Level: {0}", Level.ToString());
                     point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
@@ -393,6 +396,7 @@ namespace Tetris_1
                         ResetDots();
                         MovingShape.IndexRow++;
                         UpdateDots();
+                        Moved = true;
                     }
                 }
                 ResetBottomPreview();
@@ -431,7 +435,7 @@ namespace Tetris_1
             }
             
         }
-        public void Move(Keys keys) 
+        public void Move(Keys keys)
         {
             if (!SecondGround)
             {
@@ -441,31 +445,51 @@ namespace Tetris_1
                     {
                         if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
                         {
+                            CheckIfMoved();
                             ResetDots();
                         }
                         if (keys == Keys.Left)
                         {
-                            if (!CheckCollisionsLeft())
+                            if (!HasLeft)
                             {
                                 MoveLeft();
+                                Moved = true;
+                            }
+                            else
+                            {
+                                Moved = false;
                             }
 
                         }
                         else if (keys == Keys.Right)
                         {
-                            if (!CheckCollisionsRight())
+                            if (!HasRight)
                             {
                                 MoveRight();
+                                Moved = true;
+                            }
+                            else
+                            {
+                                Moved = false;
                             }
                         }
                         else if (keys == Keys.Up)
                         {
-                            MoveUp();
+                            if (MoveUp())
+                            {
+                                Moved = true;
+                            }
+                            else
+                            {
+                                Moved = false;
+                            }
+
                         }
                         else if (keys == Keys.Down)
                         {
 
                             MoveDown();
+                            Moved = true;
                         }
                         UpdateDots();
                         ResetBottomPreview();
@@ -481,37 +505,60 @@ namespace Tetris_1
                     {
                         if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
                         {
+                            CheckIfMoved();
                             ResetDots();
                         }
                         if (keys == Keys.A)
                         {
-                            if (!CheckCollisionsLeft())
+                            if (!HasLeft)
                             {
                                 MoveLeft();
+                                Moved = true;
+                            }
+                            else
+                            {
+                                Moved = false;
                             }
 
                         }
                         else if (keys == Keys.D)
                         {
-                            if (!CheckCollisionsRight())
+                            if (!HasRight)
                             {
                                 MoveRight();
+                                Moved = true;
+                            }
+                            else
+                            {
+                                Moved = false;
                             }
                         }
                         else if (keys == Keys.W)
                         {
-                            MoveUp();
+                            if (MoveUp())
+                            {
+                                Moved = true;
+                            }
                         }
                         else if (keys == Keys.S)
                         {
 
                             MoveDown();
+                            Moved = true;
                         }
                         UpdateDots();
                         ResetBottomPreview();
                         BottomPreview();
                     }
                 }
+            }
+        }
+        private void CheckIfMoved()
+        {
+            if (Moved)
+            {
+                HasRight = CheckCollisionsRight();
+                HasLeft = CheckCollisionsLeft();
             }
         }
 
@@ -579,12 +626,13 @@ namespace Tetris_1
                 MovingShape.MoveRight();
             }
         }
-        public void MoveUp()
+        public bool MoveUp()
         {
             if (MovingShape != null && !MovingShape.AtBottom)
             {
-                MovingShape.MoveUp();
+                return MovingShape.MoveUp();
             }
+            return false;
         }
         public void MoveDown()
         {
