@@ -35,7 +35,7 @@ namespace Tetris_1
             label1.BackColor = Color.Transparent;
             label1.ForeColor = Color.Orange;
             langPack.BackColor = Color.Orange;
-            langPack.ForeColor=Color.Blue;
+            langPack.ForeColor = Color.Blue;
             Invalidate();
         }
 
@@ -660,6 +660,16 @@ namespace Tetris_1
         private void langPack_SelectedValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_MouseEnter(object sender, EventArgs e)
+        {
+          //  Cursor.Current = Cursors.Cross;
+        }
+
+        private void Form1_MouseLeave(object sender, EventArgs e)
+        {
+           // Cursor.Current = Cursors.Default;
         }
     }
 }

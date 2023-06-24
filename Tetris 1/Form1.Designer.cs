@@ -166,6 +166,8 @@
             Load += Form1_Load;
             Paint += Form1_Paint;
             KeyDown += Form1_KeyDown;
+            MouseEnter += Form1_MouseEnter;
+            MouseLeave += Form1_MouseLeave;
             ResumeLayout(false);
             PerformLayout();
         }

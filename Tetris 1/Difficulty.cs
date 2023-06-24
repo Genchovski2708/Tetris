@@ -37,18 +37,18 @@ namespace Tetris_1
             if (langInt == 0)
             {
                 gbChooseDifficulty.Text = "Choose Difficulty";
-                rbEasy.Text = "Easy";
-                rbIntermediate.Text = "Intermediate";
-                rbHard.Text = "Hard";
+                radioButton3.Text = "Easy";
+                radioButton2.Text = "Intermediate";
+                radioButton1.Text = "Hard";
                 btnConfirm.Text = "Confirm";
             }
             else if (langInt == 1)
             {
                 this.Text = "Тежина";
                 gbChooseDifficulty.Text = "Избери Тежина";
-                rbEasy.Text = "Лесно";
-                rbIntermediate.Text = "Средно";
-                rbHard.Text = "Тешко";
+                radioButton3.Text = "Лесно";
+                radioButton2.Text = "Средно";
+                radioButton1.Text = "Тешко";
                 btnConfirm.Text = "Потврди";
             }
         }
