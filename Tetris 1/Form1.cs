@@ -479,7 +479,7 @@ namespace Tetris_1
                 {
                     Playground2.Move(e.KeyCode);
                 }
-                Invalidate();
+              //  Invalidate();
             
         }
 
