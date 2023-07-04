@@ -51,7 +51,7 @@ namespace Tetris_1
             PreviewShapeSquares = new GridSquare[4, 4];
             InitilizeGridMatrix();
             InitilizePreviewShapeSquares();
-            GenerateSquares();
+            MakeGrid();
         }
 
         private void InitilizePreviewShapeSquares()
@@ -76,7 +76,7 @@ namespace Tetris_1
             }
         }
 
-        public void GenerateSquares()
+        public void MakeGrid()
         {
             int countRow = 0;
             int countCol = 0;
@@ -102,12 +102,68 @@ namespace Tetris_1
         public void DrawSquares(Graphics g)
         {
             Brush p = new SolidBrush(Color.Blue);
-            g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, BottomRight.X - TopLeft.X+40, BottomRight.Y - TopLeft.Y+15);
+            g.FillRectangle(p, TopLeft.X - 20, TopLeft.Y - 15, BottomRight.X - TopLeft.X + 40, BottomRight.Y - TopLeft.Y + 15);
             if (!Extreme)
             {
                 g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE * 4, DISTANCE * 4);
             }
             p.Dispose();
+
+            DrawGridMatrix(g);
+
+            if (!Extreme)
+            {
+                DrawPreviewShapeSquares(g);
+            }
+
+            DrawText(g, ClearedRows.ToString(), Points.ToString(), TopLeft, DISTANCE, Language);
+
+            if (!Extreme)
+            {
+                DrawLevel(g);
+            }
+
+            DrawGridRectangles(g);
+
+            if (!Extreme)
+            {
+                DrawPreviewRectangles(g);
+            }
+
+            DrawOuterRectangles(g);
+        }
+
+        private void DrawText(Graphics g, string rowsText, string pointsText, Point topLeft, int distance, int language)
+        {
+            Font font = new Font("Arial", 18);
+            Brush brush = Brushes.White;
+            string text;
+            Point point;
+
+            if (language == 0)
+            {
+                text = String.Format("Rows: {0}", rowsText);
+                point = new Point(topLeft.X, topLeft.Y - 4 * distance);
+                g.DrawString(text, font, brush, point);
+
+                text = String.Format("Points: {0}", pointsText);
+                point = new Point(topLeft.X, topLeft.Y - 3 * distance);
+                g.DrawString(text, font, brush, point);
+            }
+            else
+            {
+                text = String.Format("Редици: {0}", rowsText);
+                point = new Point(topLeft.X, topLeft.Y - 4 * distance);
+                g.DrawString(text, font, brush, point);
+
+                text = String.Format("Поени: {0}", pointsText);
+                point = new Point(topLeft.X, topLeft.Y - 3 * distance);
+                g.DrawString(text, font, brush, point);
+            }
+        }
+
+        private void DrawGridMatrix(Graphics g)
+        {
             for (int i = 0; i < VerticalSquares; i++)
             {
                 for (int j = 0; j < HorizontalSquares; j++)
@@ -115,56 +171,41 @@ namespace Tetris_1
                     GridMatrix[i, j].Draw(g);
                 }
             }
-            if (!Extreme)
+        }
+
+        private void DrawPreviewShapeSquares(Graphics g)
+        {
+            for (int i = 0; i < 4; i++)
             {
-                for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
                 {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        PreviewShapeSquares[i, j].Draw(g);
-                    }
+                    PreviewShapeSquares[i, j].Draw(g);
                 }
             }
+        }
+
+        private void DrawLevel(Graphics g)
+        {
             Font font = new Font("Arial", 18);
             Brush brush = Brushes.White;
             string text;
             Point point;
             if (Language == 0)
             {
-                text = String.Format("Rows: {0}", ClearedRows.ToString());
-                 point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
-                g.DrawString(text, font, brush, point);
-
-                text = String.Format("Points: {0}", Points.ToString());
-                point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
+                text = String.Format("Level: {0}", Level.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
                 g.DrawString(text, font, brush, point);
             }
             else
             {
-                text = String.Format("Редици: {0}", ClearedRows.ToString());
-                point = new Point(TopLeft.X, TopLeft.Y - 4 * DISTANCE);
-                g.DrawString(text, font, brush, point);
-
-                text = String.Format("Поени: {0}", Points.ToString());
-                point = new Point(TopLeft.X, TopLeft.Y - 3 * DISTANCE);
+                text = String.Format("Ниво: {0}", Level.ToString());
+                point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
                 g.DrawString(text, font, brush, point);
             }
-            if (!Extreme)
-            {
-                if (Language == 0)
-                {
-                    text = String.Format("Level: {0}", Level.ToString());
-                    point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
-                    g.DrawString(text, font, brush, point);
-                }
-                else
-                {
-                    text = String.Format("Ниво: {0}", Level.ToString());
-                    point = new Point(TopLeft.X, TopLeft.Y - 2 * DISTANCE);
-                    g.DrawString(text, font, brush, point);
-                }
-            }
+        }
 
+        private void DrawGridRectangles(Graphics g)
+        {
             Pen pen = new Pen(Color.Black, 2);
             for (int i = 0; i < VerticalSquares; i++)
             {
@@ -173,26 +214,33 @@ namespace Tetris_1
                     g.DrawRectangle(pen, GridMatrix[i, j].Center.X - DISTANCE / 2, GridMatrix[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
                 }
             }
-            if (!Extreme)
+            pen.Dispose();
+        }
+
+        private void DrawPreviewRectangles(Graphics g)
+        {
+            Pen pen = new Pen(Color.Black, 2);
+            for (int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
             {
-                for (int i = TopLeft.X + 260; i < (TopLeft.X + 260 + (4 * DISTANCE)); i += DISTANCE)
+                for (int j = TopLeft.Y - 220; j < (TopLeft.Y - 220) + (4 * DISTANCE); j += DISTANCE)
                 {
-                    for (int j = TopLeft.Y - 220; j < (TopLeft.Y - 220) + (4 * DISTANCE); j += DISTANCE)
-                    {
-                        g.DrawRectangle(pen, i, j, DISTANCE, DISTANCE);
-                    }
+                    g.DrawRectangle(pen, i, j, DISTANCE, DISTANCE);
                 }
             }
+            pen.Dispose();
+        }
+
+        private void DrawOuterRectangles(Graphics g)
+        {
             Pen pe = new Pen(Color.Yellow, 3);
             if (!Extreme)
             {
                 g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
             }
             g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, BottomRight.X - TopLeft.X + 44, BottomRight.Y - TopLeft.Y + 19);
-            pen.Dispose();
             pe.Dispose();
+        }
 
-        }  
         public void AddShape()
         {
             if (MovingShape == null || MovingShape.AtBottom && GameIsStarted)
@@ -276,7 +324,7 @@ namespace Tetris_1
                     tempShape.IndexRow = i;
                     if (CheckIfShapeAtBottom(tempShape))
                     {
-                        if (!CheckIfOverlapping(tempShape, i))
+                        if (!CheckIfOverlappingByRow(tempShape, i))
                         {
                             for (int y = 0; y < 4; y++)
                             {
@@ -292,7 +340,7 @@ namespace Tetris_1
                         return;
                     }
                 }
-                if (!CheckIfOverlapping(tempShape, VerticalSquares - tempShape.Height))
+                if (!CheckIfOverlappingByRow(tempShape, VerticalSquares - tempShape.Height))
                 {
                     for (int y = tempShape.Height - 1; y >= 0; y--)
                     {
@@ -313,13 +361,13 @@ namespace Tetris_1
 
         }
 
-        private bool CheckIfOverlapping(Shape tempShape, int i)
+        private bool CheckIfOverlappingByRow(Shape tempShape, int i)
         {
             for (int y = 0; y < 4; y++)
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (tempShape.Matrix[y, x] && GridMatrix[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeDot(i + y, tempShape.IndexColumn + x))
+                    if (tempShape.Matrix[y, x] && GridMatrix[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeSquare(i + y, tempShape.IndexColumn + x))
                     {
                         return true;
                     }
@@ -328,7 +376,7 @@ namespace Tetris_1
             return false;
         }
 
-        private bool IsMovingShapeDot(int y, int x)
+        private bool IsMovingShapeSquare(int y, int x)
         {
             for(int i=0;i<MovingShape.Height;i++)
             {
@@ -438,122 +486,114 @@ namespace Tetris_1
         }
         public void Move(Keys keys)
         {
-            if (!SecondGround)
+            if (SecondGround)
             {
-                if (MovingShape != null)
-                {
-                    if (GameIsStarted && !MovingShape.AtBottom)
-                    {
-                        if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
-                        {
-                            CheckIfMoved();
-                            ResetSquares();
-                        }
-                        if (keys == Keys.Left)
-                        {
-                            if (!HasLeft)
-                            {
-                                MoveLeft();
-                                Moved = true;
-                            }
-                            else
-                            {
-                                Moved = false;
-                            }
-
-                        }
-                        else if (keys == Keys.Right)
-                        {
-                            if (!HasRight)
-                            {
-                                MoveRight();
-                                Moved = true;
-                            }
-                            else
-                            {
-                                Moved = false;
-                            }
-                        }
-                        else if (keys == Keys.Up)
-                        {
-                            if (MoveUp())
-                            {
-                                Moved = true;
-                            }
-                            else
-                            {
-                                Moved = false;
-                            }
-
-                        }
-                        else if (keys == Keys.Down)
-                        {
-
-                            MoveDown();
-                            Moved = true;
-                        }
-                        UpdateSquares();
-                        ResetBottomPreview();
-                        BottomPreview();
-                    }
-                }
+                MoveSecondGround(keys);
             }
             else
             {
-                if (MovingShape != null)
-                {
-                    if (GameIsStarted && !MovingShape.AtBottom)
-                    {
-                        if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
-                        {
-                            CheckIfMoved();
-                            ResetSquares();
-                        }
-                        if (keys == Keys.A)
-                        {
-                            if (!HasLeft)
-                            {
-                                MoveLeft();
-                                Moved = true;
-                            }
-                            else
-                            {
-                                Moved = false;
-                            }
-
-                        }
-                        else if (keys == Keys.D)
-                        {
-                            if (!HasRight)
-                            {
-                                MoveRight();
-                                Moved = true;
-                            }
-                            else
-                            {
-                                Moved = false;
-                            }
-                        }
-                        else if (keys == Keys.W)
-                        {
-                            if (MoveUp())
-                            {
-                                Moved = true;
-                            }
-                        }
-                        else if (keys == Keys.S)
-                        {
-
-                            MoveDown();
-                            Moved = true;
-                        }
-                        UpdateSquares();
-                        ResetBottomPreview();
-                        BottomPreview();
-                    }
-                }
+                MoveFirstGround(keys);
             }
         }
+
+        private void MoveFirstGround(Keys keys)
+        {
+            if (MovingShape == null || !GameIsStarted || MovingShape.AtBottom)
+                return;
+
+            CheckIfMoved();
+            ResetSquares();
+
+            switch (keys)
+            {
+                case Keys.Left:
+                    if (!HasLeft)
+                    {
+                        MoveLeft();
+                        Moved = true;
+                    }
+                    else
+                    {
+                        Moved = false;
+                    }
+                    break;
+                case Keys.Right:
+                    if (!HasRight)
+                    {
+                        MoveRight();
+                        Moved = true;
+                    }
+                    else
+                    {
+                        Moved = false;
+                    }
+                    break;
+                case Keys.Up:
+                    Moved = Rotate();
+                    break;
+                case Keys.Down:
+                    MoveDown();
+                    Moved = true;
+                    break;
+                default:
+                    Moved = false;
+                    break;
+            }
+
+            UpdateSquares();
+            ResetBottomPreview();
+            BottomPreview();
+        }
+
+        private void MoveSecondGround(Keys keys)
+        {
+            if (MovingShape == null || !GameIsStarted || MovingShape.AtBottom)
+                return;
+
+            CheckIfMoved();
+            ResetSquares();
+
+            switch (keys)
+            {
+                case Keys.A:
+                    if (!HasLeft)
+                    {
+                        MoveLeft();
+                        Moved = true;
+                    }
+                    else
+                    {
+                        Moved = false;
+                    }
+                    break;
+                case Keys.D:
+                    if (!HasRight)
+                    {
+                        MoveRight();
+                        Moved = true;
+                    }
+                    else
+                    {
+                        Moved = false;
+                    }
+                    break;
+                case Keys.W:
+                    Moved = Rotate();
+                    break;
+                case Keys.S:
+                    MoveDown();
+                    Moved = true;
+                    break;
+                default:
+                    Moved = false;
+                    break;
+            }
+
+            UpdateSquares();
+            ResetBottomPreview();
+            BottomPreview();
+        }
+
         private void CheckIfMoved()
         {
             if (Moved)
@@ -635,11 +675,13 @@ namespace Tetris_1
                 MovingShape.MoveRight();
             }
         }
-        public bool MoveUp()
+        public bool Rotate()
         {
-            if (MovingShape != null && !MovingShape.AtBottom)
+            Shape tempShape = (Shape)MovingShape.Clone();
+            tempShape.Rotate();
+            if (MovingShape != null && !MovingShape.AtBottom && !CheckIfOverlappingByRow(tempShape, tempShape.IndexRow))
             {
-                return MovingShape.MoveUp();
+                return MovingShape.Rotate();
             }
             return false;
         }

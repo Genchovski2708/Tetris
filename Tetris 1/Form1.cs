@@ -116,289 +116,218 @@ namespace Tetris_1
             if (!ExtremeModeOn)
             {
                 timer1.Interval = 1;
-                int tickNow1 = 1;
-                if (Easy)
-                {
-                    tickNow1 = 100 / (int)(0.5 * Playground.Level + 3);
-                }
-                if (Intermediate)
-                {
-                    tickNow1 = 100 / (Playground.Level + 3);
-                }
-                if (Hard)
-                {
-                    tickNow1 = 100 / (int)(2 * Playground.Level + 3);
-                }
+                int tickNow1 = SetTickNow(Playground);
+
                 if (tick % tickNow1 == 0 || Playground.MovingShape == null || Playground.MovingShape.AtBottom)
                 {
-
-                    Playground.AddShape();
-                    Playground.Tick();
-                    if (Playground.GameOver)
-                    {
-                        timer1.Stop();
-                    }
-                    if (TwoPlayers && Playground2.GameOver)
-                    {
-                        timer1.Stop();
-                    }
-                    if (Playground.FinishedS)
-                    {
-                        DialogResult dg;
-                        if (langPack.SelectedIndex == 0)
-                        {
-                            dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
-                        }
-                        else
-                        {
-                            dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
-                        }
-                        if (dg == DialogResult.Yes)
-                        {
-                            Playground = null;
-                            UpdateStartBackground();
-                        }
-                        else
-                        {
-                            this.Close();
-                        }
-                    }
-                    else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
-                    {
-                        string w = "DRAW"; //0 - D 1 - P1 2 - P2
-                        if (Playground.Points > Playground2.Points)
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                w = "Player 1!";
-                            }
-                            else
-                            {
-                                w = "Играч 1";
-                            }
-                        }
-                        else if (Playground.Points < Playground2.Points)
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                w = "Player 2";
-                            }
-                            else
-                            {
-                                w = "Играч 2";
-                            }
-                        }
-                        if (w.Equals("DRAW"))
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                MessageBox.Show("DRAW!", "Game Ended", MessageBoxButtons.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
-                            }
-                        }
-                        else
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"Победникот е: {w}", "Играта заврши", MessageBoxButtons.OK);
-                            }
-                        }
-                        DialogResult dg;
-                        if (langPack.SelectedIndex == 0)
-                        {
-                            dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
-                        }
-                        else
-                        {
-                            dg = MessageBox.Show("Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
-                        }
-                        if (dg == DialogResult.Yes)
-                        {
-                            Playground = null;
-                            Playground2 = null;
-                            UpdateStartBackground();
-                        }
-                        else
-                        {
-                            this.Close();
-                        }
-                    }
+                    PlaygroundAddShapeTick(Playground);
+                    HandleGameOver();
+                    HandleSinglePlayerGameFinish();
+                    HandleTwoPlayersGameFinish();
                     tick = 0;
                 }
                 int tickNow2 = 1;
                 if (TwoPlayers)
                 {
-                    if (Easy)
-                    {
-                        tickNow2 = 100 / (int)(0.5 * Playground2.Level + 3);
-                    }
-                    if (Intermediate)
-                    {
-                        tickNow2 = 100 / (int)(Playground2.Level + 3);
-                    }
-                    if (Hard)
-                    {
-                        tickNow2 = 100 / (int)(2 * Playground2.Level + 3);
-                    }
-                    if (tickNow2 < 1)
-                    {
-                        tickNow2 = 1;
-                    }
+                    tickNow2 = SetTickNow(Playground2);
                 }
                 if (TwoPlayers && (tick2 % tickNow2 == 0 || Playground2.MovingShape == null || Playground2.MovingShape.AtBottom))
                 {
 
                     if (TwoPlayers)
                     {
-                        Playground2.AddShape();
-                        Playground2.Tick();
+                        PlaygroundAddShapeTick(Playground2);
                     }
-                    if (Playground.GameOver)
-                    {
-                        timer1.Stop();
-                    }
-                    if (TwoPlayers && Playground2.GameOver)
-                    {
-                        timer1.Stop();
-                    }
-                    if (Playground.FinishedS)
-                    {
-                        DialogResult dg;
-                        if (langPack.SelectedIndex == 0)
-                        {
-                            dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
-                        }
-                        else
-                        {
-                            dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
-                        }
-                        if (dg == DialogResult.Yes)
-                        {
-                            Playground = null;
-                            UpdateStartBackground();
-                        }
-                        else
-                        {
-                            this.Close();
-                        }
-                    }
-                    else if ((Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
-                    {
-                        string w = "DRAW"; //0 - D 1 - P1 2 - P2
-                        if (Playground.Points > Playground2.Points)
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                w = "Player 1!";
-                            }
-                            else
-                            {
-                                w = "Играч 1";
-                            }
-                        }
-                        else if (Playground.Points < Playground2.Points)
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                w = "Player 2";
-                            }
-                            else
-                            {
-                                w = "Играч 2";
-                            }
-                        }
-                        if (w.Equals("DRAW"))
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                MessageBox.Show("DRAW!", "Game Ended", MessageBoxButtons.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
-                            }
-                        }
-                        else
-                        {
-                            if (langPack.SelectedIndex == 0)
-                            {
-                                MessageBox.Show($"The winner is: {w}", "Game Ended", MessageBoxButtons.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"Победникот е: {w}", "Играта заврши", MessageBoxButtons.OK);
-                            }
-                        }
-                        DialogResult dg;
-                        if (langPack.SelectedIndex == 0)
-                        {
-                            dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
-                        }
-                        else
-                        {
-                            dg = MessageBox.Show("Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
-                        }
-                        if (dg == DialogResult.Yes)
-                        {
-                            Playground = null;
-                            Playground2 = null;
-                            UpdateStartBackground();
-                        }
-                        else
-                        {
-                            this.Close();
-                        }
-                    }
+                    HandleGameOver();
+                    HandleSinglePlayerGameFinish();
+                    HandleTwoPlayersGameFinish();
                     tick2 = 0;
                 }
 
             }
             else
             {
-                if (tick % speed == 0 || Playground.MovingShape == null || Playground.MovingShape.AtBottom)
-                {
-                    Playground.AddShape();
-                    Playground.Tick();
-                }
-                if (tick == 100)
-                {
-                    tick = 0;
-                    if (speed >= 3)
-                    {
-                        speed--;
-                    }
-                }
-                if (Playground.FinishedS)
-                {
-                    timer1.Stop();
-                    DialogResult dg;
-                    if (langPack.SelectedIndex == 0)
-                    {
-                        dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
-                    }
-                    else
-                    {
-                        dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
-                    }
-                    if (dg == DialogResult.Yes)
-                    {
-                        Playground = null;
-                        UpdateStartBackground();
-                    }
-                    else
-                    {
-                        this.Close();
-                    }
-                }
+                HandleExtremeMode();
             }
             Invalidate();
+        }
+
+        private void PlaygroundAddShapeTick(Playground Playground)
+        {
+            Playground.AddShape();
+            Playground.Tick();
+        }
+
+        private int SetTickNow(Playground Playground)
+        {
+            if (Easy)
+            {
+                return 100 / (int)(0.5 * Playground.Level + 3);
+            }
+            if (Intermediate)
+            {
+                return 100 / (Playground.Level + 3);
+            }
+            if (Hard)
+            {
+                return 100 / (int)(2 * Playground.Level + 3);
+            }
+            return 1;
+        }
+        private void HandleGameOver()
+        {
+            if (Playground.GameOver || (TwoPlayers && Playground2.GameOver))
+            {
+                timer1.Stop();
+            }
+        }
+        private void HandleSinglePlayerGameFinish()
+        {
+            if (Playground.FinishedS)
+            {
+                DialogResult dg;
+                if (langPack.SelectedIndex == 0)
+                {
+                    dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                }
+                else
+                {
+                    dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                }
+                if (dg == DialogResult.Yes)
+                {
+                    Playground = null;
+                    UpdateStartBackground();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
+        }
+        private void HandleTwoPlayersGameFinish()
+        {
+            if (Playground.FinishedT || (Playground2 != null && Playground2.FinishedT))
+            {
+                string winner = GetWinner();
+                if (string.IsNullOrEmpty(winner))
+                {
+                    ShowDrawMessageBox();
+                }
+                else
+                {
+                    ShowWinnerMessageBox(winner);
+                }
+                DialogResult dg;
+                if (langPack.SelectedIndex == 0)
+                {
+                    dg = MessageBox.Show("New game?", "Game Over", MessageBoxButtons.YesNo);
+                }
+                else
+                {
+                    dg = MessageBox.Show("Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                }
+                if (dg == DialogResult.Yes)
+                {
+                    Playground = null;
+                    Playground2 = null;
+                    UpdateStartBackground();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
+        }
+
+        private string GetWinner()
+        {
+            string winner = "DRAW";
+            if (Playground.Points > Playground2.Points)
+            {
+                if (langPack.SelectedIndex == 0)
+                {
+                    winner = "Player 1!";
+                }
+                else
+                {
+                    winner = "Играч 1";
+                }
+            }
+            else if (Playground.Points < Playground2.Points)
+            {
+                if (langPack.SelectedIndex == 0)
+                {
+                    winner = "Player 2";
+                }
+                else
+                {
+                    winner = "Играч 2";
+                }
+            }
+            return winner;
+        }
+
+        private void ShowDrawMessageBox()
+        {
+            if (langPack.SelectedIndex == 0)
+            {
+                MessageBox.Show("DRAW!", "Game Ended", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show("НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
+            }
+        }
+
+        private void ShowWinnerMessageBox(string winner)
+        {
+            if (langPack.SelectedIndex == 0)
+            {
+                MessageBox.Show($"The winner is: {winner}", "Game Ended", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Победникот е: {winner}", "Играта заврши", MessageBoxButtons.OK);
+            }
+        }
+        private void HandleExtremeMode()
+        {
+            if (tick % speed == 0 || Playground.MovingShape == null || Playground.MovingShape.AtBottom)
+            {
+                Playground.AddShape();
+                Playground.Tick();
+            }
+            if (tick == 100)
+            {
+                tick = 0;
+                if (speed >= 3)
+                {
+                    speed--;
+                }
+            }
+            if (Playground.FinishedS)
+            {
+                timer1.Stop();
+                DialogResult dg;
+                if (langPack.SelectedIndex == 0)
+                {
+                    dg = MessageBox.Show($"Your points: {Playground.Points}, New Game?", "Game Over", MessageBoxButtons.YesNo);
+                }
+                else
+                {
+                    dg = MessageBox.Show($"Вашите поени: {Playground.Points}, Нова игра?", "Играта заврши", MessageBoxButtons.YesNo);
+                }
+                if (dg == DialogResult.Yes)
+                {
+                    Playground = null;
+                    UpdateStartBackground();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
         }
         private void UpdateStartBackground()
         {

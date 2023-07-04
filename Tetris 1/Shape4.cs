@@ -8,7 +8,7 @@ namespace Tetris_1
 {
     internal class Shape4 : Shape
     {
-        public bool IsRegular { get; set; }
+        public bool IsRegular { get; set; } // true = 4 , false = reversed 4
         public Shape4(GridSquare firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
             IsRegular = Random.Next(0, 2) == 0;

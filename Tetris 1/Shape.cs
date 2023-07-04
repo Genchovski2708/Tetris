@@ -96,15 +96,13 @@ namespace Tetris_1
         public void MoveLeft()
         {
             IndexColumn--;
-            //FixLimits();
         }
 
         public void MoveRight()
         {
             IndexColumn++;
-            //FixLimits();
         }
-        public bool MoveUp()
+        public bool Rotate()
         {
             int previusStage = Stage;
             Stage = (Stage + 1) % 4;
