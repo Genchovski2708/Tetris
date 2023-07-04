@@ -9,13 +9,13 @@ namespace Tetris_1
     internal class Shape4 : Shape
     {
         public bool IsRegular { get; set; }
-        public Shape4(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
+        public Shape4(GridSquare firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
             IsRegular = Random.Next(0, 2) == 0;
             ResetMatrix();
             FillMatrix();
         }
-        public Shape4(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage, bool isRegular) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        public Shape4(GridSquare firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage, bool isRegular) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
         {
             IsRegular = isRegular;
             ResetMatrix();

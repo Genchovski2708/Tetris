@@ -9,13 +9,13 @@ namespace Tetris_1
     internal class ShapeL : Shape
     {
         private int IsRegular; // 0 - Regular | 1 - Irregular
-        public ShapeL(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
+        public ShapeL(GridSquare firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight)
         {
             IsRegular = Random.Next(0, 2);
             ResetMatrix();
             FillMatrix();
         }
-        public ShapeL(Dot firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage, int isRegular) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
+        public ShapeL(GridSquare firstPoint, int ixRow, int ixColumn, int limitLeft, int limitRight, int stage, int isRegular) : base(firstPoint, ixRow, ixColumn, limitLeft, limitRight, stage)
         {
             IsRegular = isRegular;
             ResetMatrix();

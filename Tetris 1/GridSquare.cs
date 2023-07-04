@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris_1
 {
-    public class Dot
+    public class GridSquare
     {
         public Point Center { get; set; }
         public int Size { get; set; } = 5;
@@ -15,16 +15,16 @@ namespace Tetris_1
         public bool HasSquare { get; set; } = false;
         public bool BottomPreview { get; set; } = false;
         public bool Visible { get; set; } = true;
-        public Dot() 
+        public GridSquare() 
         {
             Center = Point.Empty;
         }
 
-        public Dot(Point center)
+        public GridSquare(Point center)
         {
             Center = center;
         }
-        public Dot(Point center, Color color)
+        public GridSquare(Point center, Color color)
         {
             Center = center;
             Color = color;

@@ -10,7 +10,7 @@ namespace Tetris_1
     {
         private int location;
         public static Random Random = new Random();
-        public Dot FirstPoint { get; set; }
+        public GridSquare FirstPoint { get; set; }
         public bool [,] Matrix { get; set; }
         public int IndexColumn { get; set; }
         public int IndexRow { get; set; }
@@ -25,7 +25,7 @@ namespace Tetris_1
         public Color Color { get; set; }
         public bool IsMovingShape { get; set; } = false;
 
-        protected Shape(Dot firstPoint,int indexRow, int indexColumn, int limitLeft, int limitRight)
+        protected Shape(GridSquare firstPoint,int indexRow, int indexColumn, int limitLeft, int limitRight)
         {
             FirstPoint = firstPoint;
             Matrix = new bool[4,4];
@@ -38,7 +38,7 @@ namespace Tetris_1
             FillMatrix();
             FixLimits();
         }
-        protected Shape(Dot firstPoint, int indexRow, int indexColumn, int limitLeft, int limitRight, int stage)
+        protected Shape(GridSquare firstPoint, int indexRow, int indexColumn, int limitLeft, int limitRight, int stage)
         {
             FirstPoint = firstPoint;
             Matrix = new bool[4, 4];
@@ -52,7 +52,7 @@ namespace Tetris_1
             FixLimits();
         }
 
-        protected Shape(Dot firstPoint, int location)
+        protected Shape(GridSquare firstPoint, int location)
         {
             FirstPoint = firstPoint;
             this.location = location;
@@ -96,13 +96,13 @@ namespace Tetris_1
         public void MoveLeft()
         {
             IndexColumn--;
-            FixLimits();
+            //FixLimits();
         }
 
         public void MoveRight()
         {
             IndexColumn++;
-            FixLimits();
+            //FixLimits();
         }
         public bool MoveUp()
         {

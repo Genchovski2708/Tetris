@@ -16,6 +16,7 @@ namespace Tetris_1
         public bool Easy { get; set; } = false;
         public bool Intermediate { get; set; } = false;
         public bool Hard { get; set; } = false;
+
         int speed = 10;
 
         int tick = 0;
@@ -51,7 +52,7 @@ namespace Tetris_1
             Brush brush = Brushes.White;
             if (Playground != null && Playground.GameIsStarted)
             {
-                Playground.DrawDots(e.Graphics);
+                Playground.DrawSquares(e.Graphics);
                 string text;
                 if (langPack.SelectedIndex == 0)
                 {
@@ -68,7 +69,7 @@ namespace Tetris_1
             {
                 if (Playground2 != null && Playground2.GameIsStarted)
                 {
-                    Playground2.DrawDots(e.Graphics);
+                    Playground2.DrawSquares(e.Graphics);
                     string text;
                     if (langPack.SelectedIndex == 0)
                     {
@@ -471,13 +472,17 @@ namespace Tetris_1
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            Playground.Move(e.KeyCode);
-            if (TwoPlayers)
-            {
-                Playground2.Move(e.KeyCode);
-            }
-            Invalidate();
+
+
+                Playground.Move(e.KeyCode);
+                if (TwoPlayers)
+                {
+                    Playground2.Move(e.KeyCode);
+                }
+                Invalidate();
+            
         }
+
         private void RemoveBackground()
         {
             this.BackgroundImage = null;

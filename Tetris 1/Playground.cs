@@ -12,15 +12,14 @@ namespace Tetris_1
     {
         public static int DISTANCE { get; set; } = 40;
         public static Random Random { get; set; } = new Random();
-        public List<Dot> Dots { get; set; }
         public List<Shape> Shapes { get; set; }
         public Shape MovingShape { get; set; }
-        public Dot [,] DotsArray { get; set; }
+        public GridSquare [,] GridMatrix { get; set; }
         public Point TopLeft { get; set; }
-        public Point TopRight { get; set; }
+        public Point BottomRight { get; set; }
 
-        public int HorizontalDots { get; set; }
-        public int VerticalDots { get; set; }
+        public int HorizontalSquares { get; set; }
+        public int VerticalSquares { get; set; }
         public bool GameIsStarted { get; set; }
         public int ClearedRows { get; set; } = 0;
         public int Points { get; set; } = 0;
@@ -29,7 +28,7 @@ namespace Tetris_1
         public bool FinishedT { get; set; } = false;
         public bool FinishedS { get; set; } = false;
         public bool SecondGround { get; set; }
-        public Dot[,] PreviewShapeDots { get; set; }
+        public GridSquare[,] PreviewShapeSquares { get; set; }
         Shape PreviewShape;
         public bool TwoPlayers { get; set; } = false;
         public bool Extreme { get; set; } = false;
@@ -42,41 +41,51 @@ namespace Tetris_1
         public Playground(Point topLeft, Point topRight, int lang)
         {
             TopLeft = topLeft;
-            TopRight = topRight;
+            BottomRight = topRight;
             Language = lang;
-            Dots = new List<Dot>();
             Shapes = new List<Shape>();
             Shape MovingShape;
-            HorizontalDots = (TopRight.X + DISTANCE - TopLeft.X) / DISTANCE;
-            VerticalDots = (TopRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
-            DotsArray = new Dot[VerticalDots + 4 , HorizontalDots];
-            PreviewShapeDots = new Dot[4, 4];
-            for(int i = 0; i < VerticalDots; i++)
-            {
-                for(int j = 0; j<HorizontalDots; j++)
-                {
-                    DotsArray[i,j] = new Dot();
-                }
-            }
-            for(int i=0; i < 4; i++)
-            {
-                for(int j = 0; j < 4; j++)
-                {
-                    PreviewShapeDots[i, j] = new Dot();
-                }
-            }
-            GenerateDots();
+            HorizontalSquares = (BottomRight.X + DISTANCE - TopLeft.X) / DISTANCE;
+            VerticalSquares = (BottomRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
+            GridMatrix = new GridSquare[VerticalSquares + 4 , HorizontalSquares];
+            PreviewShapeSquares = new GridSquare[4, 4];
+            InitilizeGridMatrix();
+            InitilizePreviewShapeSquares();
+            GenerateSquares();
         }
-        public void GenerateDots()
+
+        private void InitilizePreviewShapeSquares()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    PreviewShapeSquares[i, j] = new GridSquare();
+                }
+            }
+        }
+
+        private void InitilizeGridMatrix()
+        {
+            for (int i = 0; i < VerticalSquares; i++)
+            {
+                for (int j = 0; j < HorizontalSquares; j++)
+                {
+                    GridMatrix[i, j] = new GridSquare();
+                }
+            }
+        }
+
+        public void GenerateSquares()
         {
             int countRow = 0;
             int countCol = 0;
-            for (int j = TopLeft.Y ; j <= TopRight.Y; j += DISTANCE)
+            for (int j = TopLeft.Y ; j <= BottomRight.Y; j += DISTANCE)
             {
-                for (int i = TopLeft.X; i <= TopRight.X; i += DISTANCE)
+                for (int i = TopLeft.X; i <= BottomRight.X; i += DISTANCE)
                 {
-                    Dot temp = new Dot(new Point(i, j));
-                    DotsArray[countRow, countCol] = temp;
+                    GridSquare temp = new GridSquare(new Point(i, j));
+                    GridMatrix[countRow, countCol] = temp;
                     countCol++;
                 }
                 countCol = 0;
@@ -86,24 +95,24 @@ namespace Tetris_1
             {
                 for(int j = 3; j >= 0; j--)
                 {
-                    PreviewShapeDots[j, i] = new Dot(new Point(TopRight.X-3*DISTANCE+i*DISTANCE,TopLeft.Y-2*DISTANCE-(3-j)*DISTANCE));
+                    PreviewShapeSquares[j, i] = new GridSquare(new Point(BottomRight.X-3*DISTANCE+i*DISTANCE,TopLeft.Y-2*DISTANCE-(3-j)*DISTANCE));
                 }
             }
         }
-        public void DrawDots(Graphics g)
+        public void DrawSquares(Graphics g)
         {
             Brush p = new SolidBrush(Color.Blue);
-            g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, TopRight.X - TopLeft.X+40, TopRight.Y - TopLeft.Y+15);
+            g.FillRectangle(p, TopLeft.X-20, TopLeft.Y-15, BottomRight.X - TopLeft.X+40, BottomRight.Y - TopLeft.Y+15);
             if (!Extreme)
             {
                 g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE * 4, DISTANCE * 4);
             }
             p.Dispose();
-            for (int i = 0; i < VerticalDots; i++)
+            for (int i = 0; i < VerticalSquares; i++)
             {
-                for (int j = 0; j < HorizontalDots; j++)
+                for (int j = 0; j < HorizontalSquares; j++)
                 {
-                    DotsArray[i, j].Draw(g);
+                    GridMatrix[i, j].Draw(g);
                 }
             }
             if (!Extreme)
@@ -112,7 +121,7 @@ namespace Tetris_1
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        PreviewShapeDots[i, j].Draw(g);
+                        PreviewShapeSquares[i, j].Draw(g);
                     }
                 }
             }
@@ -157,11 +166,11 @@ namespace Tetris_1
             }
 
             Pen pen = new Pen(Color.Black, 2);
-            for (int i = 0; i < VerticalDots; i++)
+            for (int i = 0; i < VerticalSquares; i++)
             {
-                for (int j = 0; j < HorizontalDots; j++)
+                for (int j = 0; j < HorizontalSquares; j++)
                 {
-                    g.DrawRectangle(pen, DotsArray[i, j].Center.X - DISTANCE / 2, DotsArray[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
+                    g.DrawRectangle(pen, GridMatrix[i, j].Center.X - DISTANCE / 2, GridMatrix[i, j].Center.Y - DISTANCE / 2, DISTANCE, DISTANCE);
                 }
             }
             if (!Extreme)
@@ -179,7 +188,7 @@ namespace Tetris_1
             {
                 g.DrawRectangle(pe, TopLeft.X + 257, TopLeft.Y - 223, DISTANCE * 4 + 4, DISTANCE * 4 + 4);
             }
-            g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, TopRight.X - TopLeft.X + 44, TopRight.Y - TopLeft.Y + 19);
+            g.DrawRectangle(pe, TopLeft.X - 23, TopLeft.Y - 18, BottomRight.X - TopLeft.X + 44, BottomRight.Y - TopLeft.Y + 19);
             pen.Dispose();
             pe.Dispose();
 
@@ -204,12 +213,8 @@ namespace Tetris_1
                 else
                 {
                     CheckFullRows();
-                    int indx = HorizontalDots / 2 -1;
-                    //if (Extreme)
-                    //{
-                    //    indx = Random.Next(0, HorizontalDots);
-                    //}
-                    Dot randomDot = DotsArray[0, indx];
+                    int indx = HorizontalSquares / 2 -1;
+                    GridSquare randomDot = GridMatrix[0, indx];
                     if(PreviewShape!= null)
                     {
                         MovingShape = PreviewShape;
@@ -219,7 +224,7 @@ namespace Tetris_1
                         MovingShape = GenerateShape(randomDot, indx);
                     }
                     PreviewShape = GenerateShape(randomDot, indx);
-                    ChangePreviewDots();
+                    ChangePreviewSquares();
                     Shapes.Add(MovingShape);
 
                 }
@@ -227,19 +232,19 @@ namespace Tetris_1
             }
 
         }
-        private void ChangePreviewDots()
+        private void ChangePreviewSquares()
         {
             for(int i = 0; i < 4; i++)
             {
                 for(int j =0; j<4; j++)
                 {
-                    PreviewShapeDots[i, j].HasSquare = PreviewShape.Matrix[i, j];
-                    PreviewShapeDots[i, j].Color = PreviewShape.Color;
+                    PreviewShapeSquares[i, j].HasSquare = PreviewShape.Matrix[i, j];
+                    PreviewShapeSquares[i, j].Color = PreviewShape.Color;
                 }
             }
         }
 
-        public void UpdateDots()
+        public void UpdateSquares()
         {
 
             
@@ -250,10 +255,10 @@ namespace Tetris_1
                     int rowIndex = MovingShape.IndexRow + i;
                     int columnIndex = MovingShape.IndexColumn + j;
 
-                    if (MovingShape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots)
+                    if (MovingShape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalSquares && columnIndex >= 0 && columnIndex < HorizontalSquares)
                     {
-                        DotsArray[rowIndex, columnIndex].HasSquare = true;
-                        DotsArray[rowIndex, columnIndex].Color = MovingShape.Color;
+                        GridMatrix[rowIndex, columnIndex].HasSquare = true;
+                        GridMatrix[rowIndex, columnIndex].Color = MovingShape.Color;
 
                     }
                 }
@@ -266,7 +271,7 @@ namespace Tetris_1
             if (!MovingShape.AtBottom && !Extreme)
             {
                 Shape tempShape = (Shape)MovingShape.Clone();
-                for (int i = MovingShape.IndexRow; i < VerticalDots - MovingShape.Height; i++)
+                for (int i = MovingShape.IndexRow; i < VerticalSquares - MovingShape.Height; i++)
                 {
                     tempShape.IndexRow = i;
                     if (CheckIfShapeAtBottom(tempShape))
@@ -279,7 +284,7 @@ namespace Tetris_1
                                 {
                                     if (tempShape.Matrix[y, x])
                                     {
-                                        DotsArray[i + y, tempShape.IndexColumn + x].BottomPreview = true;
+                                        GridMatrix[i + y, tempShape.IndexColumn + x].BottomPreview = true;
                                     }
                                 }
                             }
@@ -287,7 +292,7 @@ namespace Tetris_1
                         return;
                     }
                 }
-                if (!CheckIfOverlapping(tempShape, VerticalDots - tempShape.Height))
+                if (!CheckIfOverlapping(tempShape, VerticalSquares - tempShape.Height))
                 {
                     for (int y = tempShape.Height - 1; y >= 0; y--)
                     {
@@ -295,7 +300,7 @@ namespace Tetris_1
                         {
                             if (tempShape.Matrix[y, x])
                             {
-                                DotsArray[VerticalDots - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
+                                GridMatrix[VerticalSquares - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
                             }
                         }
                     }
@@ -314,7 +319,7 @@ namespace Tetris_1
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (tempShape.Matrix[y, x] && DotsArray[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeDot(i + y, tempShape.IndexColumn + x))
+                    if (tempShape.Matrix[y, x] && GridMatrix[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeDot(i + y, tempShape.IndexColumn + x))
                     {
                         return true;
                     }
@@ -354,7 +359,7 @@ namespace Tetris_1
                         {
                             rowIndex = CheckedShape.IndexRow + i;
                             columnIndex = CheckedShape.IndexColumn + j;
-                            if (rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex >= 0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!CheckedShape.Matrix[i + 1, j])))
+                            if (rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex >= 0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!CheckedShape.Matrix[i + 1, j])))
                             {
                                 return true;
                             }
@@ -366,7 +371,7 @@ namespace Tetris_1
             return false;
         }
 
-        private void ResetDots()
+        private void ResetSquares()
         {
             for(int i = 0; i < 4; i++)
             {
@@ -374,7 +379,7 @@ namespace Tetris_1
                 {
                     if (MovingShape.Matrix[i, j])
                     {
-                        DotsArray[i + MovingShape.IndexRow, j + MovingShape.IndexColumn].HasSquare = false;
+                        GridMatrix[i + MovingShape.IndexRow, j + MovingShape.IndexColumn].HasSquare = false;
                     }
                 }
             }
@@ -386,16 +391,14 @@ namespace Tetris_1
             if(GameIsStarted)
             {
                 CheckIfMovingShapeAtBottom();
-                if (MovingShape != null && MovingShape.IndexRow < VerticalDots)
+                if (MovingShape != null && MovingShape.IndexRow < VerticalSquares && !MovingShape.AtBottom)
                 {
-                    if (!MovingShape.AtBottom)
-                    {
                         MovingShape.FixLimits();
-                        ResetDots();
+                        ResetSquares();
                         MovingShape.IndexRow++;
-                        UpdateDots();
+                        UpdateSquares();
                         Moved = true;
-                    }
+                    
                 }
                 ResetBottomPreview();
                 BottomPreview();
@@ -405,22 +408,22 @@ namespace Tetris_1
 
         private void ResetBottomPreview()
         {
-            for(int i = 0; i < VerticalDots; i++)
+            for(int i = 0; i < VerticalSquares; i++)
             {
-                for(int j=0; j< HorizontalDots; j++)
+                for(int j=0; j< HorizontalSquares; j++)
                 {
-                    DotsArray[i, j].BottomPreview = false;
+                    GridMatrix[i, j].BottomPreview = false;
                 }
             }
         }
 
       
 
-        public Shape GenerateShape(Dot dot, int index)
+        public Shape GenerateShape(GridSquare dot, int index)
         {
 
             int limitLeft = 0;
-            int limitRight = HorizontalDots;
+            int limitRight = HorizontalSquares;
             int random = Random.Next(0, 5);
             switch (random)
             {
@@ -444,7 +447,7 @@ namespace Tetris_1
                         if (keys == Keys.Left || keys == Keys.Right || keys == Keys.Up || keys == Keys.Down)
                         {
                             CheckIfMoved();
-                            ResetDots();
+                            ResetSquares();
                         }
                         if (keys == Keys.Left)
                         {
@@ -489,7 +492,7 @@ namespace Tetris_1
                             MoveDown();
                             Moved = true;
                         }
-                        UpdateDots();
+                        UpdateSquares();
                         ResetBottomPreview();
                         BottomPreview();
                     }
@@ -504,7 +507,7 @@ namespace Tetris_1
                         if (keys == Keys.A || keys == Keys.D || keys == Keys.W || keys == Keys.S)
                         {
                             CheckIfMoved();
-                            ResetDots();
+                            ResetSquares();
                         }
                         if (keys == Keys.A)
                         {
@@ -544,7 +547,7 @@ namespace Tetris_1
                             MoveDown();
                             Moved = true;
                         }
-                        UpdateDots();
+                        UpdateSquares();
                         ResetBottomPreview();
                         BottomPreview();
                     }
@@ -575,12 +578,16 @@ namespace Tetris_1
                         {
                             return true;
                         }
-                        if (DotsArray[indexRow, indexColumn - 1].HasSquare && (j == 0 || !MovingShape.Matrix[i, j - 1]))
+                        if (GridMatrix[indexRow, indexColumn - 1].HasSquare && (j == 0 || !MovingShape.Matrix[i, j - 1]))
                         {
                             return true;
                         }
                     }
                 }
+            }
+            if (MovingShape.IndexColumn + MovingShape.StartingWidthIndex < MovingShape.LimitLeft)
+            {
+                return true;
             }
             return false;
         }
@@ -595,16 +602,20 @@ namespace Tetris_1
                     indexColumn = MovingShape.IndexColumn + j;
                     if (MovingShape.Matrix[i, j])
                     {
-                        if (indexColumn + 1 >= HorizontalDots)
+                        if (indexColumn + 1 >= HorizontalSquares)
                         {
                             return true;
                         }
-                        if (DotsArray[indexRow, indexColumn + 1].HasSquare && (j == 3 || !MovingShape.Matrix[i, j + 1]))
+                        if (GridMatrix[indexRow, indexColumn + 1].HasSquare && (j == 3 || !MovingShape.Matrix[i, j + 1]))
                         {
                             return true;
                         }
                     }
                 }
+            }
+            if (MovingShape.IndexColumn + MovingShape.Width > MovingShape.LimitRight )
+            {
+                return true;
             }
             return false;
         }
@@ -661,7 +672,7 @@ namespace Tetris_1
                         {
                             rowIndex = MovingShape.IndexRow + i;
                             columnIndex = MovingShape.IndexColumn + j;
-                            if (rowIndex == VerticalDots - 1 || rowIndex >= 0 && rowIndex + 1 < VerticalDots && columnIndex>=0 && columnIndex < HorizontalDots && DotsArray[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
+                            if (rowIndex == VerticalSquares - 1 || rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex>=0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
                             {
                                 MovingShape.AtBottom = true;
                                 found = true;
@@ -672,8 +683,6 @@ namespace Tetris_1
                     if (found)
                     {
                         CheckFullRows();
-                        // Treba da se ima metod UpdateMovingShape(), a toa UpdateDots() nema potreba da ga ima
-                        // Ama treba i drugi rabote da se smenat
                         break;
                     }
                 }
@@ -684,7 +693,7 @@ namespace Tetris_1
         private void CheckFullRows()
         {
             int clearedRows = 0;
-            for(int i=0; i < VerticalDots; i++)
+            for(int i=0; i < VerticalSquares; i++)
             {
                 if (RowIsFull(i))
                 {
@@ -736,9 +745,9 @@ namespace Tetris_1
         {
             for(int x = i; x > 0; x--)
             {
-                for(int y = 0; y < HorizontalDots; y++)
+                for(int y = 0; y < HorizontalSquares; y++)
                 {
-                    DotsArray[x, y].HasSquare = DotsArray[x-1,y].HasSquare;
+                    GridMatrix[x, y].HasSquare = GridMatrix[x-1,y].HasSquare;
                 }
             }
         }
@@ -746,9 +755,9 @@ namespace Tetris_1
         private bool RowIsFull(int i)
         {
             
-            for(int j=0;j < HorizontalDots; j++)
+            for(int j=0;j < HorizontalSquares; j++)
             {
-                if (!DotsArray[i, j].HasSquare)
+                if (!GridMatrix[i, j].HasSquare)
                 {
                     return false;
                 }
@@ -760,9 +769,9 @@ namespace Tetris_1
         {
             for(int x=0; x<4; x++)
             {
-                for (int i = 0; i < HorizontalDots; i++)
+                for (int i = 0; i < HorizontalSquares; i++)
                 {
-                    if (DotsArray[x,i].HasSquare)
+                    if (GridMatrix[x,i].HasSquare)
                     {
                         GameIsStarted = false;
                         break;
