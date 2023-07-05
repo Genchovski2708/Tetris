@@ -39,6 +39,7 @@
             button5 = new Button();
             langPack = new ComboBox();
             label1 = new Label();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
             // timer1
@@ -149,11 +150,21 @@
             label1.TabIndex = 10;
             label1.Text = "label1";
             // 
+            // textBox1
+            // 
+            textBox1.Font = new Font("Snap ITC", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            textBox1.Location = new Point(438, 936);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(154, 31);
+            textBox1.TabIndex = 11;
+            textBox1.TextAlign = HorizontalAlignment.Center;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1052, 953);
+            ClientSize = new Size(1052, 973);
+            Controls.Add(textBox1);
             Controls.Add(label1);
             Controls.Add(langPack);
             Controls.Add(button5);
@@ -183,5 +194,6 @@
         private Button button5;
         private ComboBox langPack;
         private Label label1;
+        private TextBox textBox1;
     }
 }

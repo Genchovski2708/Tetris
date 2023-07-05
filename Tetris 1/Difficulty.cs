@@ -28,9 +28,9 @@ namespace Tetris_1
         }
         private void SetBooleans()
         {
-            Easy = rbEasy.Checked;
-            Intermediate = rbIntermediate.Checked;
-            Hard = rbHard.Checked;
+            Easy = radioButton3.Checked;
+            Intermediate = radioButton2.Checked;
+            Hard = radioButton1.Checked;
         }
         private void changeLanguage(int langInt)
         {

@@ -176,7 +176,7 @@ namespace Tetris_1
         }
         private void HandleGameOver()
         {
-            if (Playground.GameOver || (TwoPlayers && Playground2.GameOver))
+            if (Playground.GameOver && (TwoPlayers && Playground2.GameOver))
             {
                 timer1.Stop();
             }
@@ -207,7 +207,7 @@ namespace Tetris_1
         }
         private void HandleTwoPlayersGameFinish()
         {
-            if ((Playground!=null&& Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
+            if ((Playground != null && Playground.FinishedT) && (Playground2 != null && Playground2.FinishedT))
             {
                 string winner = GetWinner();
                 if (string.IsNullOrEmpty(winner))
@@ -243,7 +243,7 @@ namespace Tetris_1
         private string GetWinner()
         {
             string winner = "DRAW";
-            if(langPack.SelectedIndex!=0)
+            if (langPack.SelectedIndex != 0)
             {
                 winner = "НЕРЕШЕНО";
             }
@@ -365,6 +365,7 @@ namespace Tetris_1
             langPack.Visible = true;
             label1.Visible = true;
             label1.Enabled = true;
+            textBox1.Visible = false;
             Started = false;
             TwoPlayers = false;
             SinglePlayer = false;
@@ -392,7 +393,6 @@ namespace Tetris_1
             langPack.Enabled = false;
             label1.Visible = false;
             label1.Enabled = false;
-
         }
         private void langChange(int i)
         {
@@ -419,15 +419,11 @@ namespace Tetris_1
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-
-
             Playground.Move(e.KeyCode);
             if (TwoPlayers)
             {
                 Playground2.Move(e.KeyCode);
             }
-            //  Invalidate();
-
         }
 
         private void RemoveBackground()
@@ -452,6 +448,7 @@ namespace Tetris_1
                 {
                     hp = new HelpStart(5);
                 }
+                UpdateLevelMode();
                 hp.StartPosition = FormStartPosition.CenterScreen;
                 hp.ShowDialog();
                 timer1.Start();
@@ -464,6 +461,50 @@ namespace Tetris_1
                 UpdateStartBackground();
             }
 
+        }
+        private void UpdateLevelMode()
+        {
+            textBox1.Visible = true;
+            textBox1.Enabled = false;
+            textBox1.BackColor = Color.Orange;
+            if (langPack.SelectedIndex == 0)
+            {
+                if (Easy)
+                {
+                    textBox1.Text = "Easy";
+                }
+                else if (Intermediate)
+                {
+                    textBox1.Text = "Intermediate";
+                }
+                else if (Hard)
+                {
+                    textBox1.Text = "Hard";
+                }
+                else if (ExtremeModeOn)
+                {
+                    textBox1.Text = "Extreme";
+                }
+            }
+            else
+            {
+                if (Easy)
+                {
+                    textBox1.Text = "Лесно";
+                }
+                else if (Intermediate)
+                {
+                    textBox1.Text = "Средно";
+                }
+                else if (Hard)
+                {
+                    textBox1.Text = "Тешко";
+                }
+                else if (ExtremeModeOn)
+                {
+                    textBox1.Text = "Екстремно";
+                }
+            }
         }
         public void SinglePlayerStart()
         {
@@ -521,6 +562,7 @@ namespace Tetris_1
                 {
                     hp = new HelpStart(6);
                 }
+                UpdateLevelMode();
                 hp.StartPosition = FormStartPosition.CenterScreen;
                 hp.ShowDialog();
                 timer1.Start();
@@ -588,6 +630,7 @@ namespace Tetris_1
             {
                 hp = new HelpStart(7);
             }
+            UpdateLevelMode();
             hp.StartPosition = FormStartPosition.CenterScreen;
             hp.ShowDialog();
             timer1.Start();
