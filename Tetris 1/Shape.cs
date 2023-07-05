@@ -65,7 +65,7 @@ namespace Tetris_1
             switch(randomInt)
             {
                 case 0:
-                    return Color.Red;
+                    return Color.RosyBrown;
                 case 1:
                     return Color.Green;
                 case 2:
@@ -75,7 +75,7 @@ namespace Tetris_1
                 case 4:
                     return Color.Salmon;
                 default:
-                    return Color.Red;
+                    return Color.Orange;
             }
         }
         public void ResetMatrix()

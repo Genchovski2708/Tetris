@@ -176,9 +176,19 @@ namespace Tetris_1
         }
         private void HandleGameOver()
         {
-            if (Playground.GameOver && (TwoPlayers && Playground2.GameOver))
+            if (TwoPlayers)
             {
-                timer1.Stop();
+                if (Playground.GameOver && (TwoPlayers && Playground2.GameOver))
+                {
+                    timer1.Stop();
+                }
+            }
+            else
+            {
+                if (Playground.GameOver)
+                {
+                    timer1.Stop();
+                }
             }
         }
         private void HandleSinglePlayerGameFinish()
@@ -237,6 +247,18 @@ namespace Tetris_1
                 {
                     this.Close();
                 }
+            }
+            else if (Playground != null && Playground.FinishedT)
+            {
+                textBox2.Visible = true; textBox1.Enabled = false;
+                textBox2.Location = new Point(200, 530);
+                textBox2.Text = $"Points: {Playground.Points.ToString()}";
+            }
+            else if (TwoPlayers && Playground2.GameOver)
+            {
+                textBox2.Visible = true; textBox1.Enabled = false;
+                textBox2.Location = new Point(700, 530);
+                textBox2.Text = $"Points: {Playground2.Points.ToString()}";
             }
         }
 
@@ -366,6 +388,7 @@ namespace Tetris_1
             label1.Visible = true;
             label1.Enabled = true;
             textBox1.Visible = false;
+            textBox2.Visible = false;
             Started = false;
             TwoPlayers = false;
             SinglePlayer = false;

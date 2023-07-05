@@ -40,6 +40,7 @@
             langPack = new ComboBox();
             label1 = new Label();
             textBox1 = new TextBox();
+            textBox2 = new TextBox();
             SuspendLayout();
             // 
             // timer1
@@ -159,11 +160,21 @@
             textBox1.TabIndex = 11;
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
+            // textBox2
+            // 
+            textBox2.Font = new Font("Yu Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            textBox2.Location = new Point(449, 471);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(154, 40);
+            textBox2.TabIndex = 12;
+            textBox2.TextAlign = HorizontalAlignment.Center;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1052, 973);
+            Controls.Add(textBox2);
             Controls.Add(textBox1);
             Controls.Add(label1);
             Controls.Add(langPack);
@@ -195,5 +206,6 @@
         private ComboBox langPack;
         private Label label1;
         private TextBox textBox1;
+        private TextBox textBox2;
     }
 }
