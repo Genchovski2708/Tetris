@@ -207,7 +207,7 @@ namespace Tetris_1
         }
         private void HandleTwoPlayersGameFinish()
         {
-            if (Playground.FinishedT || (Playground2 != null && Playground2.FinishedT))
+            if ((Playground!=null&& Playground.FinishedT) || (Playground2 != null && Playground2.FinishedT))
             {
                 string winner = GetWinner();
                 if (string.IsNullOrEmpty(winner))
@@ -243,6 +243,10 @@ namespace Tetris_1
         private string GetWinner()
         {
             string winner = "DRAW";
+            if(langPack.SelectedIndex!=0)
+            {
+                winner = "НЕРЕШЕНО";
+            }
             if (Playground.Points > Playground2.Points)
             {
                 if (langPack.SelectedIndex == 0)
@@ -284,11 +288,25 @@ namespace Tetris_1
         {
             if (langPack.SelectedIndex == 0)
             {
-                MessageBox.Show($"The winner is: {winner}", "Game Ended", MessageBoxButtons.OK);
+                if (!winner.Equals("DRAW"))
+                {
+                    MessageBox.Show($"The winner is: {winner}!", "Game Ended", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    MessageBox.Show($"DRAW!", "Game Ended", MessageBoxButtons.OK);
+                }
             }
             else
             {
-                MessageBox.Show($"Победникот е: {winner}", "Играта заврши", MessageBoxButtons.OK);
+                if (!winner.Equals("НЕРЕШЕНО"))
+                {
+                    MessageBox.Show($"Победникот е: {winner}", "Играта заврши", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    MessageBox.Show($"НЕРЕШЕНО!", "Играта заврши", MessageBoxButtons.OK);
+                }
             }
         }
         private void HandleExtremeMode()
@@ -403,13 +421,13 @@ namespace Tetris_1
         {
 
 
-                Playground.Move(e.KeyCode);
-                if (TwoPlayers)
-                {
-                    Playground2.Move(e.KeyCode);
-                }
-              //  Invalidate();
-            
+            Playground.Move(e.KeyCode);
+            if (TwoPlayers)
+            {
+                Playground2.Move(e.KeyCode);
+            }
+            //  Invalidate();
+
         }
 
         private void RemoveBackground()
@@ -598,12 +616,12 @@ namespace Tetris_1
 
         private void Form1_MouseEnter(object sender, EventArgs e)
         {
-          //  Cursor.Current = Cursors.Cross;
+            //  Cursor.Current = Cursors.Cross;
         }
 
         private void Form1_MouseLeave(object sender, EventArgs e)
         {
-           // Cursor.Current = Cursors.Default;
+            // Cursor.Current = Cursors.Default;
         }
     }
 }

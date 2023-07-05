@@ -106,6 +106,7 @@ namespace Tetris_1
             if (!Extreme)
             {
                 g.FillRectangle(p, TopLeft.X + 260, TopLeft.Y - 220, DISTANCE * 4, DISTANCE * 4);
+                DrawRedRectangles(g);
             }
             p.Dispose();
 
@@ -131,6 +132,13 @@ namespace Tetris_1
             }
 
             DrawOuterRectangles(g);
+        }
+
+        private void DrawRedRectangles(Graphics g)
+        {
+            Brush b = new SolidBrush(Color.Red);
+            g.FillRectangle(b, TopLeft.X - 20, TopLeft.Y - 15, BottomRight.X - TopLeft.X + 40, DISTANCE * 4 - 5);
+            b.Dispose();
         }
 
         private void DrawText(Graphics g, string rowsText, string pointsText, Point topLeft, int distance, int language)

@@ -36,7 +36,7 @@ namespace Tetris_1
         {
             if (langInt == 0)
             {
-                gbChooseDifficulty.Text = "Choose Difficulty";
+                groupBox1.Text = "Choose Difficulty";
                 radioButton3.Text = "Easy";
                 radioButton2.Text = "Intermediate";
                 radioButton1.Text = "Hard";
@@ -45,7 +45,7 @@ namespace Tetris_1
             else if (langInt == 1)
             {
                 this.Text = "Тежина";
-                gbChooseDifficulty.Text = "Избери Тежина";
+                groupBox1.Text = "Избери Тежина";
                 radioButton3.Text = "Лесно";
                 radioButton2.Text = "Средно";
                 radioButton1.Text = "Тешко";
