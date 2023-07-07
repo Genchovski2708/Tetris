@@ -253,14 +253,28 @@ namespace Tetris_1
             {
                 textBox2.Visible = true; textBox1.Enabled = false;
                 textBox2.Location = new Point(200, 530);
-                textBox2.Text = $"Points: {Playground.Points.ToString()}";
+                if (langPack.SelectedIndex == 0)
+                {
+                    textBox2.Text = $"Points: {Playground.Points.ToString()}";
+                }
+                else
+                {
+                    textBox2.Text = $"Поени: {Playground.Points.ToString()}";
+                }
                 textBox2.Enabled = false;
             }
             else if (TwoPlayers && Playground2.GameOver)
             {
                 textBox2.Visible = true; textBox1.Enabled = false;
                 textBox2.Location = new Point(700, 530);
-                textBox2.Text = $"Points: {Playground2.Points.ToString()}";
+                if (langPack.SelectedIndex == 0)
+                {
+                    textBox2.Text = $"Points: {Playground.Points.ToString()}";
+                }
+                else
+                {
+                    textBox2.Text = $"Поени: {Playground.Points.ToString()}";
+                }
                 textBox2.Enabled = false;
             }
         }
