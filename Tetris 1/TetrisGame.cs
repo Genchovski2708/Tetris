@@ -87,10 +87,6 @@ namespace Tetris_1
 
         private bool SetDifficulty()
         {
-            //Difficulty difficulty = new Difficulty(SelectedLang);
-            //difficulty.StartPosition = FormStartPosition.CenterScreen;
-            //difficulty.Show();
-            //SetDifficultyBooleans(difficulty);
             Difficulty difficulty = new Difficulty(SelectedLang);
             difficulty.StartPosition = FormStartPosition.CenterScreen;
             DialogResult result = difficulty.ShowDialog();
