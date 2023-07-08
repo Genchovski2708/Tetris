@@ -1,6 +1,6 @@
 ﻿namespace Tetris_1
 {
-    partial class Form1
+    partial class TetrisGame
     {
         /// <summary>
         ///  Required designer variable.

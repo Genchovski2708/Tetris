@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj": {}
+    "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj": {
+    "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj",
-        "projectName": "Tetris 1",
-        "projectPath": "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris 1.csproj",
+        "projectUniqueName": "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris.csproj",
+        "projectName": "Tetris",
+        "projectPath": "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\Tetris.csproj",
         "packagesPath": "C:\\Users\\Tamara\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Tamara\\Desktop\\Andrej\\Tetris new one\\TetrisV0.1\\Tetris 1\\obj\\",
         "projectStyle": "PackageReference",

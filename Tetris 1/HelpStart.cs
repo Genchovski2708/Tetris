@@ -32,7 +32,7 @@ namespace Tetris_1
             {
                 case 0:
                     label1.Location=new Point(this.Width/9, this.Height/6);
-                    label1.Text = "WELCOME!\r\nThis is TETRIS game!\r\nYou can choose one game mode.\r\nYou will got instructions at the beginning.\r\nGood Luck!\r\n\r\n";
+                    label1.Text = "WELCOME!\r\nThis is TETRIS game!\r\nYou can choose one game mode.\r\nYou will get instructions at the beginning.\r\nGood Luck!\r\n\r\n";
                     this.Text = "Help"; break;
                 case 1:
                     label1.Location = new Point(this.Width / 7, this.Height / 6);

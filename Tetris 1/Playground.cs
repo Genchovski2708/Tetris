@@ -12,9 +12,10 @@ namespace Tetris_1
     {
         public static int DISTANCE { get; set; } = 40;
         public static Random Random { get; set; } = new Random();
-        public List<Shape> Shapes { get; set; }
         public Shape MovingShape { get; set; }
         public GridSquare [,] GridMatrix { get; set; }
+        public GridSquare[,] PreviewShapeSquares { get; set; }
+        Shape PreviewShape;
         public Point TopLeft { get; set; }
         public Point BottomRight { get; set; }
 
@@ -28,8 +29,7 @@ namespace Tetris_1
         public bool FinishedT { get; set; } = false;
         public bool FinishedS { get; set; } = false;
         public bool SecondGround { get; set; }
-        public GridSquare[,] PreviewShapeSquares { get; set; }
-        Shape PreviewShape;
+
         public bool TwoPlayers { get; set; } = false;
         public bool Extreme { get; set; } = false;
         public int Level { get; set; } = 1;
@@ -43,7 +43,6 @@ namespace Tetris_1
             TopLeft = topLeft;
             BottomRight = topRight;
             Language = lang;
-            Shapes = new List<Shape>();
             Shape MovingShape;
             HorizontalSquares = (BottomRight.X + DISTANCE - TopLeft.X) / DISTANCE;
             VerticalSquares = (BottomRight.Y + DISTANCE - TopLeft.Y) / DISTANCE;
@@ -281,7 +280,6 @@ namespace Tetris_1
                     }
                     PreviewShape = GenerateShape(randomDot, indx);
                     ChangePreviewSquares();
-                    Shapes.Add(MovingShape);
 
                 }
 
@@ -294,7 +292,7 @@ namespace Tetris_1
             {
                 for(int j =0; j<4; j++)
                 {
-                    PreviewShapeSquares[i, j].HasSquare = PreviewShape.Matrix[i, j];
+                    PreviewShapeSquares[i, j].IsPartOfShape = PreviewShape.Matrix[i, j];
                     PreviewShapeSquares[i, j].Color = PreviewShape.Color;
                 }
             }
@@ -313,7 +311,7 @@ namespace Tetris_1
 
                     if (MovingShape.Matrix[i, j] && rowIndex >= 0 && rowIndex < VerticalSquares && columnIndex >= 0 && columnIndex < HorizontalSquares)
                     {
-                        GridMatrix[rowIndex, columnIndex].HasSquare = true;
+                        GridMatrix[rowIndex, columnIndex].IsPartOfShape = true;
                         GridMatrix[rowIndex, columnIndex].Color = MovingShape.Color;
 
                     }
@@ -340,7 +338,7 @@ namespace Tetris_1
                                 {
                                     if (tempShape.Matrix[y, x])
                                     {
-                                        GridMatrix[i + y, tempShape.IndexColumn + x].BottomPreview = true;
+                                        GridMatrix[i + y, tempShape.IndexColumn + x].IsPartOfBottomPreview = true;
                                     }
                                 }
                             }
@@ -356,7 +354,7 @@ namespace Tetris_1
                         {
                             if (tempShape.Matrix[y, x])
                             {
-                                GridMatrix[VerticalSquares - (tempShape.Height - y), tempShape.IndexColumn + x].BottomPreview = true;
+                                GridMatrix[VerticalSquares - (tempShape.Height - y), tempShape.IndexColumn + x].IsPartOfBottomPreview = true;
                             }
                         }
                     }
@@ -375,7 +373,7 @@ namespace Tetris_1
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (tempShape.Matrix[y, x] && GridMatrix[i + y, tempShape.IndexColumn + x].HasSquare && !IsMovingShapeSquare(i + y, tempShape.IndexColumn + x))
+                    if (tempShape.Matrix[y, x] && GridMatrix[i + y, tempShape.IndexColumn + x].IsPartOfShape && !IsMovingShapeSquare(i + y, tempShape.IndexColumn + x))
                     {
                         return true;
                     }
@@ -415,7 +413,7 @@ namespace Tetris_1
                         {
                             rowIndex = CheckedShape.IndexRow + i;
                             columnIndex = CheckedShape.IndexColumn + j;
-                            if (rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex >= 0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!CheckedShape.Matrix[i + 1, j])))
+                            if (rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex >= 0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].IsPartOfShape && (i == 3 || (!CheckedShape.Matrix[i + 1, j])))
                             {
                                 return true;
                             }
@@ -435,7 +433,7 @@ namespace Tetris_1
                 {
                     if (MovingShape.Matrix[i, j])
                     {
-                        GridMatrix[i + MovingShape.IndexRow, j + MovingShape.IndexColumn].HasSquare = false;
+                        GridMatrix[i + MovingShape.IndexRow, j + MovingShape.IndexColumn].IsPartOfShape = false;
                     }
                 }
             }
@@ -468,7 +466,7 @@ namespace Tetris_1
             {
                 for(int j=0; j< HorizontalSquares; j++)
                 {
-                    GridMatrix[i, j].BottomPreview = false;
+                    GridMatrix[i, j].IsPartOfBottomPreview = false;
                 }
             }
         }
@@ -626,7 +624,7 @@ namespace Tetris_1
                         {
                             return true;
                         }
-                        if (GridMatrix[indexRow, indexColumn - 1].HasSquare && (j == 0 || !MovingShape.Matrix[i, j - 1]))
+                        if (GridMatrix[indexRow, indexColumn - 1].IsPartOfShape && (j == 0 || !MovingShape.Matrix[i, j - 1]))
                         {
                             return true;
                         }
@@ -654,7 +652,7 @@ namespace Tetris_1
                         {
                             return true;
                         }
-                        if (GridMatrix[indexRow, indexColumn + 1].HasSquare && (j == 3 || !MovingShape.Matrix[i, j + 1]))
+                        if (GridMatrix[indexRow, indexColumn + 1].IsPartOfShape && (j == 3 || !MovingShape.Matrix[i, j + 1]))
                         {
                             return true;
                         }
@@ -722,7 +720,7 @@ namespace Tetris_1
                         {
                             rowIndex = MovingShape.IndexRow + i;
                             columnIndex = MovingShape.IndexColumn + j;
-                            if (rowIndex == VerticalSquares - 1 || rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex>=0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].HasSquare && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
+                            if (rowIndex == VerticalSquares - 1 || rowIndex >= 0 && rowIndex + 1 < VerticalSquares && columnIndex>=0 && columnIndex < HorizontalSquares && GridMatrix[rowIndex + 1, columnIndex].IsPartOfShape && (i == 3 || (!MovingShape.Matrix[i + 1, j])))
                             {
                                 MovingShape.AtBottom = true;
                                 found = true;
@@ -797,7 +795,7 @@ namespace Tetris_1
             {
                 for(int y = 0; y < HorizontalSquares; y++)
                 {
-                    GridMatrix[x, y].HasSquare = GridMatrix[x-1,y].HasSquare;
+                    GridMatrix[x, y].IsPartOfShape = GridMatrix[x-1,y].IsPartOfShape;
                 }
             }
         }
@@ -807,7 +805,7 @@ namespace Tetris_1
             
             for(int j=0;j < HorizontalSquares; j++)
             {
-                if (!GridMatrix[i, j].HasSquare)
+                if (!GridMatrix[i, j].IsPartOfShape)
                 {
                     return false;
                 }
@@ -821,7 +819,7 @@ namespace Tetris_1
             {
                 for (int i = 0; i < HorizontalSquares; i++)
                 {
-                    if (GridMatrix[x,i].HasSquare)
+                    if (GridMatrix[x,i].IsPartOfShape)
                     {
                         GameIsStarted = false;
                         break;

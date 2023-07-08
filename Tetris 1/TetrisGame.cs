@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Tetris_1
 {
-    public partial class Form1 : Form
+    public partial class TetrisGame : Form
     {
         public Playground Playground { get; set; }
         public Playground Playground2 { get; set; }
@@ -22,7 +22,7 @@ namespace Tetris_1
         int tick = 0;
         int tick2 = 0;
         int SelectedLang = 0;
-        public Form1()
+        public TetrisGame()
         {
             InitializeComponent();
             DoubleBuffered = true;
